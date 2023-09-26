@@ -1,3 +1,13 @@
+import { useBracketSingle } from './hooks/usebracketSingle';
+
 export const BracketSingle = () => {
-	return <div>BracketSingle</div>;
+	const { singleBracket, isLoading } = useBracketSingle();
+	if (isLoading) return <div>Loading...</div>;
+
+	return (
+		<>
+			<div>BracketSingle</div>
+			<div>{singleBracket?.name}</div>
+		</>
+	);
 };
