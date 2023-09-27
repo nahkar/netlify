@@ -9,7 +9,7 @@ import { getDeepClone, getNumbersArray } from '../../../utils';
 import { COUNT_EMTY_BLOCKS } from '../../../constants';
 import { getMatchById, isFinalMatch } from '../../../services/match.service';
 import { Match__ContainerStyled, Match__WrapperStyled } from '../components/Match/styled';
-import { DragStart, Draggable } from 'react-beautiful-dnd';
+import { DragStart, Draggable, DropResult } from 'react-beautiful-dnd';
 import { Match } from '../components/Match';
 import { EmptyMatch__WrapperStyled } from '../components/EmptyMatch/styled';
 import { EmptyMatch } from '../components/EmptyMatch';
@@ -19,9 +19,12 @@ import {
 	deleteConnectionsAndEndpoints,
 	getInstance,
 	setConnection,
+	setEndpoint,
 	setListeners,
 	setPrevAndNextMatchConnections,
+	updateManagedElementOnNextTick,
 } from '../../../services/plumb';
+import { toast } from 'react-toastify';
 
 type PropsT = {
 	container: RefObject<HTMLDivElement>;
@@ -33,6 +36,7 @@ type useSingleResult = {
 	matches: IMatch[];
 	renderMatch: (data: RenderMatchT) => JSX.Element[];
 	onDragStart: (start: DragStart) => void;
+	onDragEnd: (result: DropResult) => void;
 };
 type RenderMatchT = { matches: IMatch[]; column: IColumn };
 
@@ -124,6 +128,128 @@ export const useBracketSingle = ({ container }: PropsT): useSingleResult => {
 		}
 	};
 
+
+	const isMatchPositionTaken = (columnId: string, matchNumber: number, matches: IMatch[]): boolean => {
+		const match = matches.find((match) => match.columnId === columnId && match.matchNumber === matchNumber);
+		return !!match;
+	};
+
+
+	const removeRelationModel = ({ matchId, isSameColumn }: { matchId: string; isSameColumn?: boolean }) => {
+		if (isSameColumn) {
+			return;
+		}
+		setMatches((prev) => {
+			return getDeepClone(prev).map((match) => {
+				if (match.id === matchId) {
+					// * For drag Element
+					return {
+						...match,
+						nextMatchId: null,
+						prevMatchId: null,
+					};
+				}
+				// * For next matches
+				if (match.prevMatchId && match.prevMatchId.includes(matchId)) {
+					return {
+						...match,
+						prevMatchId: match.prevMatchId.filter((id) => id !== matchId),
+					};
+				}
+				// * For previous matches
+				if (match.nextMatchId === matchId) {
+					return {
+						...match,
+						nextMatchId: null,
+					};
+				}
+				return match;
+			});
+		});
+	};
+
+	const onDragEnd = (result: DropResult) => {
+		setIsDraging(false);
+		if (!instance) {
+			return;
+		}
+		const { source, destination, draggableId } = result;
+		const prevMatch = { ...matches.find((match) => match.id === draggableId) } as IMatch;
+
+		const setEndpointParams = {
+			instance,
+			matchIdWithPrefix: addPrefixToMatchId(prevMatch.id),
+			isLastColumn: prevMatch.columnIndex === columns.length - 1,
+			match: prevMatch,
+		};
+
+		const isSameColumn = draggableMatch?.columnId === result.destination?.droppableId;
+
+		if (!destination) {
+			//* Drag out content
+			setEndpoint(setEndpointParams);
+			removeRelationModel({ matchId: draggableId, isSameColumn: true });
+
+			setPrevAndNextMatchConnections({
+				instance,
+				matches,
+				draggableMatch,
+			});
+
+			return;
+		}
+
+		if (destination.droppableId === source.droppableId && destination.index === source.index) {
+			//* Drag on the same place
+			setEndpoint(setEndpointParams);
+			removeRelationModel({ matchId: draggableId, isSameColumn: true });
+
+			setPrevAndNextMatchConnections({
+				instance,
+				matches,
+				draggableMatch,
+			});
+
+			return;
+		}
+
+		const destinationIndex = destination.index;
+		const destinationColumnId = destination.droppableId;
+
+		setMatches((prevMatches) => {
+			const matches = getDeepClone(prevMatches);
+			const currentMatch: IMatch | undefined = matches.find((m) => m.id === draggableId);
+			const destinationColumn = columns.find((column) => column.id === destinationColumnId);
+
+			if (currentMatch && destinationColumn) {
+				if (isMatchPositionTaken(destinationColumn.id, destinationIndex, matches)) {
+					toast.warning('Position is taken');
+					return matches;
+				}
+
+				if (instance && currentMatch.columnId !== destinationColumn.id) {
+					updateInstance();
+					// updateManagedElementOnNextTick({ matchIdWithPrefix: addPrefixToMatchId(currentMatch.id), instance });
+				}
+
+				currentMatch.matchNumber = destinationIndex;
+				currentMatch.columnId = destinationColumn.id;
+
+				currentMatch.matchNumber = destinationIndex;
+
+				const destColumn = columns.find((e) => e.id === destination.droppableId);
+				if (destColumn && destColumn.columnIndex !== null) {
+					currentMatch.columnIndex = destColumn.columnIndex;
+				}
+			}
+
+			return matches;
+		});
+
+		removeRelationModel({ matchId: draggableId, isSameColumn });
+		setIsRepaintConnections(true);
+	};
+
 	const renderMatch = ({ matches, column }: RenderMatchT) => {
 		return getNumbersArray(COUNT_EMTY_BLOCKS).map((index) => {
 			const match = matches.find((match) => match.columnId === column.id && match.matchNumber === index);
@@ -136,7 +262,6 @@ export const useBracketSingle = ({ container }: PropsT): useSingleResult => {
 								return (
 									<Match__ContainerStyled
 										$isAnotherMatch={!snapshot.isDragging}
-										// className={`match-styled match-styled__${match.id}`}
 										{...provided.draggableProps}
 										{...provided.dragHandleProps}
 										ref={provided.innerRef}
@@ -210,5 +335,6 @@ export const useBracketSingle = ({ container }: PropsT): useSingleResult => {
 		matches,
 		renderMatch,
 		onDragStart,
+		onDragEnd
 	};
 };

@@ -13,25 +13,27 @@ import {
 	UpdateRelationT,
 } from './types';
 import { Dispatch, SetStateAction } from 'react';
+import { theme } from '../../styles/theme';
 
 const PLUMB_CONFIG: EndpointOptions = {
 	isSource: true,
 	isTarget: true,
 	// connector: ['Straight', { stub: 35, gap: -10, cornerRadius: 10 }],
-	hoverPaintStyle: { stroke: '#911', strokeWidth: 5 },
+	hoverPaintStyle: { stroke: theme.light.colors.info.dark, strokeWidth: 5 },
 	maxConnections: 3,
 	endpoint: 'Dot',
+	connector: ['Flowchart', { stub: 35, gap: -10, cornerRadius: 10 }],
 };
 
 export const getInstance = ({ container }: GetInstanceT) => {
 	const instance = jsPlumb.getInstance({
 		PaintStyle: {
 			strokeWidth: 2,
-			stroke: '#567567',
+			stroke: theme.light.colors.info.dark,
 		},
 		Connector: ['Flowchart', { curviness: 20 }],
 		Endpoint: ['Dot', { radius: 1 }],
-		EndpointStyle: { fill: '#567567' },
+		EndpointStyle: { fill: theme.light.colors.info.dark },
 		Container: container,
 	});
 	// TODO: for debuging purposes
@@ -51,7 +53,7 @@ export const deleteConnectionsAndEndpoints = ({ matchIdWithPrefix, instance }: D
 
 	currentConnections?.forEach((c) => instance?.deleteConnection(c));
 
-	repaintOnNextTick({ instance });
+	// repaintOnNextTick({ instance });
 };
 
 export const addPrefixToMatchId = (matchId: string) => `match__${matchId}`;
@@ -167,19 +169,24 @@ export const setListeners = ({ instance, matches, setMatches }: SetListenersT) =
 };
 
 const repaintOnNextTick = ({ instance }: Pick<UpdateManagedElementOnNextTickT, 'instance'>) => {
-	setTimeout(() => instance.repaintEverything());
+	// setTimeout(() => instance.repaintEverything());
+	instance.repaintEverything()
 };
 
 export const updateManagedElementOnNextTick = ({ matchIdWithPrefix, instance }: UpdateManagedElementOnNextTickT) => {
 	const inst = instance as PlumbDevelopT;
-
-	setTimeout(() => {
-		const data = inst.getManagedElements()[matchIdWithPrefix];
-		if (data) {
-			data.el = document.getElementById(matchIdWithPrefix);
-			instance.revalidate(matchIdWithPrefix);
-		}
-	});
+	const data = inst.getManagedElements()[matchIdWithPrefix];
+	if (data) {
+		data.el = document.getElementById(matchIdWithPrefix);
+		instance.revalidate(matchIdWithPrefix);
+	}
+	// setTimeout(() => {
+	// 	const data = inst.getManagedElements()[matchIdWithPrefix];
+	// 	if (data) {
+	// 		data.el = document.getElementById(matchIdWithPrefix);
+	// 		instance.revalidate(matchIdWithPrefix);
+	// 	}
+	// });
 };
 
 export const setEndpoint = ({ instance, match, isLastColumn, matchRef, matchIdWithPrefix }: SetInitialEndpointT) => {
@@ -187,11 +194,11 @@ export const setEndpoint = ({ instance, match, isLastColumn, matchRef, matchIdWi
 
 	if (match.columnIndex > 0 && !isLastColumn) {
 		instance.addEndpoint(id, { anchor: 'Left', maxConnections: 2 }, { ...PLUMB_CONFIG, endpoint: 'Blank', isSource: false });
-		instance.addEndpoint(id, { anchor: 'Right', maxConnections: 2 }, { ...PLUMB_CONFIG, endpoint: 'Dot', isSource: true }); // Dot
+		instance.addEndpoint(id, { anchor: 'Right', maxConnections: 2 }, { ...PLUMB_CONFIG, endpoint: 'Dot', isSource: true, enabled: !match.nextMatchId }); // Dot
 	}
 
 	if (!match.columnIndex && !isLastColumn) {
-		instance.addEndpoint(id, { anchor: 'Right', maxConnections: 2 }, { ...PLUMB_CONFIG, endpoint: 'Dot' }); // Dot
+		instance.addEndpoint(id, { anchor: 'Right', maxConnections: 2 }, { ...PLUMB_CONFIG, endpoint: 'Dot', enabled: !match.nextMatchId }); // Dot
 	}
 
 	if (match.columnIndex > 0 && isLastColumn) {
@@ -269,8 +276,6 @@ export const addDynamicConnectorStyles = (matchesIds: Set<string>, setIntervals:
 	});
 };
 
-export const DEFAULT_ZOOM = 1;
-export const STEP_ZOOM = 0.1;
 
 export const changeZoom = (zoom: number, instance: jsPlumbInstance | null) => {
 	if (!instance) {

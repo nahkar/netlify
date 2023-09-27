@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { MATCH_HEIGHT } from '../../../../constants';
 
 export const Match__WrapperStyled = styled.div`
+	height: ${MATCH_HEIGHT}px;
 `;
 
 export const Match__ContainerStyled = styled.div<{ $isAnotherMatch: boolean }>`
@@ -20,9 +21,9 @@ export const Match__SingleNumberStyled = styled.span`
 	font-size: 10px;
 	font-weight: bold;
 	position: absolute;
-	left: -24px;
+	left: -21px;
 	top: 50%;
-	transform: translate(0, -7px);
+	transform: translate(0, -12px);
 	z-index: 2;
 	color: #3975d1;
 `;
@@ -34,7 +35,7 @@ export const Match__SingleParticipantWrapperStyled = styled.div`
 export const Match__SingleParticipantStyled = styled.div`
 	padding: 5px;
 	font-size: 14px;
-	background: ${props => props.theme.light.colors.info.dark};
+	background: ${(props) => props.theme.light.colors.info.dark};
 	color: #fff;
 	text-overflow: ellipsis;
 	white-space: nowrap;
