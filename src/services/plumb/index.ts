@@ -18,7 +18,7 @@ const PLUMB_CONFIG: EndpointOptions = {
 	isSource: true,
 	isTarget: true,
 	// connector: ['Straight', { stub: 35, gap: -10, cornerRadius: 10 }],
-	hoverPaintStyle: { stroke: 'red', strokeWidth: 5 },
+	hoverPaintStyle: { stroke: '#911', strokeWidth: 5 },
 	maxConnections: 3,
 	endpoint: 'Dot',
 };

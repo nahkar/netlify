@@ -14,6 +14,7 @@ export const Match__SingleWrapperStyled = styled.div`
 	height: ${MATCH_HEIGHT}px;
 	display: flex;
 	align-items: center;
+	z-index: 2;
 `;
 export const Match__SingleNumberStyled = styled.span`
 	font-size: 10px;
@@ -22,7 +23,7 @@ export const Match__SingleNumberStyled = styled.span`
 	left: -24px;
 	top: 50%;
 	transform: translate(0, -7px);
-	z-index: 9;
+	z-index: 2;
 	color: #3975d1;
 `;
 
