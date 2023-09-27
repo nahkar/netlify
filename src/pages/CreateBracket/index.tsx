@@ -9,38 +9,30 @@ import {
 	Switch,
 	TextField,
 } from '@mui/material';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useCreateBracket } from './hooks/useCreateBracket';
-import { TemplateTypeT } from './types';
+import { CreateBracketInputsT, TemplateTypeT } from './types';
 import { MIN_TEAMS_FOR_LOSERS_3, MIN_TEAMS_FOR_LOSERS_5 } from '../../constants';
 
-type Inputs = {
-	bracketName: string;
-	countOfTeams: string;
-	duplicateName: string;
-	isThirdPlace: boolean;
-	isFirstPlace: boolean;
-	isHigherSeedsTeamsLogic: boolean;
-	selectedSavedBracket: string;
-};
+
 
 export const CreateBracket = () => {
-	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, brackets } = useCreateBracket();
+	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, brackets, submitHandler } = useCreateBracket();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		watch,
-	} = useForm<Inputs>();
-	const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+	} = useForm<CreateBracketInputsT>();
 
 	const isNewBracketType = templateType === 'new_bracket';
 	const isSavedBracketType = templateType === 'saved_brackets';
 	const countOfTeams = Number(watch('countOfTeams'));
+
 	return (
 		<>
 			<div>CreateBracket</div>
-			<Box component='form' noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+			<Box component='form' noValidate autoComplete='off' onSubmit={handleSubmit(submitHandler)}>
 				<Box>
 					<Select
 						label='Select Template'
@@ -101,7 +93,7 @@ export const CreateBracket = () => {
 				{isNewBracketType && countOfTeams >= MIN_TEAMS_FOR_LOSERS_5 && (
 					<Box>
 						<FormGroup>
-							<FormControlLabel control={<Switch {...register('isFirstPlace')} />} label='Match for the 5th place' />
+							<FormControlLabel control={<Switch {...register('isFifthPlace')} />} label='Match for the 5th place' />
 						</FormGroup>
 					</Box>
 				)}

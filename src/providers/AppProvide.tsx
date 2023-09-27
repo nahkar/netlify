@@ -4,6 +4,7 @@ import { GlobalStyle } from '../globalStyles';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ThemeHoc } from '../styles/ThemeProvider';
 
 type PropsT = { children: React.ReactNode };
 
@@ -18,9 +19,11 @@ export const AppProvider = ({ children }: PropsT) => {
 
 	return (
 		<BrowserRouter>
-			<GlobalStyle />
-			<ToastContainer />
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+			<ThemeHoc>
+				<GlobalStyle />
+				<ToastContainer />
+				<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+			</ThemeHoc>
 		</BrowserRouter>
 	);
 };
