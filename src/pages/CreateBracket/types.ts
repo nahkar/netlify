@@ -1,0 +1,1 @@
+export type TemplateTypeT = 'new_bracket' | 'saved_brackets';
