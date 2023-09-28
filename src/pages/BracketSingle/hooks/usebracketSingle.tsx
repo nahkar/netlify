@@ -34,6 +34,7 @@ type useSingleResult = {
 	isLoading: boolean;
 	columns: IColumn[];
 	matches: IMatch[];
+	instance: jsPlumbInstance | null;
 	renderMatch: (data: RenderMatchT) => JSX.Element[];
 	onDragStart: (start: DragStart) => void;
 	onDragEnd: (result: DropResult) => void;
@@ -341,6 +342,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		renderMatch,
 		onDragStart,
 		onDragEnd,
-		addMatch
+		addMatch,
+		instance
 	};
 };
