@@ -1,11 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import { Header } from '../../components/Header';
+import { Box } from '@mui/material';
 
 export const MainLayout = () => {
 	return (
-		<main style={{ paddingTop: '70px' }}>
+		<Box sx={{ pt: '70px', px: '50px' }}>
 			<Header />
 			<Outlet />
-		</main>
+		</Box>
 	);
 };

@@ -82,7 +82,15 @@ export const getMatchesInColumn = (matches: IMatch[], columnId: string) => {
 	return matches.filter((match) => match.columnId === columnId);
 };
 
-export const getIndexOfMatch = ({ matches, columnId, matchId }: { matches: IMatch[]; columnId: string; matchId: string }) => {
+export const getIndexOfMatch = ({
+	matches,
+	columnId,
+	matchId,
+}: {
+	matches: IMatch[];
+	columnId: string;
+	matchId: string;
+}) => {
 	const matchesInColumn = getMatchesInColumn(matches, columnId);
 
 	return matchesInColumn.findIndex((match) => match.id === matchId);
@@ -107,7 +115,10 @@ export const addMatch = ({
 		}
 		return p;
 	});
-	return [...updatedMatches, { ...currentMatch, prevMatchId: [prevMatches[0].id, prevMatches[1].id], nextMatchId: null }];
+	return [
+		...updatedMatches,
+		{ ...currentMatch, prevMatchId: [prevMatches[0].id, prevMatches[1].id], nextMatchId: null },
+	];
 };
 
 export const deleteMatchWithRelations = (matches: IMatch[], id: string, isRemoveRelatedMatches = true) => {
@@ -165,3 +176,43 @@ export const isFinalMatch = ({ match, columns }: { match: IMatch; columns: IColu
 };
 
 export const getMaxMatchNumber = (matches: IMatch[]) => Math.max(...matches.map((match) => match.matchNumber));
+
+export const createMatch = ({
+	column,
+	matchName,
+	isLoser = false,
+	description = '',
+	matchNumber,
+	firstParticipantName,
+	secondParticipantName,
+}: {
+	column: IColumn;
+	matchName: string;
+	isLoser?: boolean;
+	description?: string;
+	matchNumber: number;
+	firstParticipantName: string;
+	secondParticipantName: string;
+}): IMatch => {
+	return {
+		id: uuidv4(),
+		columnId: column.id,
+		columnIndex: column.columnIndex || 0,
+		matchNumber,
+		matchName,
+		isLoser,
+		description,
+		nextMatchId: null,
+		prevMatchId: null,
+		participants: [
+			{
+				id: uuidv4(),
+				name: firstParticipantName,
+			},
+			{
+				id: uuidv4(),
+				name: secondParticipantName,
+			},
+		],
+	};
+};

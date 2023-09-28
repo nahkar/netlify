@@ -15,6 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { useHeader } from './hooks/useHeader';
+import { Header__LinkStyled } from './styled';
 
 export const Header = () => {
 	const { isOpen, onOpen, onClose } = useHeader();
@@ -51,7 +52,7 @@ export const Header = () => {
 					</Box>
 				</Drawer>
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }} align='center'>
-					<Link to='/'>Bracket Builder</Link>
+					<Header__LinkStyled to='/'>Bracket Builder</Header__LinkStyled>
 				</Typography>
 			</Toolbar>
 		</AppBar>

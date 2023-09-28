@@ -14,10 +14,9 @@ import { useCreateBracket } from './hooks/useCreateBracket';
 import { CreateBracketInputsT, TemplateTypeT } from './types';
 import { MIN_TEAMS_FOR_LOSERS_3, MIN_TEAMS_FOR_LOSERS_5 } from '../../constants';
 
-
-
 export const CreateBracket = () => {
-	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, brackets, submitHandler } = useCreateBracket();
+	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, brackets, submitHandler } =
+		useCreateBracket();
 	const {
 		register,
 		handleSubmit,

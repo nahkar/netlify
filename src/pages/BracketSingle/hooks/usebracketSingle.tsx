@@ -22,12 +22,12 @@ import {
 	setEndpoint,
 	setListeners,
 	setPrevAndNextMatchConnections,
-	updateManagedElementOnNextTick,
 } from '../../../services/plumb';
 import { toast } from 'react-toastify';
 
 type PropsT = {
 	container: RefObject<HTMLDivElement>;
+	createMatchOpenModal: ({ column, matchNumber }: { column: IColumn, matchNumber: number }) => void;
 };
 
 type useSingleResult = {
@@ -37,10 +37,11 @@ type useSingleResult = {
 	renderMatch: (data: RenderMatchT) => JSX.Element[];
 	onDragStart: (start: DragStart) => void;
 	onDragEnd: (result: DropResult) => void;
+	addMatch: (match: IMatch) => void;
 };
 type RenderMatchT = { matches: IMatch[]; column: IColumn };
 
-export const useBracketSingle = ({ container }: PropsT): useSingleResult => {
+export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): useSingleResult => {
 	const [_, setSingleBracket] = useState<IBracket | null>(null);
 	const [columns, setColumns] = useState<IColumn[]>([]);
 	const [matches, setMatches] = useState<IMatch[]>([]);
@@ -128,12 +129,10 @@ export const useBracketSingle = ({ container }: PropsT): useSingleResult => {
 		}
 	};
 
-
 	const isMatchPositionTaken = (columnId: string, matchNumber: number, matches: IMatch[]): boolean => {
 		const match = matches.find((match) => match.columnId === columnId && match.matchNumber === matchNumber);
 		return !!match;
 	};
-
 
 	const removeRelationModel = ({ matchId, isSameColumn }: { matchId: string; isSameColumn?: boolean }) => {
 		if (isSameColumn) {
@@ -305,10 +304,12 @@ export const useBracketSingle = ({ container }: PropsT): useSingleResult => {
 								{...provided.draggableProps}
 								{...provided.dragHandleProps}
 								ref={provided.innerRef}
+								onClick={() => createMatchOpenModal({ column, matchNumber: index })}
 							>
 								<EmptyMatch
 									// onClick={() => createMatchHandler(column, index)}
 									isDraging={isDraging}
+
 									// onContextMenu={(e) => contextMenuOnEmptyMatchHandler({ e, column, index })}
 								/>
 							</EmptyMatch__WrapperStyled>
@@ -329,12 +330,17 @@ export const useBracketSingle = ({ container }: PropsT): useSingleResult => {
 		});
 	};
 
+	const addMatch = (match: IMatch) => {
+		setMatches((prevMatches) => [...prevMatches, match]);
+	}
+
 	return {
 		isLoading,
 		columns,
 		matches,
 		renderMatch,
 		onDragStart,
-		onDragEnd
+		onDragEnd,
+		addMatch
 	};
 };
