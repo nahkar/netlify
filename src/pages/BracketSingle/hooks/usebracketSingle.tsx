@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { IBracket } from '../../../interfaces/bracket.interface';
 import { useQuery } from 'react-query';
 import { api } from '../../../api';
-import { RefObject, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useState } from 'react';
 import { IColumn } from '../../../interfaces/column.interface';
 import { IMatch } from '../../../interfaces/match.interface';
 import { getDeepClone, getNumbersArray } from '../../../utils';
@@ -27,18 +27,20 @@ import { toast } from 'react-toastify';
 
 type PropsT = {
 	container: RefObject<HTMLDivElement>;
-	createMatchOpenModal: ({ column, matchNumber }: { column: IColumn, matchNumber: number }) => void;
+	createMatchOpenModal: ({ column, matchNumber }: { column: IColumn; matchNumber: number }) => void;
 };
 
 type useSingleResult = {
 	isLoading: boolean;
 	columns: IColumn[];
 	matches: IMatch[];
+	bracketName: string;
 	instance: jsPlumbInstance | null;
 	renderMatch: (data: RenderMatchT) => JSX.Element[];
 	onDragStart: (start: DragStart) => void;
 	onDragEnd: (result: DropResult) => void;
 	addMatch: (match: IMatch) => void;
+	changeBracketName: (name: string) => void;
 };
 type RenderMatchT = { matches: IMatch[]; column: IColumn };
 
@@ -48,11 +50,20 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 	const [matches, setMatches] = useState<IMatch[]>([]);
 	const [isDraging, setIsDraging] = useState(false);
 	const [instance, setInstance] = useState<jsPlumbInstance | null>(null);
+	const [bracketName, setBracketName] = useState('');
+
+	const changeBracketName = useCallback(
+		(name: string) => {
+			setBracketName(name);
+		},
+		[setBracketName]
+	);
 
 	const useFetchBracket = (id: string) =>
 		useQuery(['bracket', id], () => api.fetchBracket(id), {
 			onSuccess: (data) => {
 				setSingleBracket(data);
+				setBracketName(data.name);
 				setColumns(getDeepClone(data.columns));
 				setMatches(getDeepClone(data.matches));
 			},
@@ -333,7 +344,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 
 	const addMatch = (match: IMatch) => {
 		setMatches((prevMatches) => [...prevMatches, match]);
-	}
+	};
 
 	return {
 		isLoading,
@@ -343,6 +354,8 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		onDragStart,
 		onDragEnd,
 		addMatch,
-		instance
+		instance,
+		bracketName,
+		changeBracketName
 	};
 };

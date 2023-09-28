@@ -6,14 +6,14 @@ import { useRef } from 'react';
 import { CreateMatch } from './components/CreateMatch';
 import { useCreateMatch } from './components/CreateMatch/hooks/useCreateMatch';
 import { CreateMatchT } from './components/CreateMatch/types';
-import { BracketInfo } from './components/MatchInfo';
+import { BracketInfo } from './components/BracketInfo';
 
 export const BracketSingle = () => {
 	const container = useRef<HTMLDivElement>(null);
 
 	const { isOpenCreateMatchModal, createMatchCloseModal, createMatchOpenModal, getCreatedMatch } = useCreateMatch();
 
-	const { columns, matches, isLoading, renderMatch, onDragStart, onDragEnd, addMatch, instance } = useBracketSingle({
+	const { columns, matches, isLoading, renderMatch, onDragStart, onDragEnd, addMatch, instance , bracketName, changeBracketName} = useBracketSingle({
 		container,
 		createMatchOpenModal,
 	});
@@ -27,7 +27,7 @@ export const BracketSingle = () => {
 	if (isLoading) return <div>Loading...</div>;
 	return (
 		<>
-			<BracketInfo columns={columns} matches={matches} instance={instance}/>
+			<BracketInfo columns={columns} matches={matches} instance={instance} bracketName={bracketName} changeBracketName={changeBracketName}/>
 			<BracketSingle__WrapperStyled ref={container}>
 				<DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
 					{columns.map((column) => (

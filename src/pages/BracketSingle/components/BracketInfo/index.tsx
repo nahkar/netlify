@@ -18,14 +18,24 @@ import { IColumn } from '../../../../interfaces/column.interface';
 import { getAllTeams } from '../../../../services/match.service';
 import { useEffect, useState } from 'react';
 import { jsPlumbInstance } from 'jsplumb';
-
+import { ChangeBracketNameForm } from './ChangeBracketNameForm';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Box, IconButton } from '@mui/material';
+import BadgeIcon from '@mui/icons-material/Badge';
 type PropsT = {
 	columns: IColumn[];
 	matches: IMatch[];
 	instance: jsPlumbInstance | null;
+	bracketName: string;
+	changeBracketName: (name: string) => void;
 };
-export const BracketInfo = ({ columns, matches, instance }: PropsT) => {
+export const BracketInfo = ({ columns, matches, instance, bracketName, changeBracketName }: PropsT) => {
 	const [isExpanded, setIsExpanded] = useState(false);
+	const [isShowEditBracketNameForm, setIsShowEditBracketNameForm] = useState(false);
+	const changeName = (bracketName: string) => {
+		changeBracketName(bracketName);
+		setIsShowEditBracketNameForm(false);
+	};
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (instance) {
@@ -66,19 +76,40 @@ export const BracketInfo = ({ columns, matches, instance }: PropsT) => {
 				</AccordionSummary>
 				<AccordionDetails>
 					<Stack spacing={1.5}>
-						<FormControl orientation='horizontal' sx={{ gap: 1 }}>
+						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
+							<BadgeIcon fontSize='small' sx={{ mx: 1 }} />
+							{!isShowEditBracketNameForm && (
+								<>
+									<FormLabel>Name:</FormLabel>
+									<FormLabel>{bracketName}</FormLabel>
+								</>
+							)}
+							<FormLabel>
+								{!isShowEditBracketNameForm && (
+									<IconButton onClick={() => setIsShowEditBracketNameForm(true)}>
+										<EditOutlinedIcon fontSize='small' />
+									</IconButton>
+								)}
+							</FormLabel>
+							{isShowEditBracketNameForm && (
+								<Box sx={{ ml: -2, mt: -1 }}>
+									<ChangeBracketNameForm bracketName={bracketName} changeBracketName={changeName} />
+								</Box>
+							)}
+						</FormControl>
+						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
 							<Groups2RoundedIcon sx={{ mx: 1 }} />
-							<FormLabel>Teams</FormLabel>
+							<FormLabel>Teams:</FormLabel>
 							<FormLabel>{getAllTeams(matches).length}</FormLabel>
 						</FormControl>
-						<FormControl orientation='horizontal' sx={{ gap: 1 }}>
+						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
 							<ScoreboardRoundedIcon sx={{ mx: 1 }} />
-							<FormLabel>Matches</FormLabel>
+							<FormLabel>Matches:</FormLabel>
 							<FormLabel>{matches.length}</FormLabel>
 						</FormControl>
-						<FormControl orientation='horizontal' sx={{ gap: 1 }}>
+						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
 							<EmojiEventsRoundedIcon sx={{ mx: 1 }} />
-							<FormLabel>Rounds</FormLabel>
+							<FormLabel>Rounds:</FormLabel>
 							<FormLabel>{columns.length}</FormLabel>
 						</FormControl>
 					</Stack>
