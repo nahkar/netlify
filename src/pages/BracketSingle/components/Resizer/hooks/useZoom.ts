@@ -1,7 +1,7 @@
 import { jsPlumbInstance } from 'jsplumb';
 import { useEffect, useState } from 'react';
 import { changeZoom } from '../../../../../services/plumb';
-import { DEFAULT_ZOOM, MAX_ZOOM_VALUE, MIN_ZOOM_VALUE, STEP_ZOOM } from '../../../../../constants';
+import { DEFAULT_ZOOM, MAX_ZOOM_VALUE, MIN_ZOOM_VALUE, STEP_ZOOM } from '../../../../../config';
 
 type PropsT = {
 	instance: jsPlumbInstance | null;

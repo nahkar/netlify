@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { MATCH_HEIGHT } from '../../../../constants';
+import { MATCH_HEIGHT } from '../../../../config';
 
 export const Match__WrapperStyled = styled.div`
 	height: ${MATCH_HEIGHT}px;

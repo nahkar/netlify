@@ -5,8 +5,8 @@ import { api } from 'api';
 import { RefObject, useCallback, useEffect, useState } from 'react';
 import { IColumn } from 'interfaces/column.interface';
 import { IMatch } from 'interfaces/match.interface';
-import { getDeepClone, getNumbersArray } from '../../../utils';
-import { COUNT_EMTY_BLOCKS } from '../../../constants';
+import { getDeepClone, getNumbersArray } from 'utils';
+import { COUNT_EMTY_BLOCKS } from 'config';
 import { getMatchById, isFinalMatch } from '../../../services/match.service';
 import { Match__ContainerStyled, Match__WrapperStyled } from '../components/Match/styled';
 import { DragStart, Draggable, DropResult } from 'dnd';
@@ -25,6 +25,7 @@ import {
 	setPrevAndNextMatchConnections,
 } from '../../../services/plumb';
 import { toast } from 'react-toastify';
+import { renameColumn } from '../../../services/column.service';
 
 type PropsT = {
 	container: RefObject<HTMLDivElement>;
@@ -43,6 +44,7 @@ type useSingleResult = {
 	addMatch: (match: IMatch) => void;
 	changeBracketName: (name: string) => void;
 	addColumn: (name: string) => void;
+	editColumn: (data: { name: string; id: string }) => void;
 };
 type RenderMatchT = { matches: IMatch[]; column: IColumn };
 
@@ -351,10 +353,17 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 	const addColumn = useCallback(
 		(name: string) => {
 			setColumns((prev) => {
-				const columns = prev.map((c) => ({ ...c }));
+				const columns = prev.map((column) => ({ ...column }));
 				columns.push({ id: uuidv4(), name, columnIndex: columns.length });
 				return columns;
 			});
+		},
+		[setColumns]
+	);
+
+	const editColumn = useCallback(
+		({ name, id }: { name: string; id: string }) => {
+			setColumns((prev) => renameColumn({ prev, editColumnId: id, columnName: name }));
 		},
 		[setColumns]
 	);
@@ -371,5 +380,6 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		bracketName,
 		changeBracketName,
 		addColumn,
+		editColumn,
 	};
 };

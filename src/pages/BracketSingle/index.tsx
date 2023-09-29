@@ -27,6 +27,7 @@ export const BracketSingle = () => {
 		bracketName,
 		changeBracketName,
 		addColumn,
+		editColumn
 	} = useBracketSingle({
 		container,
 		createMatchOpenModal,
@@ -52,7 +53,7 @@ export const BracketSingle = () => {
 			<BracketSingle__WrapperStyled ref={container}>
 				<DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
 					{columns.map((column) => (
-						<Column column={column} key={column.id}>
+						<Column column={column} key={column.id} editColumn={editColumn}>
 							<Droppable droppableId={column.id}>
 								{(provided) => (
 									<div ref={provided.innerRef} {...provided.droppableProps}>

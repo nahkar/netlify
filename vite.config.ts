@@ -10,6 +10,9 @@ export default defineConfig({
 			dnd: '/src/utils/dnd',
 			api: '/src/api',
 			interfaces: '/src/interfaces',
+			services: '/src/services',
+			utils: '/src/utils',
+			config: '/src/config',
 		},
 	},
 });

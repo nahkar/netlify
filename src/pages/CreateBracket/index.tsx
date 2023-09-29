@@ -12,7 +12,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { useCreateBracket } from './hooks/useCreateBracket';
 import { CreateBracketInputsT, TemplateTypeT } from './types';
-import { MIN_TEAMS_FOR_LOSERS_3, MIN_TEAMS_FOR_LOSERS_5 } from '../../constants';
+import { MIN_TEAMS_FOR_LOSERS_3, MIN_TEAMS_FOR_LOSERS_5 } from '../../config';
 
 export const CreateBracket = () => {
 	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, brackets, submitHandler } =

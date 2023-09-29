@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { MATCH_HEIGHT } from "../../../../constants";
+import { MATCH_HEIGHT } from "../../../../config";
 
 export const EmptyMatch__WrapperStyled = styled.div`
 	transform: none !important;
