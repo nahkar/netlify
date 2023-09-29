@@ -7,6 +7,7 @@ import { useCreateMatch } from './components/CreateMatch/hooks/useCreateMatch';
 import { CreateMatchT } from './components/CreateMatch/types';
 import { BracketInfo } from './components/BracketInfo';
 import { useBracketSingle } from './hooks/usebracketSingle';
+import { Resizer } from './components/Resizer';
 
 export const BracketSingle = () => {
 	const container = useRef<HTMLDivElement>(null);
@@ -27,6 +28,7 @@ export const BracketSingle = () => {
 	if (isLoading) return <div>Loading...</div>;
 	return (
 		<>
+			<Resizer />
 			<BracketInfo columns={columns} matches={matches} instance={instance} bracketName={bracketName} changeBracketName={changeBracketName}/>
 			<BracketSingle__WrapperStyled ref={container}>
 				<DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
