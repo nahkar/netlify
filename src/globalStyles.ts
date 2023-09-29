@@ -29,8 +29,4 @@ export const GlobalStyle = createGlobalStyle`
 				font-size: 8px
 			}
 		}
-		.brackets-wrapper {
-		transform-origin: top left !important;
-		margin: 0 0 0 40px;
-	}
 `;

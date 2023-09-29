@@ -26,6 +26,7 @@ export const BracketSingle = () => {
 		instance,
 		bracketName,
 		changeBracketName,
+		addColumn,
 	} = useBracketSingle({
 		container,
 		createMatchOpenModal,
@@ -63,7 +64,7 @@ export const BracketSingle = () => {
 						</Column>
 					))}
 				</DragDropContext>
-				<CreateColumn />
+				<CreateColumn addColumn={addColumn} />
 				<CreateMatch
 					submitMatchHandler={submitMatchHandler}
 					defaultMatchNumber={matches.length + 1}

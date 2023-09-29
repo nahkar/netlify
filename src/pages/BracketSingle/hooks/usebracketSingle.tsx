@@ -14,6 +14,7 @@ import { Match } from '../components/Match';
 import { EmptyMatch__WrapperStyled } from '../components/EmptyMatch/styled';
 import { EmptyMatch } from '../components/EmptyMatch';
 import { jsPlumbInstance } from 'jsplumb';
+import { v4 as uuidv4 } from 'uuid';
 import {
 	addPrefixToMatchId,
 	deleteConnectionsAndEndpoints,
@@ -41,6 +42,7 @@ type useSingleResult = {
 	onDragEnd: (result: DropResult) => void;
 	addMatch: (match: IMatch) => void;
 	changeBracketName: (name: string) => void;
+	addColumn: (name: string) => void;
 };
 type RenderMatchT = { matches: IMatch[]; column: IColumn };
 
@@ -346,6 +348,17 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		setMatches((prevMatches) => [...prevMatches, match]);
 	};
 
+	const addColumn = useCallback(
+		(name: string) => {
+			setColumns((prev) => {
+				const columns = prev.map((c) => ({ ...c }));
+				columns.push({ id: uuidv4(), name, columnIndex: columns.length });
+				return columns;
+			});
+		},
+		[setColumns]
+	);
+
 	return {
 		isLoading,
 		columns,
@@ -356,6 +369,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		addMatch,
 		instance,
 		bracketName,
-		changeBracketName
+		changeBracketName,
+		addColumn,
 	};
 };

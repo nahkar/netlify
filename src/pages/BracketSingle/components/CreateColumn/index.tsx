@@ -11,9 +11,11 @@ type CreateMatchT = {
 	roundName: string;
 };
 
-type PropsT = {};
+type PropsT = {
+	addColumn: (name: string) => void;
+};
 
-export const CreateColumn = ({}: PropsT) => {
+export const CreateColumn = ({ addColumn }: PropsT) => {
 	const {
 		register,
 		handleSubmit,
@@ -22,10 +24,10 @@ export const CreateColumn = ({}: PropsT) => {
 
 	const [open, setOpen] = useState(false);
 
-
 	const onSubmit: SubmitHandler<CreateMatchT> = (data) => {
-		console.log(data);
-	}
+		addColumn(data.roundName);
+		setOpen(false);
+	};
 
 	return (
 		<>
