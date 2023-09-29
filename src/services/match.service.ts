@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IMatch, MatchWithoutRelationsT } from '../interfaces/match.interface';
-import { IColumn } from '../interfaces/column.interface';
+import { IColumn } from 'interfaces/column.interface';
 import { getLoserColumns, getWinnerColumns } from './column.service';
 
 type GetEmptyMatchT = {

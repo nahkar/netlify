@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IColumn } from '../interfaces/column.interface';
-import { IMatch, MatchWithoutRelationsT } from '../interfaces/match.interface';
+import { IColumn } from 'interfaces/column.interface';
+import { IMatch, MatchWithoutRelationsT } from 'interfaces/match.interface';
 import { getNumbersArray } from '../utils';
 
 export const editColumn = ({

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IBracket } from '../../../interfaces/bracket.interface';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { api } from '../../../api';
+import { api } from 'api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

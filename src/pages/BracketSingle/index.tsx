@@ -1,4 +1,4 @@
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'dnd';
 import { Column } from './components/Column';
 import { BracketSingle__WrapperStyled } from './styled';
 import { useRef } from 'react';
@@ -14,7 +14,18 @@ export const BracketSingle = () => {
 
 	const { isOpenCreateMatchModal, createMatchCloseModal, createMatchOpenModal, getCreatedMatch } = useCreateMatch();
 
-	const { columns, matches, isLoading, renderMatch, onDragStart, onDragEnd, addMatch, instance , bracketName, changeBracketName} = useBracketSingle({
+	const {
+		columns,
+		matches,
+		isLoading,
+		renderMatch,
+		onDragStart,
+		onDragEnd,
+		addMatch,
+		instance,
+		bracketName,
+		changeBracketName,
+	} = useBracketSingle({
 		container,
 		createMatchOpenModal,
 	});
@@ -28,8 +39,14 @@ export const BracketSingle = () => {
 	if (isLoading) return <div>Loading...</div>;
 	return (
 		<>
-			<Resizer />
-			<BracketInfo columns={columns} matches={matches} instance={instance} bracketName={bracketName} changeBracketName={changeBracketName}/>
+			<Resizer instance={instance} />
+			<BracketInfo
+				columns={columns}
+				matches={matches}
+				instance={instance}
+				bracketName={bracketName}
+				changeBracketName={changeBracketName}
+			/>
 			<BracketSingle__WrapperStyled ref={container}>
 				<DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
 					{columns.map((column) => (

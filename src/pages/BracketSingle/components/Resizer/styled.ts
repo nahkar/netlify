@@ -7,8 +7,9 @@ export const Resizer__WrapperStyled = styled.div`
 	position: fixed;
 	left: 0;
 	padding: 5px 3px;
+	z-index: 9;
 	button {
-		color:  ${(props) => props.theme.light.colors.info.contrast};
+		color: ${(props) => props.theme.light.colors.info.contrast};
 	}
 	top: 25%;
 `;

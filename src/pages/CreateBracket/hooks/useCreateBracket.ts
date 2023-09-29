@@ -47,6 +47,8 @@ export const useCreateBracket = (): useCreateBracketResult => {
 				// TODO: hardcoded false value
 				cancelationMatchesAreRight: false,
 			};
+			console.log(generatedBracket);
+			
 		}
 		if(templateType === 'saved_brackets') {
 		

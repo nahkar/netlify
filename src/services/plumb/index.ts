@@ -1,5 +1,5 @@
 import { jsPlumb, jsPlumbInstance } from 'jsplumb';
-import { OnConnection, SetConnectionT, SetPrevAndNextMatchConnectionsT } from '../../interfaces/plumb.interfaces';
+import { OnConnection, SetConnectionT, SetPrevAndNextMatchConnectionsT } from 'interfaces/plumb.interfaces';
 import { toast } from 'react-toastify';
 import { EndpointOptions } from 'jsplumb';
 import {

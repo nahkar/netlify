@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { IColumn } from '../../../../../interfaces/column.interface';
+import { IColumn } from 'interfaces/column.interface';
 import { createMatch } from '../../../../../services/match.service';
 import { CreateMatchT } from '../types';
-import { IMatch } from '../../../../../interfaces/match.interface';
+import { IMatch } from 'interfaces/match.interface';
 
 type useCreateMatchResult = {
 	isOpenCreateMatchModal: boolean;

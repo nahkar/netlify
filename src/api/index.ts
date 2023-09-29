@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IBracket } from '../interfaces/bracket.interface';
+import { IBracket } from 'interfaces/bracket.interface';
 
 const axiosInstance = axios.create({
 	baseURL: process.env.VITE_BASE_URL,
