@@ -61,14 +61,14 @@ export const BracketInfo = ({ columns, matches, instance, bracketName, changeBra
 				},
 			}}
 		>
-			<Accordion sx={{ mb: 2 }} onChange={(_, expanded) => setIsExpanded(expanded)}>
+			<Accordion sx={{ mb: 2, minWidth: '800px' }} onChange={(_, expanded) => setIsExpanded(expanded)}>
 				<AccordionSummary>
 					<Avatar color='primary'>
 						<DescriptionRoundedIcon />
 					</Avatar>
 					<ListItemContent>
 						<Typography level='title-md'>Bracket Info</Typography>
-						<Typography level='body-sm'>
+						<Typography level='body-sm' component='i'>
 							The "Bracket Info" section provides a concise overview of key information related to a bracket. It
 							includes details about matches, rounds, teams, and the bracket name.
 						</Typography>

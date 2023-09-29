@@ -8,6 +8,7 @@ import { CreateMatchT } from './components/CreateMatch/types';
 import { BracketInfo } from './components/BracketInfo';
 import { useBracketSingle } from './hooks/usebracketSingle';
 import { Resizer } from './components/Resizer';
+import { CreateColumn } from './components/CreateColumn';
 
 export const BracketSingle = () => {
 	const container = useRef<HTMLDivElement>(null);
@@ -62,6 +63,7 @@ export const BracketSingle = () => {
 						</Column>
 					))}
 				</DragDropContext>
+				<CreateColumn />
 				<CreateMatch
 					submitMatchHandler={submitMatchHandler}
 					defaultMatchNumber={matches.length + 1}
