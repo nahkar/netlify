@@ -16,9 +16,7 @@ export const ChangeBracketNameForm = ({ bracketName = '', changeBracketName }: P
 	const { register, handleSubmit, watch } = useForm<ChangeBracketNameFormInputsT>();
 
 	const submitHandler: SubmitHandler<ChangeBracketNameFormInputsT> = (data) => {
-		if (data.bracketName !== bracketName) {
-			changeBracketName(data.bracketName);
-		}
+		changeBracketName(data.bracketName);
 	};
 
 	const getColorSubmitButton = () => {

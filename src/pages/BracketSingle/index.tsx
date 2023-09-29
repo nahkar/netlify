@@ -1,12 +1,12 @@
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Column } from './components/Column';
-import { useBracketSingle } from './hooks/useBracketSingle';
 import { BracketSingle__WrapperStyled } from './styled';
 import { useRef } from 'react';
 import { CreateMatch } from './components/CreateMatch';
 import { useCreateMatch } from './components/CreateMatch/hooks/useCreateMatch';
 import { CreateMatchT } from './components/CreateMatch/types';
 import { BracketInfo } from './components/BracketInfo';
+import { useBracketSingle } from './hooks/usebracketSingle';
 
 export const BracketSingle = () => {
 	const container = useRef<HTMLDivElement>(null);
