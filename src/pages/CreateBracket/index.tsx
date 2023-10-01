@@ -134,6 +134,7 @@ export const CreateBracket = () => {
 			{isSavedBracketType && isMakeDuplicate && (
 				<Box sx={{ width: '100%', mb: 2 }}>
 					<TextField
+						fullWidth
 						size='small'
 						label='Duplicate Name'
 						variant='outlined'

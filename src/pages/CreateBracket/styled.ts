@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
-import { styled } from "styled-components";
+import { Box } from '@mui/material';
+import { styled } from 'styled-components';
 
 export const CreateBracket__WrapperStyled = styled(Box)`
 	display: flex;
@@ -10,4 +10,4 @@ export const CreateBracket__WrapperStyled = styled(Box)`
 	padding: 30px 30px 10px 30px;
 	border-radius: 5px;
 	border: 1px solid ${(props) => props.theme.light.colors.secondary.dark};
-`
+`;
