@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CreateMatchT } from './types';
+import { FormErrorStyled } from 'styles/shared';
 
 type PropsT = {
 	defaultMatchNumber: number;
@@ -43,7 +44,7 @@ export const CreateMatch = ({ defaultMatchNumber = 1, isOpenCreateMatchModal, cr
 							variant='outlined'
 							{...register('matchNumber', { required: true })}
 						/>
-						{errors.matchNumber && <div>This field is required</div>}
+						{errors.matchNumber && <FormErrorStyled>This field is required</FormErrorStyled>}
 					</Box>
 					<Box sx={{ mt: 3 }} component='div'>
 						<TextField
@@ -54,7 +55,7 @@ export const CreateMatch = ({ defaultMatchNumber = 1, isOpenCreateMatchModal, cr
 							defaultValue='Team'
 							{...register('firstTeamName', { required: true })}
 						/>
-						{errors.firstTeamName && <div>This field is required</div>}
+						{errors.firstTeamName && <FormErrorStyled>This field is required</FormErrorStyled>}
 					</Box>
 					<Box sx={{ mt: 3 }} component='div'>
 						<TextField
@@ -65,7 +66,7 @@ export const CreateMatch = ({ defaultMatchNumber = 1, isOpenCreateMatchModal, cr
 							defaultValue='Team'
 							{...register('secondTeamName', { required: true })}
 						/>
-						{errors.secondTeamName && <div>This field is required</div>}
+						{errors.secondTeamName && <FormErrorStyled>This field is required</FormErrorStyled>}
 					</Box>
 				</Box>
 			</DialogContent>

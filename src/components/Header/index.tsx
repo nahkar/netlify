@@ -12,11 +12,10 @@ import {
 	Typography,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { useHeader } from './hooks/useHeader';
-import { Header__LinkStyled } from './styled';
-
+import { Header__LinkMenuStyled, Header__LinkStyled } from './styled';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 export const Header = () => {
 	const { isOpen, onOpen, onClose } = useHeader();
 	return (
@@ -28,25 +27,25 @@ export const Header = () => {
 				<Drawer open={isOpen} onClose={onClose}>
 					<Box sx={{ width: 250 }} onClick={onClose} onKeyDown={onClose} data-testid='user-menu-list'>
 						<List>
-						<ListItem disablePadding>
-								<Link to='create-bracket'>
+							<ListItem disablePadding sx={{ display: 'block' }}>
+								<Header__LinkMenuStyled to='create-bracket'>
 									<ListItemButton>
 										<ListItemIcon>
-											<ViewListIcon color='info' />
+											<CreateNewFolderIcon color='info' />
 										</ListItemIcon>
 										<ListItemText primary='Create Bracket' />
 									</ListItemButton>
-								</Link>
+								</Header__LinkMenuStyled>
 							</ListItem>
-							<ListItem disablePadding>
-								<Link to='brackets'>
+							<ListItem disablePadding sx={{ display: 'block' }}>
+								<Header__LinkMenuStyled to='brackets'>
 									<ListItemButton>
 										<ListItemIcon>
 											<ViewListIcon color='info' />
 										</ListItemIcon>
-										<ListItemText primary='My Brackets' />
+										<ListItemText primary='My Brackets'/>
 									</ListItemButton>
-								</Link>
+								</Header__LinkMenuStyled>
 							</ListItem>
 						</List>
 					</Box>

@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { FormErrorStyled } from 'styles/shared';
 type CreateMatchT = {
 	roundName: string;
 };
@@ -51,7 +52,7 @@ export const CreateColumn = ({ addColumn }: PropsT) => {
 								defaultValue='Round '
 								{...register('roundName', { required: true })}
 							/>
-							{errors.roundName && <div>This field is required</div>}
+							{errors.roundName && <FormErrorStyled>This field is required</FormErrorStyled>}
 						</Box>
 					</Box>
 				</DialogContent>

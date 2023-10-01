@@ -17,8 +17,8 @@ export const Column = ({ column, editColumn, children }: PropsT) => {
 
 	return (
 		<>
-			<Column__WrapperStyled onClick={() => setIsShowColumnEditModal(true)}>
-				<Column__TitleStyled>{column.name}</Column__TitleStyled>
+			<Column__WrapperStyled>
+				<Column__TitleStyled onClick={() => setIsShowColumnEditModal(true)}>{column.name}</Column__TitleStyled>
 				{children}
 			</Column__WrapperStyled>
 			<EditColumn

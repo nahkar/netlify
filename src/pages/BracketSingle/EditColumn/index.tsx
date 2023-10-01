@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormErrorStyled } from 'styles/shared';
 
 type CreateMatchT = {
 	roundName: string;
@@ -45,7 +46,7 @@ export const EditColumn = ({ editColumn, columnId, isShowColumnEditModal, hideEd
 							variant='outlined'
 							{...register('roundName', { required: true })}
 						/>
-						{errors.roundName && <div>This field is required</div>}
+						{errors.roundName && <FormErrorStyled>This field is required</FormErrorStyled>}
 					</Box>
 				</Box>
 			</DialogContent>
