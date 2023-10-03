@@ -13,9 +13,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import EditIcon from '@mui/icons-material/Edit';
 import styled from './styled';
+import { IMatch } from 'interfaces/match.interface';
 const { OverflayStyled } = styled;
 
 type PropsT = {
+	removeCacheSelected: () => void;
+	selected: IMatch[];
+	deleteMatchHandler: (matchId: string, isKeepRelation?: boolean) => void;
 	matchId?: string;
 	closeOverlayHandler: () => void;
 	countOfSelectedMatches: number;
@@ -36,7 +40,10 @@ export const ContextMenu = ({
 	onCopyHandler,
 	selectAllHandler,
 	toogleEditMatchModal,
-	matchId
+	matchId,
+	deleteMatchHandler,
+	selected,
+	removeCacheSelected
 }: PropsT) => {
 	const onPaste = () => {
 		if (pasteHandler) {
@@ -117,6 +124,10 @@ export const ContextMenu = ({
 						<MenuItem
 							onClick={(e) => {
 								e.stopPropagation();
+								selected.forEach((match) => {
+									deleteMatchHandler(match.id);
+								});
+								removeCacheSelected();
 							}}
 						>
 							<ListItemIcon>

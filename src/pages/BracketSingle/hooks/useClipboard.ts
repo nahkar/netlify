@@ -24,6 +24,7 @@ type useClipboardResult = {
 	copyHandler: () => void;
 	editMatchHandler: (match: EditMatchT & { id: string }) => void;
 	selectAllHandler: () => void;
+	removeCacheSelected: () => void;
 	closeOverlayHandler: () => void;
 	toogleEditMatchModal: (matchId: string) => void;
 	contextMenuOnEmptyMatchHandler: (props: {
@@ -288,7 +289,11 @@ export const useClipboard = ({
 				}
 				return m;
 			});
-		})
+		});
+	};
+
+	const removeCacheSelected = () => {
+		setSelected([]);
 	};
 	return {
 		selected,
@@ -305,5 +310,6 @@ export const useClipboard = ({
 		editableMatchId,
 		toogleEditMatchModal,
 		editMatchHandler,
+		removeCacheSelected,
 	};
 };

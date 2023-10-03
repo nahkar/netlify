@@ -311,7 +311,8 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		pasteHandler,
 		editableMatchId,
 		toogleEditMatchModal,
-		editMatchHandler
+		editMatchHandler,
+		removeCacheSelected,
 	} = useClipboard({
 		deleteMatch,
 		setMatches,
@@ -353,6 +354,9 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 										/>
 										{isShowContextMenu === match.id && (
 											<ContextMenu
+												removeCacheSelected={removeCacheSelected}
+												selected={selected}
+												deleteMatchHandler={deleteMatch}
 												matchId={match.id}
 												toogleEditMatchModal={toogleEditMatchModal}
 												isEmptyContextMenu={false}
@@ -363,7 +367,12 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 												selectAllHandler={selectAllHandler}
 											/>
 										)}
-										<EditMatch toogleEditMatchModal={toogleEditMatchModal} editableMatchId={editableMatchId} match={match} editMatchHandler={editMatchHandler}/>
+										<EditMatch
+											toogleEditMatchModal={toogleEditMatchModal}
+											editableMatchId={editableMatchId}
+											match={match}
+											editMatchHandler={editMatchHandler}
+										/>
 									</Match__ContainerStyled>
 								);
 							}}
@@ -392,6 +401,9 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 							</EmptyMatch__WrapperStyled>
 							{emptyContextMenu && emptyContextMenu.column.id === column.id && emptyContextMenu.index === index && (
 								<ContextMenu
+									removeCacheSelected={removeCacheSelected}
+									selected={selected}
+									deleteMatchHandler={deleteMatch}
 									toogleEditMatchModal={toogleEditMatchModal}
 									onCopyHandler={copyHandler}
 									selectAllHandler={selectAllHandler}
