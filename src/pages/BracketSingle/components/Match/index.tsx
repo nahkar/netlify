@@ -13,8 +13,11 @@ type PropsT = {
 	match: IMatch;
 	instance?: jsPlumbInstance | null;
 	isLastColumn: boolean;
+	isSelected: boolean;
+	clickMatchHandler: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, match: IMatch) => void;
+	contextMenuHandler: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, match: IMatch) => void;
 };
-export const Match = ({ match, instance, isLastColumn }: PropsT) => {
+export const Match = ({ match, instance, isLastColumn, clickMatchHandler, contextMenuHandler, isSelected }: PropsT) => {
 	const element = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		if (element.current && instance) {
@@ -22,7 +25,13 @@ export const Match = ({ match, instance, isLastColumn }: PropsT) => {
 		}
 	}, [instance, match, match.columnIndex]);
 	return (
-		<Match__SingleWrapperStyled ref={element} id={addPrefixToMatchId(match.id)}>
+		<Match__SingleWrapperStyled
+			$isSelected={isSelected}
+			ref={element}
+			id={addPrefixToMatchId(match.id)}
+			onClick={(e) => clickMatchHandler(e, match)}
+			onContextMenu={(e) => contextMenuHandler(e, match)}
+		>
 			<Match__SingleNumberStyled>M{match.matchName}</Match__SingleNumberStyled>
 			<Match__SingleParticipantWrapperStyled>
 				{match.participants.map((participant) => (

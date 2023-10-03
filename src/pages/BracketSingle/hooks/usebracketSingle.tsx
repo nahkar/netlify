@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
 	addPrefixToMatchId,
 	deleteConnectionsAndEndpoints,
+	deleteManagedElement,
 	getInstance,
 	setConnection,
 	setEndpoint,
@@ -26,6 +27,8 @@ import {
 } from '../../../services/plumb';
 import { toast } from 'react-toastify';
 import { renameColumn } from '../../../services/column.service';
+import { useClipboard } from './useClipboard';
+import { ContextMenu } from '../components/components/ContextMenu';
 
 type PropsT = {
 	container: RefObject<HTMLDivElement>;
@@ -265,6 +268,53 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		setIsRepaintConnections(true);
 	};
 
+	const removePlumbOfMatch = ({
+		instance,
+		matchIdWithoutPrefix,
+	}: {
+		instance: jsPlumbInstance | null;
+		matchIdWithoutPrefix: string;
+	}) => {
+		if (instance) {
+			deleteConnectionsAndEndpoints({ matchIdWithPrefix: addPrefixToMatchId(matchIdWithoutPrefix), instance });
+			deleteManagedElement({ matchIdWithPrefix: addPrefixToMatchId(matchIdWithoutPrefix), instance });
+		}
+	};
+
+	const [isShowEditModal, setIsShowEditModal] = useState(true);
+
+	const deleteMatch = useCallback(
+		(matchId: string, isKeepRelation?: boolean) => {
+			setMatches((m) => m.filter((m) => m.id !== matchId));
+			if (!isKeepRelation) {
+				removeRelationModel({ matchId });
+			}
+			removePlumbOfMatch({ instance, matchIdWithoutPrefix: matchId });
+			setIsShowEditModal(false);
+		},
+		[instance]
+	);
+
+	const {
+		selected,
+		clickMatchHandler,
+		contextMenuHandler,
+		cutHandler,
+		copyHandler,
+		selectAllHandler,
+		isShowContextMenu,
+		closeOverlayHandler,
+		contextMenuOnEmptyMatchHandler,
+		emptyContextMenu,
+		pasteHandler,
+	} = useClipboard({
+		deleteMatch,
+		setMatches,
+		columns,
+		updateInstance,
+		matches,
+	});
+
 	const renderMatch = ({ matches, column }: RenderMatchT) => {
 		return getNumbersArray(COUNT_EMTY_BLOCKS).map((index) => {
 			const match = matches.find((match) => match.columnId === column.id && match.matchNumber === index);
@@ -282,23 +332,30 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 										ref={provided.innerRef}
 									>
 										<Match
-											// selected={selected}
-											// clickMatchHandler={clickMatchHandler}
-											// contextMenuHandler={contextMenuHandler}
-											// cutHandler={cutHandler}
-											// copyHandler={copyHandler}
-											// isShowContextMenu={isShowContextMenu}
-											// closeOverlayHandler={closeOverlayHandler}
+											isSelected={selected.map((m) => m.id).includes(match.id)}
+											clickMatchHandler={clickMatchHandler}
+											contextMenuHandler={contextMenuHandler}
+											// matches={matches}
+											// matchEdithandler={matchEdithandler}
 											// highlitedTeamId={highlitedTeamId}
 											// handleMouseEnter={handleMouseEnter}
 											// handleMouseLeave={handleMouseLeave}
-											isLastColumn={isFinalMatch({ match, columns })}
 											// column={column}
+
+											isLastColumn={isFinalMatch({ match, columns })}
 											match={match}
-											// matches={matches}
-											// matchEdithandler={matchEdithandler}
 											instance={instance}
 										/>
+										{isShowContextMenu === match.id && (
+											<ContextMenu
+												isEmptyContextMenu={false}
+												countOfSelectedMatches={selected.length}
+												closeOverlayHandler={closeOverlayHandler}
+												onCutHandler={cutHandler}
+												onCopyHandler={copyHandler}
+												selectAllHandler={selectAllHandler}
+											/>
+										)}
 									</Match__ContainerStyled>
 								);
 							}}
@@ -321,24 +378,21 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 								{...provided.dragHandleProps}
 								ref={provided.innerRef}
 								onClick={() => createMatchOpenModal({ column, matchNumber: index })}
+								onContextMenu={(e) => contextMenuOnEmptyMatchHandler({ e, column, index })}
 							>
-								<EmptyMatch
-									// onClick={() => createMatchHandler(column, index)}
-									isDraging={isDraging}
-
-									// onContextMenu={(e) => contextMenuOnEmptyMatchHandler({ e, column, index })}
-								/>
+								<EmptyMatch isDraging={isDraging} />
 							</EmptyMatch__WrapperStyled>
-							{/* {emptyContextMenu && emptyContextMenu.column.id === column.id && emptyContextMenu.index === index && (
+							{emptyContextMenu && emptyContextMenu.column.id === column.id && emptyContextMenu.index === index && (
 								<ContextMenu
 									onCopyHandler={copyHandler}
+									selectAllHandler={selectAllHandler}
 									countOfSelectedMatches={selected.length}
 									closeOverlayHandler={closeOverlayHandler}
 									onCutHandler={cutHandler}
 									isEmptyContextMenu={true}
 									pasteHandler={pasteHandler}
 								/>
-							)} */}
+							)}
 						</>
 					)}
 				</Draggable>
