@@ -16,6 +16,7 @@ import styled from './styled';
 const { OverflayStyled } = styled;
 
 type PropsT = {
+	matchId?: string;
 	closeOverlayHandler: () => void;
 	countOfSelectedMatches: number;
 	onCutHandler: () => void;
@@ -23,6 +24,7 @@ type PropsT = {
 	pasteHandler?: () => void;
 	isEmptyContextMenu: boolean;
 	selectAllHandler: () => void;
+	toogleEditMatchModal: (matchId: string) => void;
 };
 
 export const ContextMenu = ({
@@ -33,6 +35,8 @@ export const ContextMenu = ({
 	pasteHandler,
 	onCopyHandler,
 	selectAllHandler,
+	toogleEditMatchModal,
+	matchId
 }: PropsT) => {
 	const onPaste = () => {
 		if (pasteHandler) {
@@ -91,11 +95,13 @@ export const ContextMenu = ({
 						</Typography>
 					</MenuItem>
 					{/* //* Don't show edit for empty matches and if selected less or more than one match  */}
-					{!isEmptyContextMenu && (
+					{!isEmptyContextMenu && matchId && (
 						<MenuItem
 							disabled={countOfSelectedMatches > 1 || countOfSelectedMatches < 1}
 							onClick={(e) => {
 								e.stopPropagation();
+								toogleEditMatchModal(matchId);
+								closeOverlayHandler();
 							}}
 						>
 							<ListItemIcon>

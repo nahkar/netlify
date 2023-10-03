@@ -1,6 +1,6 @@
 import { getDeepClone } from 'utils';
 import { IColumn } from 'interfaces/column.interface';
-import { IMatch } from 'interfaces/match.interface';
+import { EditMatchT, IMatch } from 'interfaces/match.interface';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,13 +16,16 @@ type PropsT = {
 type useClipboardResult = {
 	selected: IMatch[];
 	isShowContextMenu: string;
+	editableMatchId: string;
 	clickMatchHandler: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, match: IMatch) => void;
 	contextMenuHandler: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, match: IMatch) => void;
 	cutHandler: () => void;
 	pasteHandler: () => void;
 	copyHandler: () => void;
+	editMatchHandler: (match: EditMatchT & { id: string }) => void;
 	selectAllHandler: () => void;
 	closeOverlayHandler: () => void;
+	toogleEditMatchModal: (matchId: string) => void;
 	contextMenuOnEmptyMatchHandler: (props: {
 		e: React.MouseEvent<HTMLDivElement, MouseEvent>;
 		column: IColumn;
@@ -43,6 +46,8 @@ export const useClipboard = ({
 
 	const [isShowContextMenu, setIsShowContextMenu] = useState('');
 	const [emptyContextMenu, setEmptyContextMenu] = useState<{ column: IColumn; index: number } | null>(null);
+
+	const [editableMatchId, setEditableMatchId] = useState('');
 
 	useEffect(() => {
 		localStorage.setItem('selected', JSON.stringify(selected));
@@ -264,6 +269,27 @@ export const useClipboard = ({
 	// 	};
 	// }, []);
 
+	const toogleEditMatchModal = (matchId: string) => {
+		if (matchId && selected.length === 1 && selected[0].id === matchId) {
+			setEditableMatchId(matchId);
+		} else {
+			setEditableMatchId('');
+			setSelected([]);
+		}
+	};
+
+	const editMatchHandler = (match: EditMatchT & { id: string }) => {
+		setMatches((prev) => {
+			return prev.map((m) => {
+				if (m.id === match.id) {
+					m.matchName = match.matchName;
+					m.participants[0].name = match.team1Name;
+					m.participants[1].name = match.team2Name;
+				}
+				return m;
+			});
+		})
+	};
 	return {
 		selected,
 		isShowContextMenu,
@@ -276,5 +302,8 @@ export const useClipboard = ({
 		pasteHandler,
 		copyHandler,
 		selectAllHandler,
+		editableMatchId,
+		toogleEditMatchModal,
+		editMatchHandler,
 	};
 };

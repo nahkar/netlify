@@ -17,7 +17,14 @@ type PropsT = {
 	clickMatchHandler: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, match: IMatch) => void;
 	contextMenuHandler: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, match: IMatch) => void;
 };
-export const Match = ({ match, instance, isLastColumn, clickMatchHandler, contextMenuHandler, isSelected }: PropsT) => {
+export const Match = ({
+	match,
+	instance,
+	isLastColumn,
+	clickMatchHandler,
+	contextMenuHandler,
+	isSelected,
+}: PropsT) => {
 	const element = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		if (element.current && instance) {
@@ -38,6 +45,7 @@ export const Match = ({ match, instance, isLastColumn, clickMatchHandler, contex
 					<Match__SingleParticipantStyled key={participant.id}>{participant.name}</Match__SingleParticipantStyled>
 				))}
 			</Match__SingleParticipantWrapperStyled>
+			
 		</Match__SingleWrapperStyled>
 	);
 };

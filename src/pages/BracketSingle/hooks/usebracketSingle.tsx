@@ -28,7 +28,8 @@ import {
 import { toast } from 'react-toastify';
 import { renameColumn } from '../../../services/column.service';
 import { useClipboard } from './useClipboard';
-import { ContextMenu } from '../components/components/ContextMenu';
+import { ContextMenu } from '../components/ContextMenu';
+import { EditMatch } from '../components/EditMatch';
 
 type PropsT = {
 	container: RefObject<HTMLDivElement>;
@@ -283,6 +284,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 
 	const [isShowEditModal, setIsShowEditModal] = useState(true);
 
+	// TODO: refactor
 	const deleteMatch = useCallback(
 		(matchId: string, isKeepRelation?: boolean) => {
 			setMatches((m) => m.filter((m) => m.id !== matchId));
@@ -307,6 +309,9 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		contextMenuOnEmptyMatchHandler,
 		emptyContextMenu,
 		pasteHandler,
+		editableMatchId,
+		toogleEditMatchModal,
+		editMatchHandler
 	} = useClipboard({
 		deleteMatch,
 		setMatches,
@@ -348,6 +353,8 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 										/>
 										{isShowContextMenu === match.id && (
 											<ContextMenu
+												matchId={match.id}
+												toogleEditMatchModal={toogleEditMatchModal}
 												isEmptyContextMenu={false}
 												countOfSelectedMatches={selected.length}
 												closeOverlayHandler={closeOverlayHandler}
@@ -356,6 +363,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 												selectAllHandler={selectAllHandler}
 											/>
 										)}
+										<EditMatch toogleEditMatchModal={toogleEditMatchModal} editableMatchId={editableMatchId} match={match} editMatchHandler={editMatchHandler}/>
 									</Match__ContainerStyled>
 								);
 							}}
@@ -384,6 +392,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 							</EmptyMatch__WrapperStyled>
 							{emptyContextMenu && emptyContextMenu.column.id === column.id && emptyContextMenu.index === index && (
 								<ContextMenu
+									toogleEditMatchModal={toogleEditMatchModal}
 									onCopyHandler={copyHandler}
 									selectAllHandler={selectAllHandler}
 									countOfSelectedMatches={selected.length}
