@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { IMatch } from '../../../../interfaces/match.interface';
 import {
+	Match__SingleDescriptionStyled,
 	Match__SingleNumberStyled,
 	Match__SingleParticipantStyled,
 	Match__SingleParticipantWrapperStyled,
@@ -49,6 +50,7 @@ export const Match = ({
 				highlitedTeamId.includes(match.participants[1].id.toString())
 			}
 		>
+			{match.description && <Match__SingleDescriptionStyled>{match.description}</Match__SingleDescriptionStyled>}
 			<Match__SingleNumberStyled>M{match.matchName}</Match__SingleNumberStyled>
 			<Match__SingleParticipantWrapperStyled>
 				{match.participants.map((participant, index) => (

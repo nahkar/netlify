@@ -1,4 +1,6 @@
 import {
+	AccordionDetails,
+	AccordionSummary,
 	Autocomplete,
 	Box,
 	Button,
@@ -8,13 +10,17 @@ import {
 	Select,
 	Switch,
 	TextField,
+	Typography,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useCreateBracket } from './hooks/useCreateBracket';
 import { CreateBracketInputsT, TemplateTypeT } from './types';
 import { MIN_TEAMS_FOR_LOSERS_3, MIN_TEAMS_FOR_LOSERS_5 } from '../../config';
-import { CreateBracket__WrapperStyled } from './styled';
+import { CreateBracket__AccordionStyled, CreateBracket__WrapperStyled } from './styled';
 import { FormErrorStyled } from 'styles/shared';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { theme } from 'styles/theme';
+import { useEffect, useState } from 'react';
 
 export const CreateBracket = () => {
 	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, brackets, submitHandler } =
@@ -24,11 +30,24 @@ export const CreateBracket = () => {
 		handleSubmit,
 		formState: { errors },
 		watch,
+		setValue
 	} = useForm<CreateBracketInputsT>();
 
 	const isNewBracketType = templateType === 'new_bracket';
 	const isSavedBracketType = templateType === 'saved_brackets';
 	const countOfTeams = Number(watch('countOfTeams'));
+
+	const [isThirdPlaceChecked, setIsThirdPlaceChecked] = useState(false);
+	const [isFifthPlaceChecked, setIsFifthPlaceChecked] = useState(false);
+
+	const isShowAdvancedOptions = isThirdPlaceChecked || isFifthPlaceChecked;
+
+	useEffect(() => {
+		if (isFifthPlaceChecked) {
+			setIsThirdPlaceChecked(true);
+			setValue('isThirdPlace', true);
+		}
+	}, [isFifthPlaceChecked]);
 
 	return (
 		<CreateBracket__WrapperStyled component='form' noValidate autoComplete='off' onSubmit={handleSubmit(submitHandler)}>
@@ -64,13 +83,13 @@ export const CreateBracket = () => {
 						type='number'
 						InputProps={{
 							inputProps: {
-								min: 0,
+								min: 2,
 							},
 						}}
 						size='small'
 						label='Count of Teams'
 						variant='outlined'
-						{...register('countOfTeams', { required: isNewBracketType })}
+						{...register('countOfTeams', { required: isNewBracketType, min: 2 })}
 					/>
 					{errors.countOfTeams && <FormErrorStyled>This field is required</FormErrorStyled>}
 				</Box>
@@ -78,26 +97,38 @@ export const CreateBracket = () => {
 
 			{isNewBracketType && countOfTeams >= MIN_TEAMS_FOR_LOSERS_5 && (
 				<Box sx={{ width: '100%', mb: 2 }}>
-					<FormGroup>
-						<FormControlLabel
-							control={<Switch {...register('isHigherSeedsTeamsLogic')} />}
-							label='Higher Seeds Teams Logic'
-						/>
-					</FormGroup>
+					<FormControlLabel
+						control={<Switch defaultChecked {...register('isHigherSeedsTeamsLogic')} />}
+						label='Higher Seeds Teams Logic'
+					/>
 				</Box>
 			)}
 			{isNewBracketType && countOfTeams >= MIN_TEAMS_FOR_LOSERS_3 && (
 				<Box sx={{ width: '100%', mb: 2 }}>
-					<FormGroup>
-						<FormControlLabel control={<Switch {...register('isThirdPlace')} />} label='Match for the 3d place' />
-					</FormGroup>
+					<FormControlLabel
+						control={
+							<Switch
+								{...register('isThirdPlace')}
+								checked={isThirdPlaceChecked}
+								onChange={(e) => setIsThirdPlaceChecked(e.target.checked)}
+							/>
+						}
+						label='Match for the 3d place'
+					/>
 				</Box>
 			)}
 			{isNewBracketType && countOfTeams >= MIN_TEAMS_FOR_LOSERS_5 && (
 				<Box sx={{ width: '100%', mb: 2 }}>
-					<FormGroup>
-						<FormControlLabel control={<Switch {...register('isFifthPlace')} />} label='Match for the 5th place' />
-					</FormGroup>
+					<FormControlLabel
+						control={
+							<Switch
+								{...register('isFifthPlace')}
+								checked={isFifthPlaceChecked}
+								onChange={(e) => setIsFifthPlaceChecked(e.target.checked)}
+							/>
+						}
+						label='Match for the 5th place'
+					/>
 				</Box>
 			)}
 
@@ -142,6 +173,23 @@ export const CreateBracket = () => {
 					/>
 					{errors.duplicateName && <FormErrorStyled>This field is required</FormErrorStyled>}
 				</Box>
+			)}
+			{isShowAdvancedOptions && (
+				<CreateBracket__AccordionStyled sx={{ mb: 2 }}>
+					<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+						<Typography color={theme.light.colors.info.main}>Advanced Options</Typography>
+					</AccordionSummary>
+					<AccordionDetails>
+						<Box sx={{ width: '100%', mb: 2 }}>
+							<FormGroup>
+								<FormControlLabel
+									control={<Switch {...register('isRightSide')} />}
+									label='Cancelation Matches are Right Side'
+								/>
+							</FormGroup>
+						</Box>
+					</AccordionDetails>
+				</CreateBracket__AccordionStyled>
 			)}
 			<Box sx={{ width: '100%', mb: 2 }}>
 				<Button type='submit' variant='contained' size='medium' fullWidth>

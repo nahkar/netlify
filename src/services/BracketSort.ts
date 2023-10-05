@@ -1,5 +1,5 @@
-import { IMatch } from '../interfaces/match.interface';
-import { isEven } from '../utils';
+import { IMatch } from 'interfaces/match.interface';
+import { getDeepClone, isEven } from '../utils';
 
 export class BracketSorter {
 	matches: IMatch[];
@@ -37,7 +37,8 @@ export class BracketSorter {
 	private sortMatchesByTeamName(matches: IMatch[]) {
 		return matches.slice().sort((a, b) => {
 			return (
-				Number(a.participants[0].name.toLowerCase().split('team ')[1]) - Number(b.participants[0].name.toLowerCase().split('team ')[1])
+				Number(a.participants[0].name.toLowerCase().split('team ')[1]) -
+				Number(b.participants[0].name.toLowerCase().split('team ')[1])
 			);
 		});
 	}
@@ -48,7 +49,8 @@ export class BracketSorter {
 			matches
 				.filter(
 					(match) =>
-						match.participants[0].name.toLowerCase().includes('winner') || match.participants[1].name.toLowerCase().includes('winner'),
+						match.participants[0].name.toLowerCase().includes('winner') ||
+						match.participants[1].name.toLowerCase().includes('winner')
 				)
 				// * Set all winner teams to the bottom
 				.map((match) => {
@@ -63,7 +65,8 @@ export class BracketSorter {
 				// * Sort by team number
 				.sort((a, b) => {
 					return (
-						Number(a.participants[0].name.toLowerCase().split('team ')[1]) - Number(b.participants[0].name.toLowerCase().split('team ')[1])
+						Number(a.participants[0].name.toLowerCase().split('team ')[1]) -
+						Number(b.participants[0].name.toLowerCase().split('team ')[1])
 					);
 				})
 				// * Sort all winner by even
@@ -79,8 +82,9 @@ export class BracketSorter {
 		const matchesWithoutWinner = this.sortMatchesByTeamName(
 			matches.filter(
 				(match) =>
-					!match.participants[0].name.toLowerCase().includes('winner') && !match.participants[1].name.toLowerCase().includes('winner'),
-			),
+					!match.participants[0].name.toLowerCase().includes('winner') &&
+					!match.participants[1].name.toLowerCase().includes('winner')
+			)
 		);
 		return [...matchesWithWinner, ...matchesWithoutWinner];
 	}
@@ -256,7 +260,9 @@ export class BracketSorter {
 	};
 
 	sortBracket() {
-		const { matchesInFirstColumn, matchesInSecondColumn, matchesInOtherColumns } = this.getMatchesByColumn(this.matches);
+		const { matchesInFirstColumn, matchesInSecondColumn, matchesInOtherColumns } = this.getMatchesByColumn(
+			this.matches
+		);
 		if (matchesInFirstColumn.length === matchesInSecondColumn.length || this.matches.length < 7) {
 			console.log('Length is same or count of teams less than 8');
 
@@ -264,7 +270,9 @@ export class BracketSorter {
 		}
 		const isFirstColumn = matchesInFirstColumn.length > matchesInSecondColumn.length;
 
-		const sortedRound = this.sortMatchesInRound(isFirstColumn ? matchesInFirstColumn : matchesInSecondColumn) as unknown as IMatch[];
+		const sortedRound = this.sortMatchesInRound(
+			isFirstColumn ? matchesInFirstColumn : matchesInSecondColumn
+		) as unknown as IMatch[];
 
 		const result: IMatch[] = [];
 		if (isFirstColumn) {
@@ -275,9 +283,71 @@ export class BracketSorter {
 
 		const updatedMatches = this.updateMatchProperties(
 			result.filter((r) => typeof r !== 'number'),
-			isFirstColumn,
+			isFirstColumn
 		);
 
-		return updatedMatches;
+		const sortTeams = (matches: IMatch[]) => {
+			return matches
+				.filter((m) => m.columnIndex === 0 || m.columnIndex === 1)
+				.reduce((result: IMatch[][], currentObj) => {
+					const nextMatchId = currentObj.nextMatchId;
+					const existingGroup = result.find((group) => group.some((obj) => obj.nextMatchId === nextMatchId));
+
+					if (existingGroup) {
+						existingGroup.push(currentObj);
+					} else {
+						result.push([currentObj]);
+					}
+
+					return result;
+				}, [])
+				.reduce((acc, current) => {
+					if (current.length < 2) {
+						return acc;
+					}
+
+					if (current.filter(Boolean).length !== 2) {
+						acc.push(...current);
+						return acc;
+					}
+
+					const firstMatchFirstParticipant = current[0].participants[0];
+					const secondMatchFirstParticipant = current[1].participants[0];
+
+					if (
+						firstMatchFirstParticipant.name.toLowerCase().includes('winner') ||
+						secondMatchFirstParticipant.name.toLowerCase().includes('winner')
+					) {
+						acc.push(...current);
+						return acc;
+					}
+
+					if (
+						Number(firstMatchFirstParticipant.name.toLowerCase().split('team ')[1]) >
+						Number(secondMatchFirstParticipant.name.toLowerCase().split('team ')[1])
+					) {
+						const match2Name = current[1].matchName;
+						const match2Number = current[1].matchNumber;
+						current[1].matchName = current[0].matchName;
+						current[1].matchNumber = current[0].matchNumber;
+						current[0].matchName = match2Name;
+						current[0].matchNumber = match2Number;
+						acc.push(...current);
+					}
+
+					return acc;
+				}, []);
+		};
+
+		const sortedByTeams = sortTeams(getDeepClone(updatedMatches));
+
+		const updatedCloneMatches = getDeepClone(updatedMatches);
+
+		const sortedResult = updatedCloneMatches.map((match) => {
+			const updatedMatch = sortedByTeams.find((m) => m.id === match.id);
+			return updatedMatch ? updatedMatch : match;
+		});
+
+		return sortedResult;
 	}
 }

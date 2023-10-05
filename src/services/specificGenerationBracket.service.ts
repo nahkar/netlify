@@ -1,5 +1,5 @@
 import { getDeepClone, getNumbersArray, isEven } from '../utils';
-import { IMatch } from 'interfaces/match.interface';
+import { IMatch } from '../interfaces/match.interface';
 
 const _sortMatchesByTeamName = (matches: IMatch[]) => {
 	return matches.sort((a, b) => {
@@ -69,16 +69,16 @@ export const sortBracket = (matches: IMatch[]) => {
 		matcehesInSecondRound.filter(
 			(match) =>
 				match.participants[0].name.toLowerCase().includes('winner') ||
-				match.participants[1].name.toLowerCase().includes('winner'),
-		),
+				match.participants[1].name.toLowerCase().includes('winner')
+		)
 	);
 
 	const matchesWithoutWinner = _sortMatchesByTeamName(
 		matcehesInSecondRound.filter(
 			(match) =>
 				!match.participants[0].name.toLowerCase().includes('winner') &&
-				!match.participants[1].name.toLowerCase().includes('winner'),
-		),
+				!match.participants[1].name.toLowerCase().includes('winner')
+		)
 	);
 
 	const sortedWinnerTeamsMatches = matchesWithWinnerInSecondRound
@@ -156,7 +156,7 @@ export const sortBracket = (matches: IMatch[]) => {
 		let thirdCount = 0;
 		let fourthCount = 0;
 		if (true) {
-			const sortedMatches = _sortMatchesByTeamName(matches).reverse()
+			const sortedMatches = _sortMatchesByTeamName(matches).reverse();
 
 			sortedMatches.forEach((match, index) => {
 				switch (
@@ -182,16 +182,15 @@ export const sortBracket = (matches: IMatch[]) => {
 						break;
 				}
 			});
-			// TODO: reverse?
-			
-			// const res = [firstSection, secondSection.reverse(), thirdSection.reverse(), fourthSection].flat() as unknown as IMatch[];
-			const res = [firstSection, secondSection.reverse(), thirdSection.reverse(), fourthSection].flat() as unknown as IMatch[];
 
+			const res = [
+				firstSection,
+				secondSection.reverse(),
+				thirdSection.reverse(),
+				fourthSection,
+			].flat() as unknown as IMatch[];
 
-// TODO sort for number of match 16 
-			
-		return res.filter( m => typeof m !== "number")
-			
+			return res.filter((m) => typeof m !== 'number');
 		}
 		// const result = getNumbersArray(matches.length) as unknown as IMatch[];
 		// const sortedMatches = [...matches].sort((prevMatch, currentMatch) => {
@@ -209,7 +208,12 @@ export const sortBracket = (matches: IMatch[]) => {
 
 	// * Reverse if each semi bracket includes winner match
 	const firstColumn = m.filter((match) => match.columnIndex === 0);
-	const secondColumn = [firstSection, secondSection.reverse(), thirdSection, fourthSection.reverse()].flat() as unknown as IMatch[];
+	const secondColumn = [
+		firstSection,
+		secondSection.reverse(),
+		thirdSection,
+		fourthSection.reverse(),
+	].flat() as unknown as IMatch[];
 	const otherColumns = m.filter((match) => match.columnIndex !== 0 && match.columnIndex !== 1);
 
 	const allMatches = [..._sortedMatchesInFirstColumn(firstColumn), ...secondColumn, ...otherColumns];

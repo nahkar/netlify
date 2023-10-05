@@ -81,3 +81,10 @@ export const Match__SingleParticipantStyled = styled.div<{$isActive: boolean}>`
 		border-bottom-right-radius: 5px;
 	}
 `;
+
+export const Match__SingleDescriptionStyled = styled.div`
+	font-size: 13px;
+	color: ${(props) => props.theme.light.colors.info.main};
+	position: absolute;
+	top: -10px;
+`;

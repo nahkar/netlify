@@ -6,6 +6,7 @@ export type CreateBracketInputsT = {
 	duplicateName: string;
 	isThirdPlace: boolean;
 	isFifthPlace: boolean;
+	isRightSide: boolean;
 	isHigherSeedsTeamsLogic: boolean;
 	selectedSavedBracket: string;
 };

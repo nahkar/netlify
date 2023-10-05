@@ -6,14 +6,14 @@ export const Column__WrapperStyled = styled.div`
 	min-width: 260px;
 	max-width: 260px;
 `;
-export const Column__TitleStyled = styled.div`
+export const Column__TitleStyled = styled.div<{ $isNotEmtyColumn: boolean }>`
 	background: #f5f6f8;
 	border-radius: 0 0 10px 10px;
 	height: 40px;
-	padding: 0 5px;
+	padding: 0 10px;
 	margin: 0 0 20px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	cursor: pointer;
+	cursor: ${({ $isNotEmtyColumn }) => ($isNotEmtyColumn ? 'pointer' : 'default')};
 `;

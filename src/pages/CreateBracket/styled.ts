@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Accordion, Box } from '@mui/material';
 import { styled } from 'styled-components';
 
 export const CreateBracket__WrapperStyled = styled(Box)`
@@ -10,4 +10,15 @@ export const CreateBracket__WrapperStyled = styled(Box)`
 	padding: 30px 30px 10px 30px;
 	border-radius: 5px;
 	border: 1px solid ${(props) => props.theme.light.colors.secondary.dark};
+`;
+export const CreateBracket__AccordionStyled = styled(Accordion)`
+	border-radius: 5px !important;
+	box-shadow: none !important;
+	border: none !important;
+	&:before{
+		display: none;
+	}
+	&.Mui-expanded{
+		margin-top: 0 !important;
+	}
 `;

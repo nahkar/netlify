@@ -15,11 +15,14 @@ export const Column = ({ column, editColumn, children }: PropsT) => {
 		setIsShowColumnEditModal(false);
 	}, []);
 
+	const isNotEmtyColumn = column.columnIndex !== null;
 	return (
 		<>
 			<Column__WrapperStyled>
-				<Column__TitleStyled onClick={() => setIsShowColumnEditModal(true)}>{column.name}</Column__TitleStyled>
-				{children}
+				<Column__TitleStyled onClick={() => isNotEmtyColumn && setIsShowColumnEditModal(true)} $isNotEmtyColumn={isNotEmtyColumn}>
+					{column.name}
+				</Column__TitleStyled>
+				{isNotEmtyColumn && children}
 			</Column__WrapperStyled>
 			<EditColumn
 				name={column.name}

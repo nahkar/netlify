@@ -68,18 +68,18 @@ export const generateLoserColumns = (loserMatches: number[], lastColumnIndex: nu
 				isLooserColumn: true,
 			});
 		}
-		if (value === 4) {
+		if (value === 5) {
 			columns.push(
 				...[
 					{
 						id: uuidv4(),
-						name: `Round 1 for ${value + 1}th place`,
+						name: `Round 1 for ${value}th place`,
 						columnIndex: lastColumnIndex + index,
 						isLooserColumn: true,
 					},
 					{
 						id: uuidv4(),
-						name: `Final for ${value + 1}th place`,
+						name: `Final for ${value}th place`,
 						columnIndex: lastColumnIndex + 1 + index,
 						isLooserColumn: true,
 					},
