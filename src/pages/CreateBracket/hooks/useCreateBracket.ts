@@ -12,26 +12,27 @@ import { BracketSorter } from 'services/BracketSort';
 type OptionT = { id: string; label: string };
 
 type useCreateBracketResult = {
+	isShowLoader: boolean;
 	templateType: TemplateTypeT;
 	setTemplateType: Dispatch<SetStateAction<TemplateTypeT>>;
 	isMakeDuplicate: boolean;
 	setIsMakeDuplicate: Dispatch<SetStateAction<boolean>>;
-	brackets: OptionT[];
+	bracketsOption: OptionT[];
 	submitHandler: SubmitHandler<CreateBracketInputsT>;
 };
 
 export const useCreateBracket = (): useCreateBracketResult => {
 	const [templateType, setTemplateType] = useState<TemplateTypeT>('new_bracket');
 	const [isMakeDuplicate, setIsMakeDuplicate] = useState(false);
-	const [brackets, setBrackets] = useState<OptionT[]>([]);
+	const [bracketsOption, setBracketsOption] = useState<OptionT[]>([]);
+	const [brackets, setBrackets] = useState<IBracket[]>([]);
+
 	const navigate = useNavigate();
 
-	useQuery('brackets', () => api.fetchBrackets(), {
-		select: (data) => {
-			return data.map((bracket) => ({ id: bracket.id, label: bracket.name }));
-		},
+	const {isLoading} = useQuery('brackets', () => api.fetchBrackets(), {
 		onSuccess: (data) => {
 			setBrackets(data);
+			setBracketsOption(data.map((bracket) => ({ id: bracket.id, label: bracket.name })));
 		},
 	});
 
@@ -40,7 +41,7 @@ export const useCreateBracket = (): useCreateBracketResult => {
 			navigate(`/brackets/${bracket.id}`);
 		},
 	});
-
+	
 	const submitHandler: SubmitHandler<CreateBracketInputsT> = (data) => {
 		if (templateType === 'new_bracket') {
 			const { isThirdPlace, isFifthPlace, isHigherSeedsTeamsLogic, isRightSide, countOfTeams, bracketName } = data;
@@ -66,6 +67,21 @@ export const useCreateBracket = (): useCreateBracketResult => {
 			createBracketMutation.mutate(generatedBracket);
 		}
 		if (templateType === 'saved_brackets') {
+			const { duplicateName, selectedSavedBracket } = data;
+			const currentBracket = brackets.find((bracket) => bracket.name === selectedSavedBracket);
+			if (!currentBracket) {
+				return;
+			}
+			if (!duplicateName) {
+				navigate(`/brackets/${currentBracket.id}`);
+			} else {
+				const generatedBracket = {
+					...currentBracket,
+					id: uuidv4(),
+					name: duplicateName,
+				};
+				createBracketMutation.mutate(generatedBracket);
+			}
 		}
 	};
 
@@ -74,7 +90,8 @@ export const useCreateBracket = (): useCreateBracketResult => {
 		setTemplateType,
 		isMakeDuplicate,
 		setIsMakeDuplicate,
-		brackets,
+		bracketsOption,
 		submitHandler,
+		isShowLoader: createBracketMutation.isLoading || isLoading
 	};
 };

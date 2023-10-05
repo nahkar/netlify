@@ -14,6 +14,7 @@ export default defineConfig({
 			utils: '/src/utils',
 			config: '/src/config',
 			styles: '/src/styles',
+			components: '/src/components',
 		},
 	},
 });

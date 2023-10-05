@@ -21,16 +21,24 @@ import { FormErrorStyled } from 'styles/shared';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { theme } from 'styles/theme';
 import { useEffect, useState } from 'react';
+import { Loader } from 'components/Loader';
 
 export const CreateBracket = () => {
-	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, brackets, submitHandler } =
-		useCreateBracket();
+	const {
+		templateType,
+		setTemplateType,
+		isMakeDuplicate,
+		setIsMakeDuplicate,
+		bracketsOption,
+		submitHandler,
+		isShowLoader,
+	} = useCreateBracket();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		watch,
-		setValue
+		setValue,
 	} = useForm<CreateBracketInputsT>();
 
 	const isNewBracketType = templateType === 'new_bracket';
@@ -49,8 +57,22 @@ export const CreateBracket = () => {
 		}
 	}, [isFifthPlaceChecked]);
 
+	const getSubmitButtonlabel = () => {
+		let submitButtonLabel = 'Generate Bracket';
+
+		if (isSavedBracketType && isMakeDuplicate) {
+			submitButtonLabel = 'Generate Duplicate';
+		}
+		if (isSavedBracketType && !isMakeDuplicate) {
+			submitButtonLabel = 'Open Saved Bracket';
+		}
+
+		return submitButtonLabel;
+	};
+
 	return (
 		<CreateBracket__WrapperStyled component='form' noValidate autoComplete='off' onSubmit={handleSubmit(submitHandler)}>
+			{isShowLoader && <Loader />}
 			<Box sx={{ width: '100%', mb: 2 }}>
 				<Select
 					size='small'
@@ -138,7 +160,7 @@ export const CreateBracket = () => {
 						size='small'
 						fullWidth
 						disablePortal
-						options={brackets}
+						options={bracketsOption}
 						renderInput={(params) => (
 							<TextField
 								{...params}
@@ -193,7 +215,7 @@ export const CreateBracket = () => {
 			)}
 			<Box sx={{ width: '100%', mb: 2 }}>
 				<Button type='submit' variant='contained' size='medium' fullWidth>
-					Generate Bracket
+					{getSubmitButtonlabel()}
 				</Button>
 			</Box>
 		</CreateBracket__WrapperStyled>
