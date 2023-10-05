@@ -9,6 +9,7 @@ import { BracketInfo } from './components/BracketInfo';
 import { useBracketSingle } from './hooks/usebracketSingle';
 import { Resizer } from './components/Resizer';
 import { CreateColumn } from './components/CreateColumn';
+import { Loader } from 'components/Loader';
 
 export const BracketSingle = () => {
 	const container = useRef<HTMLDivElement>(null);
@@ -27,7 +28,7 @@ export const BracketSingle = () => {
 		bracketName,
 		changeBracketName,
 		addColumn,
-		editColumn
+		editColumn,
 	} = useBracketSingle({
 		container,
 		createMatchOpenModal,
@@ -39,7 +40,7 @@ export const BracketSingle = () => {
 		createMatchCloseModal();
 	};
 
-	if (isLoading) return <div>Loading...</div>;
+	if (isLoading) return <Loader />;
 	return (
 		<>
 			<Resizer instance={instance} />

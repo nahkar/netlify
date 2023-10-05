@@ -22,6 +22,7 @@ import { ChangeBracketNameForm } from './ChangeBracketNameForm';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Box, IconButton } from '@mui/material';
 import BadgeIcon from '@mui/icons-material/Badge';
+
 type PropsT = {
 	columns: IColumn[];
 	matches: IMatch[];

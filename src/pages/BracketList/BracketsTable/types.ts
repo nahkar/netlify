@@ -15,6 +15,7 @@ export type useCreateBracketResult = {
 	rows: RowsT[];
 	setSearch: Dispatch<SetStateAction<SearchT>>;
 	search: SearchT;
+	isLoading: boolean;
 };
 
 export type SearchT = {

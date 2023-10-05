@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 export function useBracketsTable(): useCreateBracketResult {
 	const [search, setSearch] = useState<SearchT>({ type: 'name', value: '' });
 	const [rows, setRows] = useState<RowsT[]>([]);
-	const { data } = useQuery('brackets', api.fetchBrackets);
+	const { data, isLoading } = useQuery('brackets', api.fetchBrackets);
 	const queryClient = useQueryClient();
 	const deleteBracketMutation = useMutation((id: string) => api.deleteBracket(id), {
 		onSuccess: () => {
@@ -144,5 +144,5 @@ export function useBracketsTable(): useCreateBracketResult {
 		},
 		{ field: 'id', headerName: 'ID', minWidth: 360, sortable: false, disableColumnMenu: true },
 	];
-	return { columns, rows, setSearch, search };
+	return { columns, rows, setSearch, search, isLoading: deleteBracketMutation.isLoading || isLoading };
 }

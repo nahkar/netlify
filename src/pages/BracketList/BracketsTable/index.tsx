@@ -1,11 +1,13 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useBracketsTable } from './hooks/useBracketsTable';
 import { Search } from './components/Search';
+import { Loader } from 'components/Loader';
 
 export const BracketsTable = () => {
-	const { columns, rows, setSearch, search } = useBracketsTable();
+	const { columns, rows, setSearch, search, isLoading } = useBracketsTable();
 	return (
 		<>
+			{isLoading && <Loader />}
 			<Search search={search} setSearch={setSearch} />
 			{rows.length > 0 ? (
 				<div style={{ height: '100%', width: '100%' }}>
