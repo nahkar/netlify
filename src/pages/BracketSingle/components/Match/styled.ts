@@ -9,9 +9,10 @@ export const Match__WrapperStyled = styled.div`
 export const Match__ContainerStyled = styled.div<{ $isAnotherMatch: boolean }>`
 	padding: 0 10px;
 	transform: ${(props) => props.$isAnotherMatch && 'none !important'};
+	
 `;
 
-export const Match__SingleWrapperStyled = styled.div<{ $isSelected: boolean }>`
+export const Match__SingleWrapperStyled = styled.div<{ $isSelected: boolean, 	$isActive: boolean; }>`
 	position: relative;
 	height: ${MATCH_HEIGHT}px;
 	display: flex;
@@ -40,6 +41,9 @@ export const Match__SingleWrapperStyled = styled.div<{ $isSelected: boolean }>`
 			border-color: darkred;
 		}
 	}
+	.toogle-extra-data {
+		visibility: ${(props) => (props.$isActive ? 'visible' : 'hidden')};
+	}
 `;
 export const Match__SingleNumberStyled = styled.span`
 	font-size: 10px;
@@ -54,16 +58,18 @@ export const Match__SingleNumberStyled = styled.span`
 
 export const Match__SingleParticipantWrapperStyled = styled.div`
 	width: 100%;
+	position: relative;
+	z-index: 9;
 `;
 
-export const Match__SingleParticipantStyled = styled.div`
+export const Match__SingleParticipantStyled = styled.div<{$isActive: boolean}>`
 	padding: 5px;
 	font-size: 14px;
-	background: ${(props) => props.theme.light.colors.info.dark};
-	color: #fff;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	background: ${(props) => (!props.$isActive ? props.theme.light.colors.info.dark : props.theme.light.colors.info.main)} !important;
+	color: #fff;
 	&:first-child {
 		border-bottom: 1px solid #fff;
 		border-top-left-radius: 5px;

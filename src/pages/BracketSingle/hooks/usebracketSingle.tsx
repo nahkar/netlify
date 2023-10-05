@@ -16,10 +16,12 @@ import { EmptyMatch } from '../components/EmptyMatch';
 import { jsPlumbInstance } from 'jsplumb';
 import { v4 as uuidv4 } from 'uuid';
 import {
+	addDynamicConnectorStyles,
 	addPrefixToMatchId,
 	deleteConnectionsAndEndpoints,
 	deleteManagedElement,
 	getInstance,
+	removeDynamicConnectorStyles,
 	setConnection,
 	setEndpoint,
 	setListeners,
@@ -59,6 +61,8 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 	const [isDraging, setIsDraging] = useState(false);
 	const [instance, setInstance] = useState<jsPlumbInstance | null>(null);
 	const [bracketName, setBracketName] = useState('');
+	const [highlitedTeamId, setHighlitedTeamId] = useState<string[]>([]);
+	const [intervals, setIntervals] = useState<NodeJS.Timeout[]>([]);
 
 	const changeBracketName = useCallback(
 		(name: string) => {
@@ -321,6 +325,98 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		matches,
 	});
 
+	const getMatchNameFromTeamId = ({ teamId, matches }: { teamId: string; matches: IMatch[] }) => {
+		const match = matches.find(
+			(match) => match.participants[0].id.toString() === teamId || match.participants[1].id.toString() === teamId
+		);
+
+		return match?.matchName;
+	};
+
+	const handleMouseEnter = ({ match, participantIndex }: { match: IMatch; participantIndex: number }) => {
+		// * Rule: all matches has to be sorted by columnIndex
+		const highligtedTeamId = match.participants[participantIndex].id.toString();
+
+		const currentMatchId = match.id;
+
+		const currentMatchIndex = matches.findIndex((match) => match.id === currentMatchId);
+
+		const prevIndex = currentMatchIndex - 1;
+		const nextIndex = currentMatchIndex + 1;
+
+		const prevMatches = prevIndex >= 0 ? matches.slice(0, prevIndex + 1) : [];
+		const nextMatches = nextIndex < matches.length ? matches.slice(nextIndex) : [];
+
+		let matchName = getMatchNameFromTeamId({ teamId: highligtedTeamId, matches });
+
+		const nextActiveMatches = nextMatches.reduce(
+			(acc: { activeMatchId: string; ids: string[] }, match: IMatch) => {
+				if (match.prevMatchId?.includes(acc.activeMatchId)) {
+					acc.activeMatchId = match.id;
+					if (matchName && match.participants[0].name.includes(matchName)) {
+						matchName = getMatchNameFromTeamId({ teamId: match.participants[0].id.toString(), matches });
+						acc.ids.push(match.participants[0].id.toString());
+					}
+					if (matchName && match.participants[1].name.includes(matchName)) {
+						matchName = getMatchNameFromTeamId({ teamId: match.participants[0].id.toString(), matches });
+						acc.ids.push(match.participants[1].id.toString());
+					}
+				}
+				return acc;
+			},
+			{ activeMatchId: currentMatchId, ids: [] }
+		);
+
+		const highligtedTeamName = match.participants[participantIndex].name;
+		const hifgligtedWinnerMatchName: string | undefined = highligtedTeamName.split('M')[1];
+
+		const prevActiveMatches = prevMatches.reverse().reduce(
+			(acc: { activeMatchId: string; ids: string[] }, match: IMatch) => {
+				if (match.nextMatchId === acc.activeMatchId && match.matchName === hifgligtedWinnerMatchName) {
+					acc.activeMatchId = match.id;
+					acc.ids.push(match.participants[0].id.toString(), match.participants[1].id.toString());
+				}
+				return acc;
+			},
+			{ activeMatchId: currentMatchId, ids: [] }
+		);
+
+		setHighlitedTeamId([highligtedTeamId, ...nextActiveMatches.ids, ...prevActiveMatches.ids]);
+	};
+
+	useEffect(() => {
+		let clear;
+		clearInterval(clear);
+		const matchesIds = new Set<string>();
+		highlitedTeamId.forEach((id) => {
+			matches.find((match) => {
+				if (match.participants[0].id.toString() === id || match.participants[1].id.toString() === id) {
+					matchesIds.add(match.id);
+				}
+			});
+		});
+		if (intervals.length) {
+			intervals.forEach((interval) => {
+				clearInterval(interval);
+			});
+			setIntervals([]);
+		}
+
+		removeDynamicConnectorStyles();
+		intervals.forEach((interval) => {
+			clearInterval(interval);
+		});
+		setIntervals([]);
+
+		if (highlitedTeamId.length) {
+			addDynamicConnectorStyles(matchesIds, setIntervals);
+		}
+	}, [highlitedTeamId]);
+
+	const handleMouseLeave = () => {
+		setHighlitedTeamId([]);
+	};
+
 	const renderMatch = ({ matches, column }: RenderMatchT) => {
 		return getNumbersArray(COUNT_EMTY_BLOCKS).map((index) => {
 			const match = matches.find((match) => match.columnId === column.id && match.matchNumber === index);
@@ -341,13 +437,9 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 											isSelected={selected.map((m) => m.id).includes(match.id)}
 											clickMatchHandler={clickMatchHandler}
 											contextMenuHandler={contextMenuHandler}
-											// matches={matches}
-											// matchEdithandler={matchEdithandler}
-											// highlitedTeamId={highlitedTeamId}
-											// handleMouseEnter={handleMouseEnter}
-											// handleMouseLeave={handleMouseLeave}
-											// column={column}
-
+											highlitedTeamId={highlitedTeamId}
+											handleMouseEnter={handleMouseEnter}
+											handleMouseLeave={handleMouseLeave}
 											isLastColumn={isFinalMatch({ match, columns })}
 											match={match}
 											instance={instance}

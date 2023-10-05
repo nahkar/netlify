@@ -8,6 +8,9 @@ export const GlobalStyle = createGlobalStyle`
 		margin: 0;
 		padding: 0;
 	}
+	.jtk-endpoint svg{
+		z-index: 2;
+	}
 	.jtk-overlay{
 			cursor: pointer;
 			background: ${(props) => props.theme.light.colors.error.main};

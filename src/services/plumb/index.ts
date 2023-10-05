@@ -286,7 +286,7 @@ export const addDynamicConnectorStyles = (
 	[...matchesIds].forEach((id) => {
 		const svgLine = document.querySelector(`.connector-${id}`) as HTMLElement;
 		if (svgLine) {
-			svgLine.querySelector('path')?.setAttribute('stroke', '#1876d2');
+			svgLine.querySelector('path')?.setAttribute('stroke',  theme.light.colors.info.main);
 			svgLine.querySelector('path')?.setAttribute('stroke-width', '4px');
 			svgLine.setAttribute('stroke-dasharray', '5 5');
 			setIntervals((prev) => {
