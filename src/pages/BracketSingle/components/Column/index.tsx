@@ -7,8 +7,9 @@ type PropsT = {
 	column: IColumn;
 	children: React.ReactNode;
 	editColumn: (data: { name: string; id: string }) => void;
+	removeColumn: (id: string) => void;
 };
-export const Column = ({ column, editColumn, children }: PropsT) => {
+export const Column = ({ column, editColumn, removeColumn, children }: PropsT) => {
 	const [isShowColumnEditModal, setIsShowColumnEditModal] = useState(false);
 
 	const hideEditColumnModal = useCallback(() => {
@@ -19,13 +20,17 @@ export const Column = ({ column, editColumn, children }: PropsT) => {
 	return (
 		<>
 			<Column__WrapperStyled>
-				<Column__TitleStyled onClick={() => isNotEmtyColumn && setIsShowColumnEditModal(true)} $isNotEmtyColumn={isNotEmtyColumn}>
+				<Column__TitleStyled
+					onClick={() => isNotEmtyColumn && setIsShowColumnEditModal(true)}
+					$isNotEmtyColumn={isNotEmtyColumn}
+				>
 					{column.name}
 				</Column__TitleStyled>
 				{isNotEmtyColumn && children}
 			</Column__WrapperStyled>
 			<EditColumn
 				name={column.name}
+				removeColumn={removeColumn}
 				editColumn={editColumn}
 				columnId={column.id}
 				isShowColumnEditModal={isShowColumnEditModal}

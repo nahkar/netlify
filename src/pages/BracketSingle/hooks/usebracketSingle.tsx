@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { IBracket } from 'interfaces/bracket.interface';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { api } from 'api';
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { IColumn } from 'interfaces/column.interface';
 import { IMatch } from 'interfaces/match.interface';
-import { getDeepClone, getNumbersArray } from 'utils';
+import { getDeepClone, getNumbersArray, usePrevious } from 'utils';
 import { COUNT_EMTY_BLOCKS } from 'config';
 import { getMatchById, isFinalMatch } from '../../../services/match.service';
 import { Match__ContainerStyled, Match__WrapperStyled } from '../components/Match/styled';
@@ -15,6 +15,7 @@ import { EmptyMatch__WrapperStyled } from '../components/EmptyMatch/styled';
 import { EmptyMatch } from '../components/EmptyMatch';
 import { jsPlumbInstance } from 'jsplumb';
 import { v4 as uuidv4 } from 'uuid';
+import { difference, differenceBy, differenceWith, isEqual } from 'lodash';
 import {
 	addDynamicConnectorStyles,
 	addPrefixToMatchId,
@@ -32,7 +33,6 @@ import { renameColumn } from '../../../services/column.service';
 import { useClipboard } from './useClipboard';
 import { ContextMenu } from '../components/ContextMenu';
 import { EditMatch } from '../components/EditMatch';
-
 type PropsT = {
 	container: RefObject<HTMLDivElement>;
 	createMatchOpenModal: ({ column, matchNumber }: { column: IColumn; matchNumber: number }) => void;
@@ -51,6 +51,7 @@ type useSingleResult = {
 	changeBracketName: (name: string) => void;
 	addColumn: (name: string) => void;
 	editColumn: (data: { name: string; id: string }) => void;
+	removeColumn: (id: string) => void;
 };
 type RenderMatchT = { matches: IMatch[]; column: IColumn };
 
@@ -64,9 +65,32 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 	const [highlitedTeamId, setHighlitedTeamId] = useState<string[]>([]);
 	const [intervals, setIntervals] = useState<NodeJS.Timeout[]>([]);
 
+	const params = useParams();
+
+	const editBracketMutation = useMutation((data: { id: string; bracket: Partial<IBracket> }) =>
+		api.editBracket(data.id, data.bracket)
+	);
+
+
+	const previousMatches = usePrevious<IMatch[]>(matches);
+
+	useEffect(() => {
+		const diff = differenceWith(
+			matches,
+			previousMatches,
+			(obj1, obj2) => obj1.nextMatchId === obj2.nextMatchId && isEqual(obj1.prevMatchId, obj2.prevMatchId)
+		);
+		if (diff.length && diff.length > 0 && diff.length < 3) {
+			editBracketMutation.mutate({ id: params.id!, bracket: { matches } });
+		}
+	}, [matches]);
+
 	const changeBracketName = useCallback(
 		(name: string) => {
 			setBracketName(name);
+			console.log(name);
+
+			editBracketMutation.mutate({ id: params.id!, bracket: { name } });
 		},
 		[setBracketName]
 	);
@@ -80,8 +104,6 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				setMatches(getDeepClone(data.matches));
 			},
 		});
-
-	const params = useParams();
 
 	const { isLoading } = useFetchBracket(params.id || '');
 
@@ -104,6 +126,11 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [instance]);
+
+	useEffect(() => {
+		// * When we remove column, we need to repaint connections
+		instance?.repaintEverything();
+	}, [columns.length]);
 
 	const updateInstance = () => {
 		instance?.reset();
@@ -265,7 +292,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 					currentMatch.columnIndex = destColumn.columnIndex;
 				}
 			}
-
+			editBracketMutation.mutate({ id: params.id!, bracket: { matches } });
 			return matches;
 		});
 
@@ -286,17 +313,17 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		}
 	};
 
-	const [isShowEditModal, setIsShowEditModal] = useState(true);
-
-	// TODO: refactor
 	const deleteMatch = useCallback(
 		(matchId: string, isKeepRelation?: boolean) => {
-			setMatches((m) => m.filter((m) => m.id !== matchId));
+			setMatches((m) => {
+				const matches = m.filter((m) => m.id !== matchId);
+				editBracketMutation.mutate({ id: params.id!, bracket: { matches } });
+				return matches;
+			});
 			if (!isKeepRelation) {
 				removeRelationModel({ matchId });
 			}
 			removePlumbOfMatch({ instance, matchIdWithoutPrefix: matchId });
-			setIsShowEditModal(false);
 		},
 		[instance]
 	);
@@ -514,7 +541,16 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 	};
 
 	const addMatch = (match: IMatch) => {
-		setMatches((prevMatches) => [...prevMatches, match]);
+		setMatches((prevMatches) => {
+			editBracketMutation.mutate({
+				id: params.id!,
+				bracket: {
+					matches: [...prevMatches, match],
+				},
+			});
+
+			return [...prevMatches, match];
+		});
 	};
 
 	const addColumn = useCallback(
@@ -522,6 +558,12 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 			setColumns((prev) => {
 				const columns = prev.map((column) => ({ ...column }));
 				columns.push({ id: uuidv4(), name, columnIndex: columns.length });
+				editBracketMutation.mutate({
+					id: params.id!,
+					bracket: {
+						columns,
+					},
+				});
 				return columns;
 			});
 		},
@@ -530,9 +572,75 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 
 	const editColumn = useCallback(
 		({ name, id }: { name: string; id: string }) => {
-			setColumns((prev) => renameColumn({ prev, editColumnId: id, columnName: name }));
+			setColumns((prev) => {
+				const columns = renameColumn({ prev, editColumnId: id, columnName: name });
+				editBracketMutation.mutate({
+					id: params.id!,
+					bracket: {
+						columns,
+					},
+				});
+				return columns;
+			});
 		},
 		[setColumns]
+	);
+
+	const removeColumn = useCallback(
+		(id: string) => {
+			const column = columns.find((column) => column.id === id);
+			if (column) {
+				let removedMatches: IMatch[] = [];
+				// * Reindex the columnIndex in matches
+
+				setMatches((prev) => {
+					const matches = getDeepClone(prev);
+					removedMatches = matches.filter((m) => m.columnId === column.id);
+					const updatedMatches = matches
+						.filter((m) => m.columnId !== column.id)
+						.map((m) => {
+							if (column.columnIndex !== null && m.columnIndex >= column.columnIndex) {
+								return {
+									...m,
+									columnIndex: m.columnIndex - 1,
+								};
+							}
+							return m;
+						});
+					editBracketMutation.mutate({
+						id: params.id!,
+						bracket: {
+							matches: updatedMatches,
+						},
+					});
+					return updatedMatches;
+				});
+
+				removedMatches.forEach((match) => removeRelationModel({ matchId: match.id }));
+
+				setColumns((prev) => {
+					const columns = getDeepClone(prev);
+					// * Reindex columnIndex
+					const updatedColumns = columns
+						.filter((c) => c.id !== column.id)
+						.map((column, index) => ({ ...column, columnIndex: index }));
+					editBracketMutation.mutate({
+						id: params.id!,
+						bracket: {
+							columns: updatedColumns,
+						},
+					});
+					return updatedColumns;
+				});
+
+				matches
+					.filter((match) => match.columnId === column.id)
+					.forEach((match) => {
+						removePlumbOfMatch({ instance, matchIdWithoutPrefix: match.id });
+					});
+			}
+		},
+		[columns, matches]
 	);
 
 	return {
@@ -548,5 +656,6 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		changeBracketName,
 		addColumn,
 		editColumn,
+		removeColumn,
 	};
 };

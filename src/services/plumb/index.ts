@@ -54,8 +54,6 @@ export const deleteConnectionsAndEndpoints = ({ matchIdWithPrefix, instance }: D
 	);
 
 	currentConnections?.forEach((c) => instance?.deleteConnection(c));
-
-	// repaintOnNextTick({ instance });
 };
 
 export const addPrefixToMatchId = (matchId: string) => `match__${matchId}`;
@@ -66,7 +64,7 @@ export const updateRelation = ({ matches, targetId, sourceId, type, setMatches }
 	const targetMatch = matches.find((m) => m.id === targetId);
 
 	setMatches((prev) => {
-		return prev.map((match) => {
+		const updatedMatches = prev.map((match) => {
 			if (targetMatch && sourceMatch && type === 'AddRelation') {
 				if (match.id === sourceMatch.id) {
 					return {
@@ -99,6 +97,7 @@ export const updateRelation = ({ matches, targetId, sourceId, type, setMatches }
 			}
 			return match;
 		});
+		return updatedMatches;
 	});
 };
 
@@ -118,7 +117,6 @@ export const setListeners = ({ instance, matches, setMatches }: SetListenersT) =
 
 	instance.bind('connection', (data) => {
 		const { targetId, sourceId } = data;
-
 		updateRelation({
 			matches,
 			setMatches,
@@ -138,7 +136,7 @@ export const setListeners = ({ instance, matches, setMatches }: SetListenersT) =
 		const { sourceId, targetId } = data;
 		const connections = instance.getAllConnections();
 		const currentConnection = connections.find((c) => c.sourceId === sourceId);
-		if (currentConnection) {
+		if (currentConnection) {			
 			updateRelation({
 				matches,
 				setMatches,
@@ -172,11 +170,6 @@ export const setListeners = ({ instance, matches, setMatches }: SetListenersT) =
 	});
 };
 
-// const repaintOnNextTick = ({ instance }: Pick<UpdateManagedElementOnNextTickT, 'instance'>) => {
-// 	// setTimeout(() => instance.repaintEverything());
-// 	instance.repaintEverything();
-// };
-
 export const updateManagedElementOnNextTick = ({ matchIdWithPrefix, instance }: UpdateManagedElementOnNextTickT) => {
 	const inst = instance as PlumbDevelopT;
 	const data = inst.getManagedElements()[matchIdWithPrefix];
@@ -184,13 +177,6 @@ export const updateManagedElementOnNextTick = ({ matchIdWithPrefix, instance }: 
 		data.el = document.getElementById(matchIdWithPrefix);
 		instance.revalidate(matchIdWithPrefix);
 	}
-	// setTimeout(() => {
-	// 	const data = inst.getManagedElements()[matchIdWithPrefix];
-	// 	if (data) {
-	// 		data.el = document.getElementById(matchIdWithPrefix);
-	// 		instance.revalidate(matchIdWithPrefix);
-	// 	}
-	// });
 };
 
 export const setEndpoint = ({ instance, match, isLastColumn, matchRef, matchIdWithPrefix }: SetInitialEndpointT) => {
@@ -286,7 +272,7 @@ export const addDynamicConnectorStyles = (
 	[...matchesIds].forEach((id) => {
 		const svgLine = document.querySelector(`.connector-${id}`) as HTMLElement;
 		if (svgLine) {
-			svgLine.querySelector('path')?.setAttribute('stroke',  theme.light.colors.info.main);
+			svgLine.querySelector('path')?.setAttribute('stroke', theme.light.colors.info.main);
 			svgLine.querySelector('path')?.setAttribute('stroke-width', '4px');
 			svgLine.setAttribute('stroke-dasharray', '5 5');
 			setIntervals((prev) => {

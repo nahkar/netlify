@@ -22,7 +22,7 @@ export const api = {
 		const { data } = await axiosInstance.post<IBracket>(`/bracket`, bracket);
 		return data;
 	},
-	editBracket: async (id: string, bracket: IBracket) => {
+	editBracket: async (id: string, bracket: Partial<IBracket>) => {
 		const { data } = await axiosInstance.put<IBracket>(`/bracket/${id}`, bracket);
 		return data;
 	},

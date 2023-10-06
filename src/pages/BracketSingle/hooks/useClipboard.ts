@@ -4,6 +4,10 @@ import { EditMatchT, IMatch } from 'interfaces/match.interface';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
+import { useMutation } from 'react-query';
+import { IBracket } from 'interfaces/bracket.interface';
+import { api } from 'api';
+import { useParams } from 'react-router-dom';
 
 type PropsT = {
 	deleteMatch: (matchId: string, isKeepRelation: boolean) => void;
@@ -49,6 +53,12 @@ export const useClipboard = ({
 	const [emptyContextMenu, setEmptyContextMenu] = useState<{ column: IColumn; index: number } | null>(null);
 
 	const [editableMatchId, setEditableMatchId] = useState('');
+
+	const editBracketMutation = useMutation((data: { id: string; bracket: Partial<IBracket> }) =>
+		api.editBracket(data.id, data.bracket)
+	);
+
+	const params = useParams();
 
 	useEffect(() => {
 		localStorage.setItem('selected', JSON.stringify(selected));
@@ -281,7 +291,7 @@ export const useClipboard = ({
 
 	const editMatchHandler = (match: EditMatchT & { id: string }) => {
 		setMatches((prev) => {
-			return prev.map((m) => {
+			const updatedMatches = prev.map((m) => {
 				if (m.id === match.id) {
 					m.matchName = match.matchName;
 					m.participants[0].name = match.team1Name;
@@ -289,6 +299,8 @@ export const useClipboard = ({
 				}
 				return m;
 			});
+			editBracketMutation.mutate({ id: params.id!, bracket: { matches: updatedMatches } });
+			return updatedMatches;
 		});
 	};
 

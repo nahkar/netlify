@@ -16,11 +16,19 @@ type PropsT = {
 	columnId: string;
 	name: string;
 	editColumn: (data: { name: string; id: string }) => void;
+	removeColumn: (id: string) => void;
 	isShowColumnEditModal: boolean;
 	hideEditColumnModal: () => void;
 };
 
-export const EditColumn = ({ editColumn, columnId, isShowColumnEditModal, hideEditColumnModal, name }: PropsT) => {
+export const EditColumn = ({
+	editColumn,
+	removeColumn,
+	columnId,
+	isShowColumnEditModal,
+	hideEditColumnModal,
+	name,
+}: PropsT) => {
 	const {
 		register,
 		handleSubmit,
@@ -29,6 +37,11 @@ export const EditColumn = ({ editColumn, columnId, isShowColumnEditModal, hideEd
 
 	const onSubmit: SubmitHandler<CreateMatchT> = (data) => {
 		editColumn({ name: data.roundName, id: columnId });
+		hideEditColumnModal();
+	};
+
+	const removeColumnHandler = () => {
+		removeColumn(columnId);
 		hideEditColumnModal();
 	};
 
@@ -51,9 +64,12 @@ export const EditColumn = ({ editColumn, columnId, isShowColumnEditModal, hideEd
 				</Box>
 			</DialogContent>
 			<DialogActions>
+				<Button sx={{ marginRight: 'auto' }} color='error' onClick={removeColumnHandler}>
+					Remove
+				</Button>
 				<Button onClick={hideEditColumnModal}>Close</Button>
 				<Button onClick={handleSubmit(onSubmit)} autoFocus>
-					Create
+					Edit
 				</Button>
 			</DialogActions>
 		</Dialog>

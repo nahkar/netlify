@@ -87,7 +87,7 @@ export const EditMatch = ({ toogleEditMatchModal, editableMatchId, match, editMa
 				<DialogActions>
 					<Button onClick={closeMatchModal}>Close</Button>
 					<Button onClick={handleSubmit(onSubmit)} autoFocus>
-						Create
+						Update
 					</Button>
 				</DialogActions>
 			</Dialog>
