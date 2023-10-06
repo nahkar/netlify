@@ -1,6 +1,8 @@
 import { jsPlumbInstance } from 'jsplumb';
 import { IMatch } from '../../interfaces/match.interface';
 import { Dispatch, SetStateAction } from 'react';
+import { UseMutateFunction } from 'react-query';
+import { IBracket } from 'interfaces/bracket.interface';
 
 export type DeleteConnectionsAndEndpointsT = {
 	matchIdWithPrefix: string;
@@ -17,6 +19,16 @@ export type SetListenersT = {
 	instance: jsPlumbInstance;
 	matches: IMatch[];
 	setMatches: Dispatch<SetStateAction<IMatch[]>>;
+	removeConnectionhandler: UseMutateFunction<
+		IBracket,
+		unknown,
+		{
+			id: string;
+			bracket: Partial<IBracket>;
+		},
+		unknown
+	>;
+	bracketId: string;
 };
 
 export type GetInstanceT = {

@@ -61,7 +61,7 @@ export const updateRelation = ({ matches, targetId, sourceId, type, setMatches }
 	const targetMatch = matches.find((m) => m.id === targetId);
 
 	setMatches((prev) => {
-		const updatedMatches = prev.map((match) => {
+		return prev.map((match) => {
 			if (targetMatch && sourceMatch && type === 'AddRelation') {
 				if (match.id === sourceMatch.id) {
 					return {
@@ -92,7 +92,6 @@ export const updateRelation = ({ matches, targetId, sourceId, type, setMatches }
 			}
 			return match;
 		});
-		return updatedMatches;
 	});
 };
 
@@ -107,7 +106,7 @@ export const unbindListeners = (instance: jsPlumbInstance) => {
 	instance.unbind('beforeDrop');
 };
 
-export const setListeners = ({ instance, matches, setMatches }: SetListenersT) => {
+export const setListeners = ({ instance, matches, setMatches, removeConnectionhandler, bracketId }: SetListenersT) => {
 	unbindListeners(instance);
 
 	instance.bind('connection', (data) => {
@@ -131,6 +130,23 @@ export const setListeners = ({ instance, matches, setMatches }: SetListenersT) =
 		const { sourceId, targetId } = data;
 		const connections = instance.getAllConnections();
 		const currentConnection = connections.find((c) => c.sourceId === sourceId);
+
+		removeConnectionhandler({
+			id: bracketId,
+			bracket: {
+				matches: matches.map((m) => {
+					if (removePrefixFromMatchId(sourceId) === m.id) {
+						m.nextMatchId = null;
+					}
+					if (removePrefixFromMatchId(targetId) === m.id && m.prevMatchId) {
+						m.prevMatchId = m.prevMatchId.filter((id) => id !== removePrefixFromMatchId(sourceId));
+					}
+					return {
+						...m,
+					};
+				}),
+			},
+		});
 		if (currentConnection) {
 			updateRelation({
 				matches,

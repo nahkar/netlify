@@ -75,8 +75,10 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		const diff = differenceWith(
 			matches,
 			previousMatches,
-			(obj1, obj2) => obj1.nextMatchId === obj2.nextMatchId && isEqual(obj1.prevMatchId, obj2.prevMatchId),
+			(a, b) => isEqual(a.nextMatchId, b.nextMatchId) && isEqual(a.prevMatchId, b.prevMatchId),
 		);
+		console.log('DIFF', diff);
+
 		if (diff.length && diff.length > 0 && diff.length < 3) {
 			editBracketMutation.mutate({ id: params.id!, bracket: { matches } });
 		}
@@ -136,9 +138,9 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 
 	useEffect(() => {
 		if (instance) {
-			setListeners({ instance, matches, setMatches });
+			setListeners({ instance, matches, setMatches, removeConnectionhandler: editBracketMutation.mutate, bracketId: params.id! });
 		}
-	}, [instance, matches]);
+	}, [editBracketMutation.mutate, instance, matches, params.id]);
 
 	useEffect(() => {
 		if (instance && matches.length) {
@@ -153,7 +155,8 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				}
 			});
 		}
-	}, [instance, matches]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [instance, matches.length]);
 
 	const [draggableMatch, setDraggableMatch] = useState<IMatch | null>(null);
 	const [isRepaintConnections, setIsRepaintConnections] = useState(false);
