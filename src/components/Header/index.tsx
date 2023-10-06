@@ -51,7 +51,7 @@ export const Header = () => {
 					</Box>
 				</Drawer>
 				<Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align="center">
-					<Header__LinkStyled to="/">Bracket Builder</Header__LinkStyled>
+					<Header__LinkStyled to="/">Bracket2 Builder</Header__LinkStyled>
 				</Typography>
 			</Toolbar>
 		</AppBar>
