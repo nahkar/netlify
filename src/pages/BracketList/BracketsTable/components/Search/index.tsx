@@ -1,7 +1,6 @@
 import { Option } from '@mui/joy';
 import { InputStyled, SearchWrapperStyled, SelectStyled } from './styled';
 import { ChangeEventHandler, Dispatch, SetStateAction } from 'react';
-import { SearchT, useCreateBracketResult } from '../../types';
 
 type PropsT = {
 	setSearch: Dispatch<SetStateAction<SearchT>>;
