@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { RowsT, SearchT, useCreateBracketResult } from '../types';
 import { getAllTeams } from '../../../../services/match.service';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { api } from '../../../../api';
+import { api } from '~api';
 import { toast } from 'react-toastify';
 
 export function useBracketsTable(): useCreateBracketResult {

@@ -19,7 +19,7 @@ import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 export const Header = () => {
 	const { isOpen, onOpen, onClose } = useHeader();
 	return (
-		<AppBar position='fixed'>
+		<AppBar position='fixed' data-testid='header'>
 			<Toolbar>
 				<IconButton size='large' edge='start' color='inherit' sx={{ mr: 2 }} onClick={onOpen} data-testid='user-menu'>
 					<MenuIcon />

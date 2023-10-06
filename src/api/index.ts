@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IBracket } from 'interfaces/bracket.interface';
 
 const axiosInstance = axios.create({
-	baseURL: process.env.VITE_BASE_URL,
+	baseURL: import.meta.env.BASE_URL,
 });
 
 export const api = {

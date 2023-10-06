@@ -5,6 +5,9 @@
 		"target": "ESNext",
     "module": "ESNext",
 		"baseUrl": "./src",
+		"paths": {
+			"~api": ["api"],
+		},
     "skipLibCheck": true,
 
     /* Bundler mode */

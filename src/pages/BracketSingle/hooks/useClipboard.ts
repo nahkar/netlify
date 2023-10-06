@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import { useMutation } from 'react-query';
 import { IBracket } from 'interfaces/bracket.interface';
-import { api } from 'api';
 import { useParams } from 'react-router-dom';
+import { api } from '~api';
 
 type PropsT = {
 	deleteMatch: (matchId: string, isKeepRelation: boolean) => void;

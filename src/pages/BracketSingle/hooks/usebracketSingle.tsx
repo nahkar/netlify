@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { IBracket } from 'interfaces/bracket.interface';
 import { useMutation, useQuery } from 'react-query';
-import { api } from 'api';
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { api } from '~api';
+import { RefObject, useCallback, useEffect, useState } from 'react';
 import { IColumn } from 'interfaces/column.interface';
 import { IMatch } from 'interfaces/match.interface';
 import { getDeepClone, getNumbersArray, usePrevious } from 'utils';
@@ -15,7 +15,7 @@ import { EmptyMatch__WrapperStyled } from '../components/EmptyMatch/styled';
 import { EmptyMatch } from '../components/EmptyMatch';
 import { jsPlumbInstance } from 'jsplumb';
 import { v4 as uuidv4 } from 'uuid';
-import { difference, differenceBy, differenceWith, isEqual } from 'lodash';
+import { differenceWith, isEqual } from 'lodash';
 import {
 	addDynamicConnectorStyles,
 	addPrefixToMatchId,
