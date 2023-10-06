@@ -5,10 +5,10 @@ module.exports = {
 	env: { browser: true, es2020: true },
 	extends: [
 		'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:react-hooks/recommended',
+		'plugin:react/recommended',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:@typescript-eslint/recommended-requiring-type-checking',
+		'plugin:react-hooks/recommended',
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -25,6 +25,11 @@ module.exports = {
 		'@typescript-eslint/no-unsafe-call': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-unsafe-member-access': 'off',
+	},
+	settings: {
+		react: {
+			version: 'detect',
+		},
 	},
 	ignorePatterns: ['.eslintrc.cjs'],
 };
