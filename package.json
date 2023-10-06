@@ -21,8 +21,10 @@
 	},
 	"lint-staged": {
 		"*.{js,css,ts,tsx,jsx}": [
-			"prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
-			"eslint --fix"
+			"prettier --check src/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
+			"eslint --fix",
+			"yarn test",  
+			"yarn build" 
 		]
 	},
 	"dependencies": {
