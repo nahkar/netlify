@@ -7,11 +7,11 @@ import { CreateBracket } from '../pages/CreateBracket';
 
 export const App = () => (
 	<Routes>
-		<Route path='/' element={<MainLayout />}>
+		<Route path="/" element={<MainLayout />}>
 			<Route index element={<Home />} />
-			<Route path='brackets/:id' element={<BracketSingle />} />
-			<Route path='brackets' element={<BracketList />} />
-			<Route path='create-bracket' element={<CreateBracket />} />
+			<Route path="brackets/:id" element={<BracketSingle />} />
+			<Route path="brackets" element={<BracketList />} />
+			<Route path="create-bracket" element={<CreateBracket />} />
 		</Route>
 	</Routes>
 );

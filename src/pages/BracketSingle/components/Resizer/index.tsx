@@ -15,33 +15,30 @@ export const Resizer = ({ instance }: PropsT) => {
 	return (
 		<Resizer__WrapperStyled>
 			{/* //* This is a hidden input for correct working of zoom */}
-			<input id='zoom' type='hidden' value={zoom} />
-			<Box
-				component='div'
-				sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}
-			>
-				<Tooltip title='Decrease' placement='right'>
-					<IconButton size='small' onClick={decrease}>
-						<TextDecreaseTwoToneIcon fontSize='small' />
+			<input id="zoom" type="hidden" value={zoom} />
+			<Box component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+				<Tooltip title="Decrease" placement="right">
+					<IconButton size="small" onClick={decrease}>
+						<TextDecreaseTwoToneIcon fontSize="small" />
 					</IconButton>
 				</Tooltip>
-				<Box component='div' sx={{ color: 'primary.contrastText', fontSize: '12px', borderTop: '1px solid #fff' }}>
-					<Tooltip title='Restore' placement='right'>
-						<IconButton size='small' onClick={restore}>
-							<SettingsOverscanOutlinedIcon fontSize='small' />
+				<Box component="div" sx={{ color: 'primary.contrastText', fontSize: '12px', borderTop: '1px solid #fff' }}>
+					<Tooltip title="Restore" placement="right">
+						<IconButton size="small" onClick={restore}>
+							<SettingsOverscanOutlinedIcon fontSize="small" />
 						</IconButton>
 					</Tooltip>
 				</Box>
-				<Box component='div' sx={{ color: 'primary.contrastText', fontSize: '12px', borderTop: '1px solid #fff' }}>
-					<Tooltip title='Increase' placement='right'>
-						<IconButton size='small' onClick={increase}>
-							<TextIncreaseTwoToneIcon fontSize='small' />
+				<Box component="div" sx={{ color: 'primary.contrastText', fontSize: '12px', borderTop: '1px solid #fff' }}>
+					<Tooltip title="Increase" placement="right">
+						<IconButton size="small" onClick={increase}>
+							<TextIncreaseTwoToneIcon fontSize="small" />
 						</IconButton>
 					</Tooltip>
 				</Box>
-				<Tooltip title='Current value' placement='right'>
+				<Tooltip title="Current value" placement="right">
 					<Box
-						component='div'
+						component="div"
 						sx={{
 							color: 'primary.contrastText',
 							fontSize: '12px',

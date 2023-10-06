@@ -20,10 +20,7 @@ export const Column = ({ column, editColumn, removeColumn, children }: PropsT) =
 	return (
 		<>
 			<Column__WrapperStyled>
-				<Column__TitleStyled
-					onClick={() => isNotEmtyColumn && setIsShowColumnEditModal(true)}
-					$isNotEmtyColumn={isNotEmtyColumn}
-				>
+				<Column__TitleStyled onClick={() => isNotEmtyColumn && setIsShowColumnEditModal(true)} $isNotEmtyColumn={isNotEmtyColumn}>
 					{column.name}
 				</Column__TitleStyled>
 				{isNotEmtyColumn && children}

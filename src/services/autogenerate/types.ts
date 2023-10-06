@@ -14,7 +14,7 @@ export interface IConvertedMatch {
 	participants: IParticipant[];
 }
 
-export  interface INode {
+export interface INode {
 	name: string;
 	isByes: boolean;
 	prevMatch: string;

@@ -12,9 +12,8 @@ type PropsT = {
 	defaultMatchNumber: number;
 	isOpenCreateMatchModal: boolean;
 	createMatchCloseModal: () => void;
-	submitMatchHandler: SubmitHandler<CreateMatchT>
+	submitMatchHandler: SubmitHandler<CreateMatchT>;
 };
-
 
 export const CreateMatch = ({ defaultMatchNumber = 1, isOpenCreateMatchModal, createMatchCloseModal, submitMatchHandler }: PropsT) => {
 	const {
@@ -23,47 +22,46 @@ export const CreateMatch = ({ defaultMatchNumber = 1, isOpenCreateMatchModal, cr
 		formState: { errors },
 	} = useForm<CreateMatchT>();
 
-
 	return (
 		<Dialog fullWidth open={isOpenCreateMatchModal} onClose={createMatchCloseModal}>
 			<DialogTitle>Create New Match</DialogTitle>
 			<DialogContent>
-				<Box component='form' noValidate autoComplete='off' onSubmit={handleSubmit(submitMatchHandler)}>
-					<Box sx={{ mt: 1 }} component='div'>
+				<Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit(submitMatchHandler)}>
+					<Box sx={{ mt: 1 }} component="div">
 						<TextField
 							fullWidth
-							type='number'
+							type="number"
 							defaultValue={defaultMatchNumber}
 							InputProps={{
 								inputProps: {
 									min: 0,
 								},
 							}}
-							size='small'
-							label='Match Number'
-							variant='outlined'
+							size="small"
+							label="Match Number"
+							variant="outlined"
 							{...register('matchNumber', { required: true })}
 						/>
 						{errors.matchNumber && <FormErrorStyled>This field is required</FormErrorStyled>}
 					</Box>
-					<Box sx={{ mt: 3 }} component='div'>
+					<Box sx={{ mt: 3 }} component="div">
 						<TextField
 							fullWidth
-							size='small'
-							label='The First Team Name'
-							variant='outlined'
-							defaultValue='Team'
+							size="small"
+							label="The First Team Name"
+							variant="outlined"
+							defaultValue="Team"
 							{...register('firstTeamName', { required: true })}
 						/>
 						{errors.firstTeamName && <FormErrorStyled>This field is required</FormErrorStyled>}
 					</Box>
-					<Box sx={{ mt: 3 }} component='div'>
+					<Box sx={{ mt: 3 }} component="div">
 						<TextField
 							fullWidth
-							size='small'
-							label='The Second Team Name'
-							variant='outlined'
-							defaultValue='Team'
+							size="small"
+							label="The Second Team Name"
+							variant="outlined"
+							defaultValue="Team"
 							{...register('secondTeamName', { required: true })}
 						/>
 						{errors.secondTeamName && <FormErrorStyled>This field is required</FormErrorStyled>}

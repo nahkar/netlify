@@ -21,14 +21,7 @@ type PropsT = {
 	hideEditColumnModal: () => void;
 };
 
-export const EditColumn = ({
-	editColumn,
-	removeColumn,
-	columnId,
-	isShowColumnEditModal,
-	hideEditColumnModal,
-	name,
-}: PropsT) => {
+export const EditColumn = ({ editColumn, removeColumn, columnId, isShowColumnEditModal, hideEditColumnModal, name }: PropsT) => {
 	const {
 		register,
 		handleSubmit,
@@ -49,14 +42,14 @@ export const EditColumn = ({
 		<Dialog fullWidth open={isShowColumnEditModal} onClose={hideEditColumnModal}>
 			<DialogTitle>Edit Round</DialogTitle>
 			<DialogContent>
-				<Box component='form' noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
-					<Box sx={{ mt: 1 }} component='div'>
+				<Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+					<Box sx={{ mt: 1 }} component="div">
 						<TextField
 							fullWidth
 							defaultValue={name}
-							size='small'
-							label='Round Name'
-							variant='outlined'
+							size="small"
+							label="Round Name"
+							variant="outlined"
 							{...register('roundName', { required: true })}
 						/>
 						{errors.roundName && <FormErrorStyled>This field is required</FormErrorStyled>}
@@ -64,7 +57,7 @@ export const EditColumn = ({
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button sx={{ marginRight: 'auto' }} color='error' onClick={removeColumnHandler}>
+				<Button sx={{ marginRight: 'auto' }} color="error" onClick={removeColumnHandler}>
 					Remove
 				</Button>
 				<Button onClick={hideEditColumnModal}>Close</Button>

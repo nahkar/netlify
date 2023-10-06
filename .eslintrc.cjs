@@ -8,11 +8,8 @@ module.exports = {
 		'plugin:@typescript-eslint/recommended',
 		'plugin:@typescript-eslint/recommended-requiring-type-checking',
 		'plugin:react-hooks/recommended',
-		// 'eslint:recommended',
-		// 'plugin:react/recommended',
-		// 'plugin:@typescript-eslint/recommended',
-		// 'plugin:@typescript-eslint/recommended-requiring-type-checking',
-		// 'plugin:react-hooks/recommended',
+		"eslint-config-prettier",
+		"plugin:prettier/recommended",
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {

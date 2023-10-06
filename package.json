@@ -16,11 +16,12 @@
 		"test:watch": "vitest",
 		"preview": "vite preview",
 		"precommit": "lint-staged",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"prettier": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
 	},
 	"lint-staged": {
 		"*.{js,css,ts,tsx,jsx}": [
-			"prettier --write",
+			"prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
 			"eslint --fix"
 		]
 	},
@@ -67,6 +68,8 @@
 		"@typescript-eslint/parser": "^6.7.4",
 		"@vitejs/plugin-react": "^4.0.3",
 		"eslint": "^8.50.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-import": "^2.28.1",
 		"eslint-plugin-prettier": "^5.0.0",
 		"eslint-plugin-react": "^7.33.2",
 		"eslint-plugin-react-hooks": "^4.6.0",

@@ -37,8 +37,7 @@ export class BracketSorter {
 	private sortMatchesByTeamName(matches: IMatch[]) {
 		return matches.slice().sort((a, b) => {
 			return (
-				Number(a.participants[0].name.toLowerCase().split('team ')[1]) -
-				Number(b.participants[0].name.toLowerCase().split('team ')[1])
+				Number(a.participants[0].name.toLowerCase().split('team ')[1]) - Number(b.participants[0].name.toLowerCase().split('team ')[1])
 			);
 		});
 	}
@@ -49,8 +48,7 @@ export class BracketSorter {
 			matches
 				.filter(
 					(match) =>
-						match.participants[0].name.toLowerCase().includes('winner') ||
-						match.participants[1].name.toLowerCase().includes('winner')
+						match.participants[0].name.toLowerCase().includes('winner') || match.participants[1].name.toLowerCase().includes('winner'),
 				)
 				// * Set all winner teams to the bottom
 				.map((match) => {
@@ -65,8 +63,7 @@ export class BracketSorter {
 				// * Sort by team number
 				.sort((a, b) => {
 					return (
-						Number(a.participants[0].name.toLowerCase().split('team ')[1]) -
-						Number(b.participants[0].name.toLowerCase().split('team ')[1])
+						Number(a.participants[0].name.toLowerCase().split('team ')[1]) - Number(b.participants[0].name.toLowerCase().split('team ')[1])
 					);
 				})
 				// * Sort all winner by even
@@ -82,9 +79,8 @@ export class BracketSorter {
 		const matchesWithoutWinner = this.sortMatchesByTeamName(
 			matches.filter(
 				(match) =>
-					!match.participants[0].name.toLowerCase().includes('winner') &&
-					!match.participants[1].name.toLowerCase().includes('winner')
-			)
+					!match.participants[0].name.toLowerCase().includes('winner') && !match.participants[1].name.toLowerCase().includes('winner'),
+			),
 		);
 		return [...matchesWithWinner, ...matchesWithoutWinner];
 	}
@@ -260,9 +256,7 @@ export class BracketSorter {
 	};
 
 	sortBracket() {
-		const { matchesInFirstColumn, matchesInSecondColumn, matchesInOtherColumns } = this.getMatchesByColumn(
-			this.matches
-		);
+		const { matchesInFirstColumn, matchesInSecondColumn, matchesInOtherColumns } = this.getMatchesByColumn(this.matches);
 		if (matchesInFirstColumn.length === matchesInSecondColumn.length || this.matches.length < 7) {
 			console.log('Length is same or count of teams less than 8');
 
@@ -270,9 +264,7 @@ export class BracketSorter {
 		}
 		const isFirstColumn = matchesInFirstColumn.length > matchesInSecondColumn.length;
 
-		const sortedRound = this.sortMatchesInRound(
-			isFirstColumn ? matchesInFirstColumn : matchesInSecondColumn
-		) as unknown as IMatch[];
+		const sortedRound = this.sortMatchesInRound(isFirstColumn ? matchesInFirstColumn : matchesInSecondColumn) as unknown as IMatch[];
 
 		const result: IMatch[] = [];
 		if (isFirstColumn) {
@@ -283,7 +275,7 @@ export class BracketSorter {
 
 		const updatedMatches = this.updateMatchProperties(
 			result.filter((r) => typeof r !== 'number'),
-			isFirstColumn
+			isFirstColumn,
 		);
 
 		const sortTeams = (matches: IMatch[]) => {

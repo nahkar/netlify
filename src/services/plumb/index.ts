@@ -1,7 +1,6 @@
-import { jsPlumb, jsPlumbInstance } from 'jsplumb';
+import { jsPlumb, jsPlumbInstance, EndpointOptions } from 'jsplumb';
 import { OnConnection, SetConnectionT, SetPrevAndNextMatchConnectionsT } from 'interfaces/plumb.interfaces';
 import { toast } from 'react-toastify';
-import { EndpointOptions } from 'jsplumb';
 import {
 	DeleteConnectionsAndEndpointsT,
 	DeleteManagedElementT,

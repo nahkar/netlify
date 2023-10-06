@@ -1,16 +1,15 @@
 import '@testing-library/jest-dom';
-import {  render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Search } from './';
 import { AppProvider } from '../../../../../providers/AppProvider';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-
 const setSearch = vi.fn();
 
 describe('<Search />', () => {
 	beforeEach(() => {
-	render(
+		render(
 			<AppProvider>
 				<Search setSearch={setSearch} search={{ type: 'id', value: '' }} />
 			</AppProvider>,

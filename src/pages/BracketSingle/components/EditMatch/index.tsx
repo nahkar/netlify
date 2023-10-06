@@ -48,35 +48,35 @@ export const EditMatch = ({ toogleEditMatchModal, editableMatchId, match, editMa
 			<Dialog fullWidth open={open} onClose={closeMatchModal}>
 				<DialogTitle>Edit Match</DialogTitle>
 				<DialogContent>
-					<Box component='form' noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
-						<Box sx={{ mt: 1 }} component='div'>
+					<Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+						<Box sx={{ mt: 1 }} component="div">
 							<TextField
 								fullWidth
-								size='small'
-								label='Match Name'
-								variant='outlined'
+								size="small"
+								label="Match Name"
+								variant="outlined"
 								defaultValue={match.matchName}
 								{...register('matchName', { required: true })}
 							/>
 							{errors.matchName && <FormErrorStyled>This field is required</FormErrorStyled>}
 						</Box>
-						<Box sx={{ mt: 3 }} component='div'>
+						<Box sx={{ mt: 3 }} component="div">
 							<TextField
 								fullWidth
-								size='small'
-								label='Team 1'
-								variant='outlined'
+								size="small"
+								label="Team 1"
+								variant="outlined"
 								defaultValue={match.participants[0].name}
 								{...register('team1Name', { required: true })}
 							/>
 							{errors.team1Name && <FormErrorStyled>This field is required</FormErrorStyled>}
 						</Box>
-						<Box sx={{ mt: 3 }} component='div'>
+						<Box sx={{ mt: 3 }} component="div">
 							<TextField
 								fullWidth
-								size='small'
-								label='Team 2'
-								variant='outlined'
+								size="small"
+								label="Team 2"
+								variant="outlined"
 								defaultValue={match.participants[1].name}
 								{...register('team2Name', { required: true })}
 							/>

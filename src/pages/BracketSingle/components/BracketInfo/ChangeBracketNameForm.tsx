@@ -36,23 +36,23 @@ export const ChangeBracketNameForm = ({ bracketName = '', changeBracketName }: P
 
 	return (
 		<Box
-			component='form'
+			component="form"
 			noValidate
-			autoComplete='off'
+			autoComplete="off"
 			onSubmit={handleSubmit(submitHandler)}
 			sx={{ display: 'flex', alignItems: 'center' }}
 		>
 			<Box>
 				<ChangeBracketNameForm__TextFieldStyled
-					size='small'
-					label='Bracket Name'
-					variant='outlined'
+					size="small"
+					label="Bracket Name"
+					variant="outlined"
 					defaultValue={bracketName}
 					{...register('bracketName', { required: true })}
 				/>
 			</Box>
-			<IconButton sx={{ mt: 1 }} type='submit' color={getColorSubmitButton()}>
-				<SaveIcon fontSize='medium' />
+			<IconButton sx={{ mt: 1 }} type="submit" color={getColorSubmitButton()}>
+				<SaveIcon fontSize="medium" />
 			</IconButton>
 		</Box>
 	);

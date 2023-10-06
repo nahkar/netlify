@@ -1,5 +1,5 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { Dispatch, SetStateAction } from "react";
+import { GridColDef } from '@mui/x-data-grid';
+import { Dispatch, SetStateAction } from 'react';
 
 export type RowsT = {
 	created_at: number;
@@ -19,6 +19,6 @@ export type useCreateBracketResult = {
 };
 
 export type SearchT = {
-	type: 'name' | 'id' |'matches' | 'rounds' | 'teams';
+	type: 'name' | 'id' | 'matches' | 'rounds' | 'teams';
 	value: string;
 };

@@ -1,7 +1,6 @@
 import { Box } from '@mui/joy';
 import styled from 'styled-components';
 
-
 export const Loader__WrapperStyled = styled.div`
 	position: fixed;
 	z-index: 99;
@@ -10,7 +9,7 @@ export const Loader__WrapperStyled = styled.div`
 	height: 100%;
 	left: 0;
 	top: 0;
-	opacity: .4;
+	opacity: 0.4;
 `;
 export const Loader__InnerWrapperStyled = styled(Box)`
 	position: absolute;
@@ -19,4 +18,3 @@ export const Loader__InnerWrapperStyled = styled(Box)`
 	top: 50%;
 	transform: translate(-50%, -50%);
 `;
-

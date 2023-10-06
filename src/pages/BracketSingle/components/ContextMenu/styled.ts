@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const OverflayStyled = styled.div`
 	position: fixed;
@@ -11,5 +11,5 @@ const OverflayStyled = styled.div`
 `;
 
 export default {
-	OverflayStyled
-}
+	OverflayStyled,
+};

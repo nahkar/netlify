@@ -5,5 +5,5 @@ import { AppProvider } from './providers/AppProvider';
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<AppProvider>
 		<App />
-	</AppProvider>
+	</AppProvider>,
 );

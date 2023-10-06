@@ -4,4 +4,3 @@ export interface ITeam {
 	label?: string;
 	isByes?: boolean;
 }
-

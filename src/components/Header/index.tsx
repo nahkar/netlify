@@ -10,6 +10,7 @@ import {
 	ListItemText,
 	Toolbar,
 	Typography,
+	Typography,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ViewListIcon from '@mui/icons-material/ViewList';

@@ -82,15 +82,7 @@ export const getMatchesInColumn = (matches: IMatch[], columnId: string) => {
 	return matches.filter((match) => match.columnId === columnId);
 };
 
-export const getIndexOfMatch = ({
-	matches,
-	columnId,
-	matchId,
-}: {
-	matches: IMatch[];
-	columnId: string;
-	matchId: string;
-}) => {
+export const getIndexOfMatch = ({ matches, columnId, matchId }: { matches: IMatch[]; columnId: string; matchId: string }) => {
 	const matchesInColumn = getMatchesInColumn(matches, columnId);
 
 	return matchesInColumn.findIndex((match) => match.id === matchId);
@@ -115,10 +107,7 @@ export const addMatch = ({
 		}
 		return p;
 	});
-	return [
-		...updatedMatches,
-		{ ...currentMatch, prevMatchId: [prevMatches[0].id, prevMatches[1].id], nextMatchId: null },
-	];
+	return [...updatedMatches, { ...currentMatch, prevMatchId: [prevMatches[0].id, prevMatches[1].id], nextMatchId: null }];
 };
 
 export const deleteMatchWithRelations = (matches: IMatch[], id: string, isRemoveRelatedMatches = true) => {

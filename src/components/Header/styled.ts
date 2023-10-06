@@ -10,7 +10,6 @@ export const Header__LinkStyled = styled(Link)`
 	display: block;
 	&:hover {
 		font-size: 22px;
-
 	}
 `;
 export const Header__LinkMenuStyled = styled(Link)`
@@ -21,6 +20,5 @@ export const Header__LinkMenuStyled = styled(Link)`
 	display: block;
 	&:hover {
 		text-decoration: underline;
-
 	}
 `;

@@ -1,4 +1,4 @@
-import {  jsPlumbInstance } from 'jsplumb';
+import { jsPlumbInstance } from 'jsplumb';
 import { IMatch } from '../../interfaces/match.interface';
 import { Dispatch, SetStateAction } from 'react';
 

@@ -29,7 +29,7 @@ export const useCreateBracket = (): useCreateBracketResult => {
 
 	const navigate = useNavigate();
 
-	const {isLoading} = useQuery('brackets', () => api.fetchBrackets(), {
+	const { isLoading } = useQuery('brackets', () => api.fetchBrackets(), {
 		onSuccess: (data) => {
 			setBrackets(data);
 			setBracketsOption(data.map((bracket) => ({ id: bracket.id, label: bracket.name })));
@@ -41,7 +41,7 @@ export const useCreateBracket = (): useCreateBracketResult => {
 			navigate(`/brackets/${bracket.id}`);
 		},
 	});
-	
+
 	const submitHandler: SubmitHandler<CreateBracketInputsT> = (data) => {
 		if (templateType === 'new_bracket') {
 			const { isThirdPlace, isFifthPlace, isHigherSeedsTeamsLogic, isRightSide, countOfTeams, bracketName } = data;
@@ -92,6 +92,6 @@ export const useCreateBracket = (): useCreateBracketResult => {
 		setIsMakeDuplicate,
 		bracketsOption,
 		submitHandler,
-		isShowLoader: createBracketMutation.isLoading || isLoading
+		isShowLoader: createBracketMutation.isLoading || isLoading,
 	};
 };

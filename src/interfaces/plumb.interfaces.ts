@@ -17,4 +17,4 @@ export type SetPrevAndNextMatchConnectionsT = {
 	instance: jsPlumbInstance;
 	matches: IMatch[];
 	draggableMatch: IMatch | null;
-}
+};

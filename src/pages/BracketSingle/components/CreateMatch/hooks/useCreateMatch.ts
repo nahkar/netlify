@@ -32,13 +32,13 @@ export const useCreateMatch = (): useCreateMatchResult => {
 			matchNumber: currentMatchNumber,
 			firstParticipantName: data.firstTeamName,
 			secondParticipantName: data.secondTeamName,
-			column: currentCollumn!
+			column: currentCollumn!,
 		});
-	}
+	};
 	return {
 		isOpenCreateMatchModal,
 		createMatchOpenModal,
 		createMatchCloseModal,
-		getCreatedMatch
+		getCreatedMatch,
 	};
 };

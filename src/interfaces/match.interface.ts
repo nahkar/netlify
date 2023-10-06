@@ -23,4 +23,4 @@ export type MatchWithoutRelationsT = Omit<IMatch, 'nextMatchId' | 'prevMatchId'>
 
 export type MatchWithLabelT = IMatch & { label: string };
 
-export type EditMatchT = { matchName: string, team1Name: string, team2Name: string}
+export type EditMatchT = { matchName: string; team1Name: string; team2Name: string };

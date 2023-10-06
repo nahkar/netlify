@@ -43,7 +43,7 @@ export const ContextMenu = ({
 	matchId,
 	deleteMatchHandler,
 	selected,
-	removeCacheSelected
+	removeCacheSelected,
 }: PropsT) => {
 	const onPaste = () => {
 		if (pasteHandler) {
@@ -63,10 +63,10 @@ export const ContextMenu = ({
 							}}
 						>
 							<ListItemIcon>
-								<ContentCut fontSize='small' />
+								<ContentCut fontSize="small" />
 							</ListItemIcon>
 							<ListItemText>Cut</ListItemText>
-							<Typography variant='body2' color='text.secondary'>
+							<Typography variant="body2" color="text.secondary">
 								⌘X
 							</Typography>
 						</MenuItem>
@@ -79,10 +79,10 @@ export const ContextMenu = ({
 							}}
 						>
 							<ListItemIcon>
-								<ContentCopy fontSize='small' />
+								<ContentCopy fontSize="small" />
 							</ListItemIcon>
 							<ListItemText>Copy (Duplicate)</ListItemText>
-							<Typography variant='body2' color='text.secondary'>
+							<Typography variant="body2" color="text.secondary">
 								⌘C
 							</Typography>
 						</MenuItem>
@@ -94,10 +94,10 @@ export const ContextMenu = ({
 						}}
 					>
 						<ListItemIcon>
-							<DoneAllIcon fontSize='small' />
+							<DoneAllIcon fontSize="small" />
 						</ListItemIcon>
 						<ListItemText>Select All</ListItemText>
-						<Typography variant='body2' color='text.secondary'>
+						<Typography variant="body2" color="text.secondary">
 							⌘A
 						</Typography>
 					</MenuItem>
@@ -112,10 +112,10 @@ export const ContextMenu = ({
 							}}
 						>
 							<ListItemIcon>
-								<EditIcon fontSize='small' />
+								<EditIcon fontSize="small" />
 							</ListItemIcon>
 							<ListItemText>Edit</ListItemText>
-							<Typography variant='body2' color='text.secondary'>
+							<Typography variant="body2" color="text.secondary">
 								⌘E
 							</Typography>
 						</MenuItem>
@@ -131,10 +131,10 @@ export const ContextMenu = ({
 							}}
 						>
 							<ListItemIcon>
-								<DeleteIcon fontSize='small' />
+								<DeleteIcon fontSize="small" />
 							</ListItemIcon>
 							<ListItemText>Delete</ListItemText>
-							<Typography variant='body2' color='text.secondary'>
+							<Typography variant="body2" color="text.secondary">
 								⌘D
 							</Typography>
 						</MenuItem>
@@ -147,10 +147,10 @@ export const ContextMenu = ({
 							}}
 						>
 							<ListItemIcon>
-								<ContentPaste fontSize='small' />
+								<ContentPaste fontSize="small" />
 							</ListItemIcon>
 							<ListItemText>Paste</ListItemText>
-							<Typography variant='body2' color='text.secondary'>
+							<Typography variant="body2" color="text.secondary">
 								⌘V
 							</Typography>
 						</MenuItem>
@@ -160,7 +160,7 @@ export const ContextMenu = ({
 							<Divider />
 							<MenuItem disabled>
 								<ListItemIcon>
-									<ListIcon fontSize='small' />
+									<ListIcon fontSize="small" />
 								</ListItemIcon>
 								<ListItemText>
 									{countOfSelectedMatches} {countOfSelectedMatches === 1 ? 'match' : 'matches'}
