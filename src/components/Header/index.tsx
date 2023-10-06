@@ -14,7 +14,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { useHeader } from './hooks/useHeader';
-import { Header__LinkMenuStyled, Header__LinkStyled } from './styled';
+import { Header__LinkMenuStyled, Header__LinkStyled, Header__LinkStyled } from './styled';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 export const Header = () => {
 	const { isOpen, onOpen, onClose } = useHeader();
@@ -51,7 +51,7 @@ export const Header = () => {
 					</Box>
 				</Drawer>
 				<Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align="center">
-					<Header__LinkStyled to="/">Bracket22 Builder</Header__LinkStyled>
+					<Header__LinkStyled to="/">Bracket Builder</Header__LinkStyled>
 				</Typography>
 			</Toolbar>
 		</AppBar>
