@@ -19,6 +19,9 @@
 		"prepare": "husky install",
 		"prettier": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
 	},
+	"hooks": {  
+    "pre-commit": "yarn test"        
+ } ,
 	"lint-staged": {
 		"*.{js,css,ts,tsx,jsx}": [
 			"prettier --check src/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
