@@ -16,15 +16,6 @@
     "preview": "vite preview",
     "prepare": "husky install"
   },
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"*.ts": "eslint --fix",
-		"*.tsx": "eslint --fix"
-	},	
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -73,6 +64,7 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
+    "lint-staged": "^14.0.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vitest": "^0.34.6"
