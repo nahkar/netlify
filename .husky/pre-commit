@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-
-npx lint-staged
+yarn lint
+yarn prettier
+yarn test
+yarn build

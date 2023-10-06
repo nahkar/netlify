@@ -1,4 +1,4 @@
-import { getDeepClone, getNumbersArray, isEven, isEven } from 'utils';
+import { getDeepClone, getNumbersArray, isEven } from 'utils';
 import { IMatch } from '../interfaces/match.interface';
 
 const _sortMatchesByTeamName = (matches: IMatch[]) => {
