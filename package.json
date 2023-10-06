@@ -10,7 +10,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",
-		"lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
 		"test": "vitest --run",
 		"test:watch": "vitest",
 		"preview": "vite preview",
@@ -18,11 +18,11 @@
 		"prepare": "husky install"
 	},
 	"lint-staged": {
-    "*.{js,css,ts,tsx,jsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
-  },
+		"*.{js,css,ts,tsx,jsx}": [
+			"prettier --write",
+			"eslint --fix"
+		]
+	},
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
 		"@emotion/styled": "^11.11.0",
@@ -73,6 +73,7 @@
 		"husky": "^8.0.3",
 		"jsdom": "^22.1.0",
 		"lint-staged": "^14.0.1",
+		"prettier": "^3.0.3",
 		"typescript": "^5.0.2",
 		"vite": "^4.4.5",
 		"vitest": "^0.34.6"

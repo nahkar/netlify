@@ -176,3 +176,7 @@ export const theme = {
 		},
 	},
 };
+
+export type ThemeT = {
+	theme: typeof theme;
+};

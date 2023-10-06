@@ -1,7 +1,7 @@
 import { Option } from '@mui/joy';
 import { InputStyled, SearchWrapperStyled, SelectStyled } from './styled';
 import { ChangeEventHandler, Dispatch, SetStateAction } from 'react';
-import { SearchT, useCreateBracketResult } from '../../types';
+import { SearchT } from '../../types';
 
 type PropsT = {
 	setSearch: Dispatch<SetStateAction<SearchT>>;
@@ -12,6 +12,7 @@ export const Search = ({ setSearch, search }: PropsT) => {
 	const handleTextChange: ChangeEventHandler<HTMLInputElement> = (event) => {
 		setSearch((prev) => ({ ...prev, value: event.target.value }));
 	};
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	const handleSelectChange = (_: React.SyntheticEvent | null, newValue: {} | null) => {
 		setSearch((prev) => ({ ...prev, type: newValue as SearchT['type'] }));
 	};

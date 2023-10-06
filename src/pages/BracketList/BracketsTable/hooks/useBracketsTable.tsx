@@ -2,7 +2,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
 import { Button } from '@mui/joy';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { RowsT, SearchT, useCreateBracketResult } from '../types';
 import { getAllTeams } from '../../../../services/match.service';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -15,13 +15,13 @@ export function useBracketsTable(): useCreateBracketResult {
 	const { data, isLoading } = useQuery('brackets', api.fetchBrackets);
 	const queryClient = useQueryClient();
 	const deleteBracketMutation = useMutation((id: string) => api.deleteBracket(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('brackets');
+		onSuccess: async () => {
+			await queryClient.invalidateQueries('brackets');
 			toast.success('Bracket deleted successfully');
 		},
 	});
 
-	const getRows = () => {
+	const getRows = useCallback(() => {
 		if (!data) {
 			return [];
 		}
@@ -37,13 +37,13 @@ export function useBracketsTable(): useCreateBracketResult {
 				teamsLogic: bracket.isHigherSeedsTeamsLogic,
 			}))
 			.reverse();
-	};
+	}, [data]);
 
 	useEffect(() => {
 		if (data) {
 			setRows(getRows());
 		}
-	}, [data]);
+	}, [data, getRows]);
 
 	useEffect(() => {
 		if (data) {
@@ -66,7 +66,7 @@ export function useBracketsTable(): useCreateBracketResult {
 				setRows(getRows().filter((bracket) => bracket.teams.toString().includes(search.value)));
 			}
 		}
-	}, [search]);
+	}, [data, getRows, search]);
 
 	const navigate = useNavigate();
 	const removeHandler = async (id: string) => {
@@ -87,7 +87,7 @@ export function useBracketsTable(): useCreateBracketResult {
 			sortable: true,
 			disableColumnMenu: true,
 			valueFormatter: (params) => {
-				return moment(params.value).format('YYYY-MM-DD');
+				return moment(params.value as string).format('YYYY-MM-DD');
 			},
 		},
 		{
@@ -100,7 +100,7 @@ export function useBracketsTable(): useCreateBracketResult {
 			disableColumnMenu: true,
 
 			valueFormatter: (params) => {
-				return moment(params.value).fromNow();
+				return moment(params.value as string).fromNow();
 			},
 		},
 		{
@@ -125,7 +125,7 @@ export function useBracketsTable(): useCreateBracketResult {
 			sortable: false,
 			disableColumnMenu: true,
 			renderCell: (params) => (
-				<Button size="sm" color="success" onClick={() => openHandler(params.row.id)}>
+				<Button size="sm" color="success" onClick={() => openHandler(params.row.id as string)}>
 					Open
 				</Button>
 			),
@@ -137,7 +137,7 @@ export function useBracketsTable(): useCreateBracketResult {
 			sortable: false,
 			disableColumnMenu: true,
 			renderCell: (params) => (
-				<Button size="sm" color="danger" onClick={() => removeHandler(params.row.id)}>
+				<Button size="sm" color="danger" onClick={() => removeHandler(params.row.id as string)}>
 					Remove
 				</Button>
 			),

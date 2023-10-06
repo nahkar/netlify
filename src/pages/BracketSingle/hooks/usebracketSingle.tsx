@@ -56,7 +56,7 @@ type useSingleResult = {
 type RenderMatchT = { matches: IMatch[]; column: IColumn };
 
 export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): useSingleResult => {
-	const [_, setSingleBracket] = useState<IBracket | null>(null);
+	const [, setSingleBracket] = useState<IBracket | null>(null);
 	const [columns, setColumns] = useState<IColumn[]>([]);
 	const [matches, setMatches] = useState<IMatch[]>([]);
 	const [isDraging, setIsDraging] = useState(false);
@@ -67,10 +67,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 
 	const params = useParams();
 
-	const editBracketMutation = useMutation((data: { id: string; bracket: Partial<IBracket> }) =>
-		api.editBracket(data.id, data.bracket)
-	);
-
+	const editBracketMutation = useMutation((data: { id: string; bracket: Partial<IBracket> }) => api.editBracket(data.id, data.bracket));
 
 	const previousMatches = usePrevious<IMatch[]>(matches);
 
@@ -78,12 +75,12 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		const diff = differenceWith(
 			matches,
 			previousMatches,
-			(obj1, obj2) => obj1.nextMatchId === obj2.nextMatchId && isEqual(obj1.prevMatchId, obj2.prevMatchId)
+			(obj1, obj2) => obj1.nextMatchId === obj2.nextMatchId && isEqual(obj1.prevMatchId, obj2.prevMatchId),
 		);
 		if (diff.length && diff.length > 0 && diff.length < 3) {
 			editBracketMutation.mutate({ id: params.id!, bracket: { matches } });
 		}
-	}, [matches]);
+	}, [editBracketMutation, matches, params.id, previousMatches]);
 
 	const changeBracketName = useCallback(
 		(name: string) => {
@@ -92,7 +89,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 
 			editBracketMutation.mutate({ id: params.id!, bracket: { name } });
 		},
-		[setBracketName]
+		[editBracketMutation, params.id],
 	);
 
 	const useFetchBracket = (id: string) =>
@@ -130,7 +127,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 	useEffect(() => {
 		// * When we remove column, we need to repaint connections
 		instance?.repaintEverything();
-	}, [columns.length]);
+	}, [columns.length, instance]);
 
 	const updateInstance = () => {
 		instance?.reset();
@@ -141,7 +138,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		if (instance) {
 			setListeners({ instance, matches, setMatches });
 		}
-	}, [instance, matches.length]);
+	}, [instance, matches]);
 
 	useEffect(() => {
 		if (instance && matches.length) {
@@ -156,7 +153,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				}
 			});
 		}
-	}, [instance, matches.length]);
+	}, [instance, matches]);
 
 	const [draggableMatch, setDraggableMatch] = useState<IMatch | null>(null);
 	const [isRepaintConnections, setIsRepaintConnections] = useState(false);
@@ -169,7 +166,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				draggableMatch,
 			});
 		}
-	}, [isRepaintConnections]);
+	}, [draggableMatch, instance, isRepaintConnections, matches]);
 
 	const onDragStart = (start: DragStart) => {
 		setIsDraging(true);
@@ -300,13 +297,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		setIsRepaintConnections(true);
 	};
 
-	const removePlumbOfMatch = ({
-		instance,
-		matchIdWithoutPrefix,
-	}: {
-		instance: jsPlumbInstance | null;
-		matchIdWithoutPrefix: string;
-	}) => {
+	const removePlumbOfMatch = ({ instance, matchIdWithoutPrefix }: { instance: jsPlumbInstance | null; matchIdWithoutPrefix: string }) => {
 		if (instance) {
 			deleteConnectionsAndEndpoints({ matchIdWithPrefix: addPrefixToMatchId(matchIdWithoutPrefix), instance });
 			deleteManagedElement({ matchIdWithPrefix: addPrefixToMatchId(matchIdWithoutPrefix), instance });
@@ -325,7 +316,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 			}
 			removePlumbOfMatch({ instance, matchIdWithoutPrefix: matchId });
 		},
-		[instance]
+		[editBracketMutation, instance, params.id],
 	);
 
 	const {
@@ -353,9 +344,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 	});
 
 	const getMatchNameFromTeamId = ({ teamId, matches }: { teamId: string; matches: IMatch[] }) => {
-		const match = matches.find(
-			(match) => match.participants[0].id.toString() === teamId || match.participants[1].id.toString() === teamId
-		);
+		const match = matches.find((match) => match.participants[0].id.toString() === teamId || match.participants[1].id.toString() === teamId);
 
 		return match?.matchName;
 	};
@@ -391,7 +380,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				}
 				return acc;
 			},
-			{ activeMatchId: currentMatchId, ids: [] }
+			{ activeMatchId: currentMatchId, ids: [] },
 		);
 
 		const highligtedTeamName = match.participants[participantIndex].name;
@@ -405,7 +394,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				}
 				return acc;
 			},
-			{ activeMatchId: currentMatchId, ids: [] }
+			{ activeMatchId: currentMatchId, ids: [] },
 		);
 
 		setHighlitedTeamId([highligtedTeamId, ...nextActiveMatches.ids, ...prevActiveMatches.ids]);
@@ -438,6 +427,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 		if (highlitedTeamId.length) {
 			addDynamicConnectorStyles(matchesIds, setIntervals);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [highlitedTeamId]);
 
 	const handleMouseLeave = () => {
@@ -567,7 +557,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				return columns;
 			});
 		},
-		[setColumns]
+		[editBracketMutation, params.id],
 	);
 
 	const editColumn = useCallback(
@@ -583,7 +573,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				return columns;
 			});
 		},
-		[setColumns]
+		[editBracketMutation, params.id],
 	);
 
 	const removeColumn = useCallback(
@@ -621,9 +611,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 				setColumns((prev) => {
 					const columns = getDeepClone(prev);
 					// * Reindex columnIndex
-					const updatedColumns = columns
-						.filter((c) => c.id !== column.id)
-						.map((column, index) => ({ ...column, columnIndex: index }));
+					const updatedColumns = columns.filter((c) => c.id !== column.id).map((column, index) => ({ ...column, columnIndex: index }));
 					editBracketMutation.mutate({
 						id: params.id!,
 						bracket: {
@@ -640,7 +628,7 @@ export const useBracketSingle = ({ container, createMatchOpenModal }: PropsT): u
 					});
 			}
 		},
-		[columns, matches]
+		[columns, editBracketMutation, instance, matches, params.id],
 	);
 
 	return {

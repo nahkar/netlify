@@ -49,9 +49,7 @@ export const deleteConnectionsAndEndpoints = ({ matchIdWithPrefix, instance }: D
 
 	ednpoints?.forEach((e) => instance?.deleteEndpoint(e));
 
-	const currentConnections = connections?.filter(
-		(c) => c.targetId === matchIdWithPrefix || c.sourceId === matchIdWithPrefix
-	);
+	const currentConnections = connections?.filter((c) => c.targetId === matchIdWithPrefix || c.sourceId === matchIdWithPrefix);
 
 	currentConnections?.forEach((c) => instance?.deleteConnection(c));
 };
@@ -75,9 +73,7 @@ export const updateRelation = ({ matches, targetId, sourceId, type, setMatches }
 				if (match.id === targetMatch.id) {
 					return {
 						...match,
-						prevMatchId: match.prevMatchId
-							? [...new Set([...match.prevMatchId, sourceMatch.id])]
-							: [...new Set([sourceMatch.id])],
+						prevMatchId: match.prevMatchId ? [...new Set([...match.prevMatchId, sourceMatch.id])] : [...new Set([sourceMatch.id])],
 					};
 				}
 			}
@@ -136,7 +132,7 @@ export const setListeners = ({ instance, matches, setMatches }: SetListenersT) =
 		const { sourceId, targetId } = data;
 		const connections = instance.getAllConnections();
 		const currentConnection = connections.find((c) => c.sourceId === sourceId);
-		if (currentConnection) {			
+		if (currentConnection) {
 			updateRelation({
 				matches,
 				setMatches,
@@ -183,32 +179,20 @@ export const setEndpoint = ({ instance, match, isLastColumn, matchRef, matchIdWi
 	const id = matchRef || matchIdWithPrefix || '';
 
 	if (match.columnIndex > 0 && !isLastColumn) {
-		instance.addEndpoint(
-			id,
-			{ anchor: 'Left', maxConnections: 2 },
-			{ ...PLUMB_CONFIG, endpoint: 'Blank', isSource: false }
-		);
+		instance.addEndpoint(id, { anchor: 'Left', maxConnections: 2 }, { ...PLUMB_CONFIG, endpoint: 'Blank', isSource: false });
 		instance.addEndpoint(
 			id,
 			{ anchor: 'Right', maxConnections: 2 },
-			{ ...PLUMB_CONFIG, endpoint: 'Dot', isSource: true, enabled: !match.nextMatchId }
+			{ ...PLUMB_CONFIG, endpoint: 'Dot', isSource: true, enabled: !match.nextMatchId },
 		); // Dot
 	}
 
 	if (!match.columnIndex && !isLastColumn) {
-		instance.addEndpoint(
-			id,
-			{ anchor: 'Right', maxConnections: 2 },
-			{ ...PLUMB_CONFIG, endpoint: 'Dot', enabled: !match.nextMatchId }
-		); // Dot
+		instance.addEndpoint(id, { anchor: 'Right', maxConnections: 2 }, { ...PLUMB_CONFIG, endpoint: 'Dot', enabled: !match.nextMatchId }); // Dot
 	}
 
 	if (match.columnIndex > 0 && isLastColumn) {
-		instance.addEndpoint(
-			id,
-			{ anchor: 'Left', maxConnections: 2 },
-			{ ...PLUMB_CONFIG, isSource: false, endpoint: 'Blank' }
-		);
+		instance.addEndpoint(id, { anchor: 'Left', maxConnections: 2 }, { ...PLUMB_CONFIG, isSource: false, endpoint: 'Blank' });
 	}
 };
 
@@ -220,12 +204,11 @@ export const setConnection = ({ instance, sourceMatchIdWithoutPrefix, targetMatc
 	});
 };
 
-export const setPrevAndNextMatchConnections = ({
-	instance,
-	matches,
-	draggableMatch,
-}: SetPrevAndNextMatchConnectionsT) => {
-	const prevMatchId = matches.find((match) => match.prevMatchId?.includes(draggableMatch?.id!))?.id;
+export const setPrevAndNextMatchConnections = ({ instance, matches, draggableMatch }: SetPrevAndNextMatchConnectionsT) => {
+	if (!draggableMatch) {
+		return;
+	}
+	const prevMatchId = matches.find((match) => match.prevMatchId?.includes(draggableMatch?.id))?.id;
 	const nextMatchIdFirst = matches.find((match) => match.nextMatchId === draggableMatch?.id)?.id;
 	const nextMatchIdLast = matches.findLast((match) => match.nextMatchId === draggableMatch?.id)?.id;
 
@@ -265,10 +248,7 @@ export const removeDynamicConnectorStyles = () => {
 	});
 };
 
-export const addDynamicConnectorStyles = (
-	matchesIds: Set<string>,
-	setIntervals: Dispatch<SetStateAction<NodeJS.Timeout[]>>
-) => {
+export const addDynamicConnectorStyles = (matchesIds: Set<string>, setIntervals: Dispatch<SetStateAction<NodeJS.Timeout[]>>) => {
 	[...matchesIds].forEach((id) => {
 		const svgLine = document.querySelector(`.connector-${id}`) as HTMLElement;
 		if (svgLine) {

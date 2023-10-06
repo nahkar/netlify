@@ -33,7 +33,7 @@ export const CreateColumn = ({ addColumn }: PropsT) => {
 	return (
 		<>
 			<Box>
-				<Tooltip title='Create Round' placement='right'>
+				<Tooltip title="Create Round" placement="right">
 					<IconButton onClick={() => setOpen(true)}>
 						<AddCircleOutlineOutlinedIcon />
 					</IconButton>
@@ -42,14 +42,14 @@ export const CreateColumn = ({ addColumn }: PropsT) => {
 			<Dialog fullWidth open={open} onClose={() => setOpen(false)}>
 				<DialogTitle>Create New Round</DialogTitle>
 				<DialogContent>
-					<Box component='form' noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
-						<Box sx={{ mt: 1 }} component='div'>
+					<Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+						<Box sx={{ mt: 1 }} component="div">
 							<TextField
 								fullWidth
-								size='small'
-								label='Round Name'
-								variant='outlined'
-								defaultValue='Round '
+								size="small"
+								label="Round Name"
+								variant="outlined"
+								defaultValue="Round "
 								{...register('roundName', { required: true })}
 							/>
 							{errors.roundName && <FormErrorStyled>This field is required</FormErrorStyled>}

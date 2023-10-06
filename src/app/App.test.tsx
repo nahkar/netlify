@@ -19,20 +19,21 @@ const getContainer = (path: string) => {
 };
 
 describe('<App />', () => {
-	it('Should render main layout', async () => {
+	it('Should render main layout', () => {
 		const container = getContainer('/');
-		await act(async () => {
+		act(() => {
 			expect(getByTestId(container, 'main-layout')).toBeInTheDocument();
 		});
 	});
-	it('Should render main layout', async () => {
+	it('Should render main layout', () => {
 		const container = getContainer('/');
-		await act(async () => {
+		act(() => {
 			expect(getByText(container, /Home/i)).toBeInTheDocument();
 		});
 	});
 	it('Should render brackets page', async () => {
 		const container = getContainer('/brackets');
+		// eslint-disable-next-line @typescript-eslint/require-await
 		await act(async () => {
 			expect(getByText(container, /Brackets not found/i)).toBeInTheDocument();
 		});

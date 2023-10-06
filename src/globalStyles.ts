@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
+import { ThemeT } from 'styles/theme';
 
-export const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle<ThemeT>`
 	* {
 		font-family: 'Source Sans Pro', sans-serif;
 		font-size: 16px;

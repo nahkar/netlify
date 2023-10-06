@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
+import { ThemeT } from 'styles/theme';
 
-export const Resizer__WrapperStyled = styled.div`
+export const Resizer__WrapperStyled = styled.div<ThemeT>`
 	width: 45px;
 	background: ${(props) => props.theme.light.colors.info.dark};
 	border-radius: 5px;

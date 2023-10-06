@@ -37,7 +37,7 @@ export const Match = ({
 		if (element.current && instance) {
 			setEndpoint({ instance, match, isLastColumn, matchRef: element.current });
 		}
-	}, [instance, match, match.columnIndex]);
+	}, [instance, isLastColumn, match]);
 	return (
 		<Match__SingleWrapperStyled
 			$isSelected={isSelected}
@@ -46,8 +46,7 @@ export const Match = ({
 			onClick={(e) => clickMatchHandler(e, match)}
 			onContextMenu={(e) => contextMenuHandler(e, match)}
 			$isActive={
-				highlitedTeamId.includes(match.participants[0].id.toString()) ||
-				highlitedTeamId.includes(match.participants[1].id.toString())
+				highlitedTeamId.includes(match.participants[0].id.toString()) || highlitedTeamId.includes(match.participants[1].id.toString())
 			}
 		>
 			{match.description && <Match__SingleDescriptionStyled>{match.description}</Match__SingleDescriptionStyled>}

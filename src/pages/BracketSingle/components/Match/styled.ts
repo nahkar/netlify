@@ -1,18 +1,17 @@
 import { styled } from 'styled-components';
 import { MATCH_HEIGHT } from '../../../../config';
+import { ThemeT } from 'styles/theme';
 
 export const Match__WrapperStyled = styled.div`
 	height: ${MATCH_HEIGHT}px;
-
 `;
 
 export const Match__ContainerStyled = styled.div<{ $isAnotherMatch: boolean }>`
 	padding: 0 10px;
 	transform: ${(props) => props.$isAnotherMatch && 'none !important'};
-	
 `;
 
-export const Match__SingleWrapperStyled = styled.div<{ $isSelected: boolean, 	$isActive: boolean; }>`
+export const Match__SingleWrapperStyled = styled.div<{ $isSelected: boolean; $isActive: boolean }>`
 	position: relative;
 	height: ${MATCH_HEIGHT}px;
 	display: flex;
@@ -62,7 +61,7 @@ export const Match__SingleParticipantWrapperStyled = styled.div`
 	z-index: 9;
 `;
 
-export const Match__SingleParticipantStyled = styled.div<{$isActive: boolean}>`
+export const Match__SingleParticipantStyled = styled.div<ThemeT & { $isActive: boolean }>`
 	padding: 5px;
 	font-size: 14px;
 	text-overflow: ellipsis;
@@ -82,7 +81,7 @@ export const Match__SingleParticipantStyled = styled.div<{$isActive: boolean}>`
 	}
 `;
 
-export const Match__SingleDescriptionStyled = styled.div`
+export const Match__SingleDescriptionStyled = styled.div<ThemeT>`
 	font-size: 13px;
 	color: ${(props) => props.theme.light.colors.info.main};
 	position: absolute;

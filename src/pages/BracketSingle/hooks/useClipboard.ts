@@ -31,32 +31,20 @@ type useClipboardResult = {
 	removeCacheSelected: () => void;
 	closeOverlayHandler: () => void;
 	toogleEditMatchModal: (matchId: string) => void;
-	contextMenuOnEmptyMatchHandler: (props: {
-		e: React.MouseEvent<HTMLDivElement, MouseEvent>;
-		column: IColumn;
-		index: number;
-	}) => void;
+	contextMenuOnEmptyMatchHandler: (props: { e: React.MouseEvent<HTMLDivElement, MouseEvent>; column: IColumn; index: number }) => void;
 	emptyContextMenu: { column: IColumn; index: number } | null;
 };
 
-export const useClipboard = ({
-	deleteMatch,
-	setMatches,
-	columns,
-	updateInstance,
-	matches,
-}: PropsT): useClipboardResult => {
-	const [selected, setSelected] = useState<IMatch[]>(JSON.parse(localStorage.getItem('selected')!) || []);
-	const [copies, setCopies] = useState<IMatch[]>(JSON.parse(localStorage.getItem('copies')!) || []);
+export const useClipboard = ({ deleteMatch, setMatches, columns, updateInstance, matches }: PropsT): useClipboardResult => {
+	const [selected, setSelected] = useState<IMatch[]>((JSON.parse(localStorage.getItem('selected')!) as IMatch[]) || []);
+	const [copies, setCopies] = useState<IMatch[]>((JSON.parse(localStorage.getItem('copies')!) as IMatch[]) || []);
 
 	const [isShowContextMenu, setIsShowContextMenu] = useState('');
 	const [emptyContextMenu, setEmptyContextMenu] = useState<{ column: IColumn; index: number } | null>(null);
 
 	const [editableMatchId, setEditableMatchId] = useState('');
 
-	const editBracketMutation = useMutation((data: { id: string; bracket: Partial<IBracket> }) =>
-		api.editBracket(data.id, data.bracket)
-	);
+	const editBracketMutation = useMutation((data: { id: string; bracket: Partial<IBracket> }) => api.editBracket(data.id, data.bracket));
 
 	const params = useParams();
 
@@ -186,9 +174,7 @@ export const useClipboard = ({
 				return data.map((match) => {
 					return {
 						...match,
-						columnIndex: !!emptyContextMenu.column.columnIndex
-							? emptyContextMenu.column.columnIndex
-							: match.columnIndex,
+						columnIndex: emptyContextMenu.column.columnIndex ? emptyContextMenu.column.columnIndex : match.columnIndex,
 						columnId: emptyContextMenu.column.id,
 						matchNumber: emptyContextMenu.index,
 					};
@@ -199,9 +185,7 @@ export const useClipboard = ({
 					Math.max(...data.map((match) => match.columnIndex)) - Math.min(...data.map((match) => match.columnIndex)) + 1;
 				const columnsForPaste = getColumns().filter(
 					(c) =>
-						c.columnIndex !== null &&
-						emptyContextMenu.column.columnIndex !== null &&
-						c.columnIndex >= emptyContextMenu.column.columnIndex
+						c.columnIndex !== null && emptyContextMenu.column.columnIndex !== null && c.columnIndex >= emptyContextMenu.column.columnIndex,
 				);
 				if (countOfColumnsForPaste > columnsForPaste.length) {
 					toast.error('The number of columns is less than the number of matches');
@@ -213,7 +197,7 @@ export const useClipboard = ({
 						...new Set(
 							getDeepClone(data)
 								.sort((a, b) => a.columnIndex - b.columnIndex)
-								.map((m) => m.columnId)
+								.map((m) => m.columnId),
 						),
 					].forEach((columnId, index) => {
 						mapper[columnId] = idsForPaste[index];

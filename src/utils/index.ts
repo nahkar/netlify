@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 export const getNumbersArray = (count: number) => Array.from(Array(count).keys());
 
-export const getDeepClone = <T>(data: T): T => JSON.parse(JSON.stringify(data));
+export const getDeepClone = <T>(data: T): T => JSON.parse(JSON.stringify(data)) as T;
 
 export const isEven = (num: number) => num % 2 === 0;
 

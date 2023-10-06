@@ -46,12 +46,12 @@ export const BracketInfo = ({ columns, matches, instance, bracketName, changeBra
 		setTimeout(() => {
 			clearInterval(interval);
 		}, 500);
-	}, [isExpanded]);
+	}, [instance, isExpanded]);
 
 	return (
 		<AccordionGroup
-			variant='plain'
-			transition='0.2s'
+			variant="plain"
+			transition="0.2s"
 			sx={{
 				borderRadius: 'md',
 				[`& .${accordionDetailsClasses.content}.${accordionDetailsClasses.expanded}`]: {
@@ -64,21 +64,21 @@ export const BracketInfo = ({ columns, matches, instance, bracketName, changeBra
 		>
 			<Accordion sx={{ mb: 2, minWidth: '800px' }} onChange={(_, expanded) => setIsExpanded(expanded)}>
 				<AccordionSummary>
-					<Avatar color='primary'>
+					<Avatar color="primary">
 						<DescriptionRoundedIcon />
 					</Avatar>
 					<ListItemContent>
-						<Typography level='title-md'>Bracket Info</Typography>
-						<Typography level='body-sm' component='i'>
-							The "Bracket Info" section provides a concise overview of key information related to a bracket. It
-							includes details about matches, rounds, teams, and the bracket name.
+						<Typography level="title-md">Bracket Info</Typography>
+						<Typography level="body-sm" component="i">
+							The "Bracket Info" section provides a concise overview of key information related to a bracket. It includes details about
+							matches, rounds, teams, and the bracket name.
 						</Typography>
 					</ListItemContent>
 				</AccordionSummary>
 				<AccordionDetails>
 					<Stack spacing={1.5}>
-						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
-							<BadgeIcon fontSize='small' sx={{ mx: 1 }} />
+						<FormControl orientation="horizontal" sx={{ gap: 1, alignItems: 'center' }}>
+							<BadgeIcon fontSize="small" sx={{ mx: 1 }} />
 							{!isShowEditBracketNameForm && (
 								<>
 									<FormLabel>Name:</FormLabel>
@@ -88,7 +88,7 @@ export const BracketInfo = ({ columns, matches, instance, bracketName, changeBra
 							<FormLabel>
 								{!isShowEditBracketNameForm && (
 									<IconButton onClick={() => setIsShowEditBracketNameForm(true)}>
-										<EditOutlinedIcon fontSize='small' />
+										<EditOutlinedIcon fontSize="small" />
 									</IconButton>
 								)}
 							</FormLabel>
@@ -98,17 +98,17 @@ export const BracketInfo = ({ columns, matches, instance, bracketName, changeBra
 								</Box>
 							)}
 						</FormControl>
-						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
+						<FormControl orientation="horizontal" sx={{ gap: 1, alignItems: 'center' }}>
 							<Groups2RoundedIcon sx={{ mx: 1 }} />
 							<FormLabel>Teams:</FormLabel>
 							<FormLabel>{getAllTeams(matches).length}</FormLabel>
 						</FormControl>
-						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
+						<FormControl orientation="horizontal" sx={{ gap: 1, alignItems: 'center' }}>
 							<ScoreboardRoundedIcon sx={{ mx: 1 }} />
 							<FormLabel>Matches:</FormLabel>
 							<FormLabel>{matches.length}</FormLabel>
 						</FormControl>
-						<FormControl orientation='horizontal' sx={{ gap: 1, alignItems: 'center' }}>
+						<FormControl orientation="horizontal" sx={{ gap: 1, alignItems: 'center' }}>
 							<EmojiEventsRoundedIcon sx={{ mx: 1 }} />
 							<FormLabel>Rounds:</FormLabel>
 							<FormLabel>{columns.length}</FormLabel>

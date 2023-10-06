@@ -3,10 +3,7 @@ import { IMatch } from '../interfaces/match.interface';
 
 const _sortMatchesByTeamName = (matches: IMatch[]) => {
 	return matches.sort((a, b) => {
-		return (
-			Number(a.participants[0].name.toLowerCase().split('team ')[1]) -
-			Number(b.participants[0].name.toLowerCase().split('team ')[1])
-		);
+		return Number(a.participants[0].name.toLowerCase().split('team ')[1]) - Number(b.participants[0].name.toLowerCase().split('team ')[1]);
 	});
 };
 
@@ -30,7 +27,7 @@ const _renameMatches = (matches: IMatch[]) => {
 };
 
 export const sortBracket = (matches: IMatch[]) => {
-	const m = getDeepClone(matches) as IMatch[];
+	const m = getDeepClone(matches);
 	const ORDER_SECTIONS = [1, 4, 3, 2];
 
 	const _generateOrder = ({ len }: { len: number }) => {
@@ -58,27 +55,24 @@ export const sortBracket = (matches: IMatch[]) => {
 	}
 
 	// * Empty sections for the second round
-	let firstSection = getNumbersArray(countMatchesInSection);
-	let secondSection = getNumbersArray(countMatchesInSection);
-	let thirdSection = getNumbersArray(countMatchesInSection);
-	let fourthSection = getNumbersArray(countMatchesInSection);
+	const firstSection = getNumbersArray(countMatchesInSection);
+	const secondSection = getNumbersArray(countMatchesInSection);
+	const thirdSection = getNumbersArray(countMatchesInSection);
+	const fourthSection = getNumbersArray(countMatchesInSection);
 
 	const matcehesInSecondRound = m.filter((match) => match.columnIndex === 1);
 
 	const matchesWithWinnerInSecondRound = _sortMatchesByTeamName(
 		matcehesInSecondRound.filter(
-			(match) =>
-				match.participants[0].name.toLowerCase().includes('winner') ||
-				match.participants[1].name.toLowerCase().includes('winner')
-		)
+			(match) => match.participants[0].name.toLowerCase().includes('winner') || match.participants[1].name.toLowerCase().includes('winner'),
+		),
 	);
 
 	const matchesWithoutWinner = _sortMatchesByTeamName(
 		matcehesInSecondRound.filter(
 			(match) =>
-				!match.participants[0].name.toLowerCase().includes('winner') &&
-				!match.participants[1].name.toLowerCase().includes('winner')
-		)
+				!match.participants[0].name.toLowerCase().includes('winner') && !match.participants[1].name.toLowerCase().includes('winner'),
+		),
 	);
 
 	const sortedWinnerTeamsMatches = matchesWithWinnerInSecondRound
@@ -155,65 +149,41 @@ export const sortBracket = (matches: IMatch[]) => {
 		let secondCount = 0;
 		let thirdCount = 0;
 		let fourthCount = 0;
-		if (true) {
-			const sortedMatches = _sortMatchesByTeamName(matches).reverse();
+		const sortedMatches = _sortMatchesByTeamName(matches).reverse();
 
-			sortedMatches.forEach((match, index) => {
-				switch (
-					_generateOrder({
-						len: sortedMatches.length,
-					})[index]
-				) {
-					case 1:
-						_addMatch({ match, array: firstSection, position: ORDER_SECTIONS.map((val) => val - 1)[firstCount] });
-						++firstCount;
-						break;
-					case 4:
-						_addMatch({ match, array: fourthSection, position: ORDER_SECTIONS.map((val) => val - 1)[fourthCount] });
-						++fourthCount;
-						break;
-					case 3:
-						_addMatch({ match, array: thirdSection, position: ORDER_SECTIONS.map((val) => val - 1)[thirdCount] });
-						++thirdCount;
-						break;
-					case 2:
-						_addMatch({ match, array: secondSection, position: ORDER_SECTIONS.map((val) => val - 1)[secondCount] });
-						++secondCount;
-						break;
-				}
-			});
+		sortedMatches.forEach((match, index) => {
+			switch (
+				_generateOrder({
+					len: sortedMatches.length,
+				})[index]
+			) {
+				case 1:
+					_addMatch({ match, array: firstSection, position: ORDER_SECTIONS.map((val) => val - 1)[firstCount] });
+					++firstCount;
+					break;
+				case 4:
+					_addMatch({ match, array: fourthSection, position: ORDER_SECTIONS.map((val) => val - 1)[fourthCount] });
+					++fourthCount;
+					break;
+				case 3:
+					_addMatch({ match, array: thirdSection, position: ORDER_SECTIONS.map((val) => val - 1)[thirdCount] });
+					++thirdCount;
+					break;
+				case 2:
+					_addMatch({ match, array: secondSection, position: ORDER_SECTIONS.map((val) => val - 1)[secondCount] });
+					++secondCount;
+					break;
+			}
+		});
 
-			const res = [
-				firstSection,
-				secondSection.reverse(),
-				thirdSection.reverse(),
-				fourthSection,
-			].flat() as unknown as IMatch[];
+		const res = [firstSection, secondSection.reverse(), thirdSection.reverse(), fourthSection].flat() as unknown as IMatch[];
 
-			return res.filter((m) => typeof m !== 'number');
-		}
-		// const result = getNumbersArray(matches.length) as unknown as IMatch[];
-		// const sortedMatches = [...matches].sort((prevMatch, currentMatch) => {
-		// 	const prevTeamNumber = Number(prevMatch.participants[1].name.split('team ')[1]);
-		// 	const currentTeamNumber = Number(currentMatch.participants[1].name.split('team ')[1]);
-		// 	return prevTeamNumber - currentTeamNumber;
-		// });
-		// // TODO length matches > than order need to create more order list
-		// sortedMatches.forEach((match, index) => {
-		// 	result[ORDER_SECTIONS.map((val) => val - 1)[index]] = match;
-		// });
-
-		// return result;
+		return res.filter((m) => typeof m !== 'number');
 	};
 
 	// * Reverse if each semi bracket includes winner match
 	const firstColumn = m.filter((match) => match.columnIndex === 0);
-	const secondColumn = [
-		firstSection,
-		secondSection.reverse(),
-		thirdSection,
-		fourthSection.reverse(),
-	].flat() as unknown as IMatch[];
+	const secondColumn = [firstSection, secondSection.reverse(), thirdSection, fourthSection.reverse()].flat() as unknown as IMatch[];
 	const otherColumns = m.filter((match) => match.columnIndex !== 0 && match.columnIndex !== 1);
 
 	const allMatches = [..._sortedMatchesInFirstColumn(firstColumn), ...secondColumn, ...otherColumns];

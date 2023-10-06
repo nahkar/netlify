@@ -24,15 +24,8 @@ import { useEffect, useState } from 'react';
 import { Loader } from 'components/Loader';
 
 export const CreateBracket = () => {
-	const {
-		templateType,
-		setTemplateType,
-		isMakeDuplicate,
-		setIsMakeDuplicate,
-		bracketsOption,
-		submitHandler,
-		isShowLoader,
-	} = useCreateBracket();
+	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, bracketsOption, submitHandler, isShowLoader } =
+		useCreateBracket();
 	const {
 		register,
 		handleSubmit,
@@ -55,7 +48,7 @@ export const CreateBracket = () => {
 			setIsThirdPlaceChecked(true);
 			setValue('isThirdPlace', true);
 		}
-	}, [isFifthPlaceChecked]);
+	}, [isFifthPlaceChecked, setValue]);
 
 	const getSubmitButtonlabel = () => {
 		let submitButtonLabel = 'Generate Bracket';
@@ -71,27 +64,27 @@ export const CreateBracket = () => {
 	};
 
 	return (
-		<CreateBracket__WrapperStyled component='form' noValidate autoComplete='off' onSubmit={handleSubmit(submitHandler)}>
+		<CreateBracket__WrapperStyled component="form" noValidate autoComplete="off" onSubmit={handleSubmit(submitHandler)}>
 			{isShowLoader && <Loader />}
 			<Box sx={{ width: '100%', mb: 2 }}>
 				<Select
-					size='small'
+					size="small"
 					fullWidth
-					label='Select Template'
+					label="Select Template"
 					value={templateType}
 					onChange={(e) => setTemplateType(e.target.value as TemplateTypeT)}
 				>
-					<MenuItem value='new_bracket'>Create new Bracket</MenuItem>
-					<MenuItem value='saved_brackets'>Saved Brackets</MenuItem>
+					<MenuItem value="new_bracket">Create new Bracket</MenuItem>
+					<MenuItem value="saved_brackets">Saved Brackets</MenuItem>
 				</Select>
 			</Box>
 			{isNewBracketType && (
 				<Box sx={{ width: '100%', mb: 2 }}>
 					<TextField
 						fullWidth
-						size='small'
-						label='Bracket Name'
-						variant='outlined'
+						size="small"
+						label="Bracket Name"
+						variant="outlined"
 						{...register('bracketName', { required: isNewBracketType })}
 					/>
 					{errors.bracketName && <FormErrorStyled>This field is required</FormErrorStyled>}
@@ -102,15 +95,15 @@ export const CreateBracket = () => {
 				<Box sx={{ width: '100%', mb: 2 }}>
 					<TextField
 						fullWidth
-						type='number'
+						type="number"
 						InputProps={{
 							inputProps: {
 								min: 2,
 							},
 						}}
-						size='small'
-						label='Count of Teams'
-						variant='outlined'
+						size="small"
+						label="Count of Teams"
+						variant="outlined"
 						{...register('countOfTeams', { required: isNewBracketType, min: 2 })}
 					/>
 					{errors.countOfTeams && <FormErrorStyled>This field is required</FormErrorStyled>}
@@ -119,10 +112,7 @@ export const CreateBracket = () => {
 
 			{isNewBracketType && countOfTeams >= MIN_TEAMS_FOR_LOSERS_5 && (
 				<Box sx={{ width: '100%', mb: 2 }}>
-					<FormControlLabel
-						control={<Switch defaultChecked {...register('isHigherSeedsTeamsLogic')} />}
-						label='Higher Seeds Teams Logic'
-					/>
+					<FormControlLabel control={<Switch defaultChecked {...register('isHigherSeedsTeamsLogic')} />} label="Higher Seeds Teams Logic" />
 				</Box>
 			)}
 			{isNewBracketType && countOfTeams >= MIN_TEAMS_FOR_LOSERS_3 && (
@@ -135,7 +125,7 @@ export const CreateBracket = () => {
 								onChange={(e) => setIsThirdPlaceChecked(e.target.checked)}
 							/>
 						}
-						label='Match for the 3d place'
+						label="Match for the 3d place"
 					/>
 				</Box>
 			)}
@@ -149,7 +139,7 @@ export const CreateBracket = () => {
 								onChange={(e) => setIsFifthPlaceChecked(e.target.checked)}
 							/>
 						}
-						label='Match for the 5th place'
+						label="Match for the 5th place"
 					/>
 				</Box>
 			)}
@@ -157,16 +147,12 @@ export const CreateBracket = () => {
 			{isSavedBracketType && (
 				<Box sx={{ width: '100%', mb: 2 }}>
 					<Autocomplete
-						size='small'
+						size="small"
 						fullWidth
 						disablePortal
 						options={bracketsOption}
 						renderInput={(params) => (
-							<TextField
-								{...params}
-								label='Select Saved Bracket'
-								{...register('selectedSavedBracket', { required: isSavedBracketType })}
-							/>
+							<TextField {...params} label="Select Saved Bracket" {...register('selectedSavedBracket', { required: isSavedBracketType })} />
 						)}
 					/>
 					{errors.selectedSavedBracket && <FormErrorStyled>This field is required</FormErrorStyled>}
@@ -177,7 +163,7 @@ export const CreateBracket = () => {
 					<FormGroup>
 						<FormControlLabel
 							control={<Switch />}
-							label='Make Duplicate ?'
+							label="Make Duplicate ?"
 							checked={isMakeDuplicate}
 							onChange={() => setIsMakeDuplicate((prev) => !prev)}
 						/>
@@ -188,9 +174,9 @@ export const CreateBracket = () => {
 				<Box sx={{ width: '100%', mb: 2 }}>
 					<TextField
 						fullWidth
-						size='small'
-						label='Duplicate Name'
-						variant='outlined'
+						size="small"
+						label="Duplicate Name"
+						variant="outlined"
 						{...register('duplicateName', { required: isSavedBracketType && isMakeDuplicate })}
 					/>
 					{errors.duplicateName && <FormErrorStyled>This field is required</FormErrorStyled>}
@@ -204,17 +190,14 @@ export const CreateBracket = () => {
 					<AccordionDetails>
 						<Box sx={{ width: '100%', mb: 2 }}>
 							<FormGroup>
-								<FormControlLabel
-									control={<Switch {...register('isRightSide')} />}
-									label='Cancelation Matches are Right Side'
-								/>
+								<FormControlLabel control={<Switch {...register('isRightSide')} />} label="Cancelation Matches are Right Side" />
 							</FormGroup>
 						</Box>
 					</AccordionDetails>
 				</CreateBracket__AccordionStyled>
 			)}
 			<Box sx={{ width: '100%', mb: 2 }}>
-				<Button type='submit' variant='contained' size='medium' fullWidth>
+				<Button type="submit" variant="contained" size="medium" fullWidth>
 					{getSubmitButtonlabel()}
 				</Button>
 			</Box>
