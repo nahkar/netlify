@@ -21,7 +21,7 @@ export const AppProvider = ({ children }: PropsT) => {
 	return (
 		<BrowserRouter>
 			<ThemeHoc>
-				<GlobalStyle theme={theme}/>
+				<GlobalStyle theme={theme} />
 				<ToastContainer />
 				<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 			</ThemeHoc>

@@ -15,20 +15,8 @@
 		"test": "vitest --run",
 		"test:watch": "vitest",
 		"preview": "vite preview",
-		"precommit": "lint-staged",
 		"prepare": "husky install",
 		"prettier": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
-	},
-	"hooks": {  
-    "pre-commit": "yarn test"        
- } ,
-	"lint-staged": {
-		"*.{js,css,ts,tsx,jsx}": [
-			"prettier --check src/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
-			"eslint --fix",
-			"yarn test",  
-			"yarn build" 
-		]
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
@@ -81,7 +69,6 @@
 		"eslint-plugin-react-refresh": "^0.4.3",
 		"husky": "^8.0.3",
 		"jsdom": "^22.1.0",
-		"lint-staged": "^14.0.1",
 		"prettier": "^3.0.3",
 		"typescript": "^5.0.2",
 		"vite": "^4.4.5",
