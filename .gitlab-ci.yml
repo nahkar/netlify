@@ -1,0 +1,22 @@
+# Cache modules using lock file
+cache:
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - node_modules/
+
+deploy_static:
+  only:
+    - master
+  script:
+    - VITE_BASE_URL=$PROD_BASE_URL  docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app -u `id -u $USER`:`id -g $USER` --env HOME=. --env 'VITE_BASE_URL' node:18 bash -c 'yarn install; yarn build;'
+    - ansible-playbook -l marc-aws-sw deploy/static.yml
+
+deploy_static_dev:
+  only:
+    - development
+  script:
+    - VITE_BASE_URL=$DEV_BASE_URL  docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app -u `id -u $USER`:`id -g $USER` --env HOME=. --env 'VITE_BASE_URL' --env 'VITE_BASE_URL'  node:16 bash -c 'yarn install; yarn build;'
+    - ansible-playbook -l marc-do-dev-sw-sw deploy/static.yml
+
