@@ -1,13 +1,13 @@
-import { getDeepClone } from 'utils';
-import { IColumn } from 'interfaces/column.interface';
-import { EditMatchT, IMatch } from 'interfaces/match.interface';
+import { getDeepClone } from '~utils';
+import { EditMatchT, IMatch } from '~interfaces/match.interface';
+import { IBracket } from '~interfaces/bracket.interface';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import { useMutation } from 'react-query';
-import { IBracket } from 'interfaces/bracket.interface';
 import { useParams } from 'react-router-dom';
 import { api } from '~api';
+import { IColumn } from '~interfaces/column.interface';
 
 type PropsT = {
 	deleteMatch: (matchId: string, isKeepRelation: boolean) => void;

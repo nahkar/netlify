@@ -17,11 +17,11 @@ import { useCreateBracket } from './hooks/useCreateBracket';
 import { CreateBracketInputsT, TemplateTypeT } from './types';
 import { MIN_TEAMS_FOR_LOSERS_3, MIN_TEAMS_FOR_LOSERS_5 } from '../../config';
 import { CreateBracket__AccordionStyled, CreateBracket__WrapperStyled } from './styled';
-import { FormErrorStyled } from 'styles/shared';
+import { FormErrorStyled } from '~styles/shared';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { theme } from 'styles/theme';
+import { theme } from '~styles/theme';
 import { useEffect, useState } from 'react';
-import { Loader } from 'components/Loader';
+import { Loader } from '~components/Loader';
 
 export const CreateBracket = () => {
 	const { templateType, setTemplateType, isMakeDuplicate, setIsMakeDuplicate, bracketsOption, submitHandler, isShowLoader } =

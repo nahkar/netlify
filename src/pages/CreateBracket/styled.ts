@@ -1,6 +1,6 @@
 import { Accordion, Box } from '@mui/material';
 import { styled } from 'styled-components';
-import { ThemeT } from 'styles/theme';
+import { ThemeT } from '~styles/theme';
 
 export const CreateBracket__WrapperStyled = styled(Box)<ThemeT>`
 	display: flex;

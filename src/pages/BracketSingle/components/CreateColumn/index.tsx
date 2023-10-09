@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { FormErrorStyled } from 'styles/shared';
+import { FormErrorStyled } from '~styles/shared';
 type CreateMatchT = {
 	roundName: string;
 };

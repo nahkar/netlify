@@ -9,7 +9,7 @@ import { BracketInfo } from './components/BracketInfo';
 import { useBracketSingle } from './hooks/usebracketSingle';
 import { Resizer } from './components/Resizer';
 import { CreateColumn } from './components/CreateColumn';
-import { Loader } from 'components/Loader';
+import { Loader } from '~components/Loader';
 
 export const BracketSingle = () => {
 	const container = useRef<HTMLDivElement>(null);

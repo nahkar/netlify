@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormErrorStyled } from 'styles/shared';
+import { FormErrorStyled } from '~styles/shared';
 
 type CreateMatchT = {
 	roundName: string;

@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useBracketsTable } from './hooks/useBracketsTable';
 import { Search } from './components/Search';
-import { Loader } from 'components/Loader';
+import { Loader } from '~components/Loader';
 
 export const BracketsTable = () => {
 	const { columns, rows, setSearch, search, isLoading } = useBracketsTable();

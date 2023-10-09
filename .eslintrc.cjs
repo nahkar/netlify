@@ -36,5 +36,5 @@ module.exports = {
 			version: 'detect',
 		},
 	},
-	ignorePatterns: ['.eslintrc.cjs', 'src/utils/dnd/dnd.d.ts', 'src/**/*.test.*'],
+	ignorePatterns: ['.eslintrc.cjs', 'src/utils/dnd/dnd.d.ts', 'src/**/*.test.*', 'vite.config.ts'],
 };

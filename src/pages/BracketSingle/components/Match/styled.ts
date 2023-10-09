@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { MATCH_HEIGHT } from '../../../../config';
-import { ThemeT } from 'styles/theme';
+import { ThemeT } from '~styles/theme';
 
 export const Match__WrapperStyled = styled.div`
 	height: ${MATCH_HEIGHT}px;

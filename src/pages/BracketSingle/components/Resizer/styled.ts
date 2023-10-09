@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ThemeT } from 'styles/theme';
+import { ThemeT } from '~styles/theme';
 
 export const Resizer__WrapperStyled = styled.div<ThemeT>`
 	width: 45px;

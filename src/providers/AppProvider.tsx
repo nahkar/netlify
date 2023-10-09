@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeHoc } from '../styles/ThemeProvider';
-import { theme } from 'styles/theme';
+import { theme } from '~styles/theme';
 
 type PropsT = { children: React.ReactNode };
 

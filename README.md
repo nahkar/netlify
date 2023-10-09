@@ -9,6 +9,17 @@ yarn
 yarn dev
 ```
 
+# Docker
+
+- #### Build 
+```bash
+docker build -t bracket-builder .
+```
+- #### Run
+```bash
+docker run -d --rm -p 5173:5173 bracket-builder
+```
+
 # Notes
  - We have to remove strict mode to work properly with react-beautiful-dnd
  [Answer]( https://stackoverflow.com/questions/60029734/react-beautiful-dnd-i-get-unable-to-find-draggable-with-id-1)
