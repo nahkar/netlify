@@ -1,0 +1,12 @@
+- hosts: all
+  vars:
+    deploy_folder: /home/sw/bracket-builder-frontend
+
+  tasks:
+    - name: Copy files to the server
+      synchronize:
+        src: ../dist/
+        dest: '{{ deploy_folder }}'
+        rsync_opts:
+          - '--no-motd'
+          - '--exclude=.git'
