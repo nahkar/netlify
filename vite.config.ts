@@ -31,4 +31,19 @@ export default defineConfig({
 			'~components': path.resolve(__dirname, './src/components'),
 		},
 	},
+	build: {
+    lib: {
+      entry: path.resolve("src", 'BracketBuilder.tsx'),
+      name: 'bracket-builder',
+      fileName: (format) => `bracket-builder.${format}.js`
+    },
+    rollupOptions: {
+      external: ['react', 'react-dom'],
+      output: {
+        globals: {
+          react: 'React'
+        }
+      }
+    }
+  },
 });
