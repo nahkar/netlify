@@ -1,22 +1,33 @@
 {
 	"name": "bracket-builder",
-	"private": true,
-	"version": "0.0.0",
+	"private": false,
+	"version": "1.0.17",
 	"license": "MIT",
 	"type": "module",
 	"engines": {
 		"node": ">=18.14",
 		"npm": "8.x"
 	},
+	"main": "./dist/bracket-builder.umd.js",
+	"module": "./dist/bracket-builder.es.js",
+	"types": "./dist/bracket-builder.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/bracket-builder.es.js",
+			"require": "./dist/bracket-builder.umd.js",
+			"types": "./dist/bracket-builder.d.ts"
+		}
+	},
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc && vite build",
+		"build": "tsc && vite build && yarn copy-typescript-definitions",
 		"lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
 		"test": "vitest --run",
 		"test:watch": "vitest",
 		"preview": "vite preview",
 		"prepare": "husky install",
-		"prettier": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
+		"prettier": "prettier --check 'src/*.{js,jsx,ts,tsx,json,css,scss,md}'",
+		"copy-typescript-definitions": "copyfiles -u 1 \"src/*.d.ts\" dist"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
@@ -51,15 +62,16 @@
 		"@types/axios": "^0.14.0",
 		"@types/lodash": "^4.14.199",
 		"@types/node": "^20.7.0",
-		"@types/react": "^18.2.15",
+		"@types/react": "^18.2.27",
 		"@types/react-beautiful-dnd": "^13.1.5",
-		"@types/react-dom": "^18.2.7",
+		"@types/react-dom": "^18.2.12",
 		"@types/react-query": "^1.2.9",
 		"@types/react-router-dom": "^5.3.3",
 		"@types/uuid": "^9.0.4",
 		"@typescript-eslint/eslint-plugin": "^6.7.4",
 		"@typescript-eslint/parser": "^6.7.4",
 		"@vitejs/plugin-react": "^4.1.0",
+		"copyfiles": "^2.4.1",
 		"eslint": "^8.50.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-import": "^2.28.1",
@@ -72,6 +84,7 @@
 		"prettier": "^3.0.3",
 		"typescript": "^5.0.2",
 		"vite": "^4.4.5",
+		"vite-aliases": "^0.11.3",
 		"vitest": "^0.34.6"
 	}
 }

@@ -5,6 +5,7 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"baseUrl": "./src",
+		"declaration": true,
 		"paths": {
 			"~config": ["config"],
 			"~api": ["api"],
